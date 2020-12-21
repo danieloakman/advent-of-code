@@ -7,6 +7,7 @@ const groups = readFileSync(join(__dirname, 'day6-input'), { encoding: 'utf-8' }
   .filter(v => v)
   .map(v => v.split(/\s+/).filter(v => v));
 
+// Gold Star:
 function groupBy (str) {
   const map = {};
   for (const char of str) {
@@ -17,8 +18,6 @@ function groupBy (str) {
   }
   return map;
 }
-
-// Gold Star:
 let countOfYes = 0;
 for (const group of groups) {
   countOfYes += Object.keys(groupBy(group.join(''))).length;
@@ -27,13 +26,12 @@ console.log({ countOfYes });
 
 // Silver Star:
 function getSet (str) {
-  const bits = Array.from(new Array(26), () => 0);
+  const bits = new Array(26).fill(0);
   for (const char of str) { // Assumes str is lower case
     bits[char.charCodeAt(0) % 97] = 1;
   }
   return parseInt(bits.join(''), 2);
 }
-
 countOfYes = 0;
 for (const group of groups) {
   countOfYes += group
