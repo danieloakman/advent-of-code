@@ -1,7 +1,7 @@
 'use strict';
 
 const { readFileSync } = require('fs');
-const { join, posix } = require('path');
+const { join } = require('path');
 const map = readFileSync(join(__dirname, 'day3-input'), { encoding: 'utf-8' })
   .split('\n')
   .filter(v => v)
