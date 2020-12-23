@@ -51,7 +51,7 @@ const xmas = readFileSync(join(__dirname, 'day9-input'), { encoding: 'utf-8' })
 //     break;
 //   }
 // }
-let invalidNum;
+let invalid;
 loop1:
 for (let i = 25; i < xmas.length; i++) {
   const prev25 = xmas.slice(i - 25, i);
@@ -63,16 +63,25 @@ for (let i = 25; i < xmas.length; i++) {
         continue loop1;
     }
   }
-  console.log((invalidNum = { i, num: xmas[i] }));
+  console.log((invalid = { i, num: xmas[i] }));
   break;
 }
 
 // Silver Star:
-for (let i = 0; i < invalidNum.i; i++) {
-  for (let j = 0; j < invalidNum.i; j++) {
-    // TODO
-    // for () {
-
-    // }
+loop1:
+for (let i = 0; i < invalid.i; i++) {
+  let nums = [xmas[i]];
+  let sum = xmas[i];
+  for (let j = i + 1; j < invalid.i; j++) {
+    nums.push(xmas[j]);
+    sum += xmas[j];
+    if (sum === invalid.num) {
+      console.log(Math.min(...nums) + Math.max(...nums));
+      break loop1;
+    }
+    if (sum > invalid.num) {
+      nums = [];
+      sum = 0;
+    }
   }
 }
