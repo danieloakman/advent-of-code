@@ -6,20 +6,37 @@ const commands = readFileSync(__filename.replace('.js', '-input'), { encoding: '
   .map(str => str.split(' ').map((v, i) => i === 1 ? parseInt(v) : v));
 
 // Silver star:
-let x = 0, y = 0;
-commands.forEach(([command, amount]) => {
+let horizontalPos = 0, depth = 0;
+commands.forEach(([command, x]) => {
   switch (command) {
     case 'forward':
-      x += amount;
+      horizontalPos += x;
       break;
     case 'down':
-      y += amount;
+      depth += x;
       break;
     case 'up':
-      y -= amount;
+      depth -= x;
       break;
   }
 });
-console.log(x * y);
+console.log(horizontalPos * depth);
 
 // Gold star:
+horizontalPos = 0, depth = 0;
+let aim = 0;
+commands.forEach(([command, x]) => {
+  switch (command) {
+    case 'forward':
+      horizontalPos += x;
+      depth += aim * x;
+      break;
+    case 'down':
+      aim += x;
+      break;
+    case 'up':
+      aim -= x;
+      break;
+  }
+});
+console.log(horizontalPos * depth);
