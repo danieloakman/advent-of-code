@@ -2,13 +2,13 @@
 
 const { readFileSync } = require('fs');
 
+// First star:
 const syntaxErrMap = {
   ')': 3, ']': 57, '}': 1197, '>': 25137
 };
-const syntaxMap = {
+const closingSyntaxMap = {
   ')': '(', ']': '[', '}': '{', '>': '<'
 };
-const closingSyntax = Object.keys(syntaxMap);
 function last (arr) {
   return arr[arr.length - 1];
 }
@@ -17,8 +17,8 @@ const totalSyntaxErrors = readFileSync(__filename.replace('.js', '-input'), 'utf
   .map(line => {
     const stack = [];
     for (const char of line) {
-      if (closingSyntax.includes(char)) {
-        if (last(stack) === syntaxMap[char])
+      if (closingSyntaxMap[char] !== undefined) {
+        if (last(stack) === closingSyntaxMap[char])
           stack.pop();
         else
           return syntaxErrMap[char];
@@ -28,3 +28,4 @@ const totalSyntaxErrors = readFileSync(__filename.replace('.js', '-input'), 'utf
     return 0;
   })
   .reduce((a, b) => a + b, 0);
+console.log(totalSyntaxErrors);
