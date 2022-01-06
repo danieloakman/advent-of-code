@@ -1,0 +1,23 @@
+{
+  "name": "advent-of-code",
+  "version": "1.0.0",
+  "description": "<https://adventofcode.com>",
+  "main": "index.js",
+  "scripts": {
+    "create": "node scripts/create.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danieloakman/Advent-Of-Code.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danieloakman/Advent-Of-Code/issues"
+  },
+  "homepage": "https://github.com/danieloakman/Advent-Of-Code#readme",
+  "dependencies": {
+    "argparse": "^2.0.1",
+    "argparser": "^0.2.2"
+  }
+}
