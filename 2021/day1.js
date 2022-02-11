@@ -1,4 +1,5 @@
 'use strict';
+// https://adventofcode.com/2021/day/1
 
 const { readFileSync } = require('fs');
 const { join } = require('path');

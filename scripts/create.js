@@ -12,6 +12,7 @@ const { year, day } = argparser.parse_args();
 
 const fileStr =
 `'use strict';
+// https://adventofcode.com/${year}/day/${day}
 
 const { readFileSync } = require('fs');
 
