@@ -16,8 +16,9 @@
     "url": "https://github.com/danieloakman/Advent-Of-Code/issues"
   },
   "homepage": "https://github.com/danieloakman/Advent-Of-Code#readme",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "argparse": "^2.0.1",
-    "argparser": "^0.2.2"
+    "puppeteer": "^13.3.2"
   }
 }
