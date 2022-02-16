@@ -1,5 +1,5 @@
 'use strict';
-const { writeFileSync, existsSync } = require('fs');
+const { writeFileSync, existsSync, mkdirSync } = require('fs');
 const { ArgumentParser } = require('argparse');
 const { join } = require('path');
 const { execSync } = require('child_process');
@@ -29,6 +29,9 @@ const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
 
 const jsFilePath = join(__dirname, '../', `${year}/day${day}.js`);
 const fileInputPath = join(__dirname, '../', `${year}/day${day}-input`);
+const dir = join(__dirname, '../', `${year}`);
+if (!existsSync(dir))
+  mkdirSync(dir);
 if (!existsSync(jsFilePath))
   writeFileSync(jsFilePath, fileStr);
 else
