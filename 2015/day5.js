@@ -42,9 +42,9 @@ function isNice2 (str) {
   for (let i = 0; i < str.length; i++) {
     if (i < str.length - 1 && !contains2Pairs) {
       const pair = str.slice(i, i + 2);
-      if (!map[pair])
-        map[pair] = { c: 1, idx: i };
-      else if (map[pair].idx !== i + 1)
+      if (map[pair] === undefined) {
+        map[pair] = i;
+      } else if (map[pair] !== i && map[pair] + 1 !== i)
         contains2Pairs = true;
     }
     if (i < str.length - 2 && !containsRepeat) {
