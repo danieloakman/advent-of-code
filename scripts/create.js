@@ -3,6 +3,7 @@ const { writeFileSync, existsSync, mkdirSync } = require('fs');
 const { ArgumentParser } = require('argparse');
 const { join } = require('path');
 const { execSync } = require('child_process');
+const { downloadInput } = require('../lib/downloadInput');
 
 // Get command line arguments:
 const argparser = new ArgumentParser({ description: 'Sync-Local-and-Cloud' });
@@ -41,4 +42,5 @@ if (!existsSync(fileInputPath))
 else
   console.log(`"${fileInputPath}" already exists.`);
 
-execSync(`code ${jsFilePath} && code ${fileInputPath}`);
+downloadInput(year, day)
+  .then(() => execSync(`code ${fileInputPath} && code ${jsFilePath}`));
