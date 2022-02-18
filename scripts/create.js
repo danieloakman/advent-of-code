@@ -43,4 +43,4 @@ else
   console.log(`"${fileInputPath}" already exists.`);
 
 downloadInput(year, day)
-  .then(() => execSync(`code ${fileInputPath} && code ${jsFilePath}`));
+execSync(`code ${fileInputPath} && code ${jsFilePath}`);
