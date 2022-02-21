@@ -19,6 +19,7 @@
   "dependencies": {},
   "devDependencies": {
     "argparse": "^2.0.1",
+    "event-stream": "^4.0.1",
     "lodash": "^4.17.21",
     "more-node-fs": "^1.2.6",
     "puppeteer": "^13.3.2",
