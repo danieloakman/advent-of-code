@@ -28,13 +28,13 @@ const { two, three } = input
 console.log({ checksum: two * three });
 
 // Second Star:
-function findDifferences (a, b) {
-  return a.split('').reduce((p, v, i) => {
-    if (v !== b[i])
-      p.push(v);
-    return p;
-  }, []);
-}
+// function findDifferences (a, b) {
+//   return a.split('').reduce((p, v, i) => {
+//     if (v !== b[i])
+//       p.push(v);
+//     return p;
+//   }, []);
+// }
 function findInCommon (a, b) {
   return a.split('').reduce((p, v, i) => {
     if (v === b[i])
