@@ -1,12 +1,14 @@
 'use strict';
 
 const { readFileSync } = require('fs');
+const { Map2D } = require('../lib/utils');
 
 const EMPTY = '.';
 const DOT = '#';
 
-class Map2D {
+class FoldingMap extends Map2D {
   constructor (xMax, yMax) {
+    super();
     this.map = Array.from(new Array(yMax), _ => new Array(xMax).fill(EMPTY));
   }
 
@@ -16,12 +18,6 @@ class Map2D {
 
   get yMax () {
     return Math.max(...[...this.dots()].map(p => p.y));
-  }
-
-  set (x, y, value) {
-    if (this.map[y] === undefined)
-      this.map[y] = [];
-    this.map[y][x] = value;
   }
 
   // clear (x, y) {
@@ -45,10 +41,6 @@ class Map2D {
       .reverse();
   }
 
-  get (x, y) {
-    return this.map[y] ? this.map[y][x] : undefined;
-  }
-
   fold (axis, axisValue) {
     if (typeof axisValue !== 'number') axisValue = parseFloat(axisValue);
     // axis === 'x' is fold left, 'y' is fold up.
@@ -64,14 +56,7 @@ class Map2D {
   }
 
   *dots () {
-    for (let y = 0; y < this.map.length; y++) {
-      if (!this.map[y]) continue;
-      for (let x = 0; x < this.map[y].length; x++) {
-        const value = this.get(x, y);
-        if (value === DOT)
-          yield { x, y, value };
-      }
-    }
+    return this.getAll(v => v === DOT);
   }
 
   log () {
@@ -80,7 +65,7 @@ class Map2D {
 }
 
 // First Star:
-const map = new Map2D(20, 20);
+const map = new FoldingMap(20, 20);
 readFileSync(__filename.replace('.js', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .forEach(str => {

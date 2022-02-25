@@ -1,0 +1,52 @@
+'use strict';
+// https://adventofcode.com/2018/day/3
+// https://adventofcode.com/2018/day/3/input
+
+const { readFileSync } = require('fs');
+
+const { Map2D } = require('../lib/utils');
+
+class Claim {
+  /** @type {Claim[]} */
+  static claims = [];
+  static plot = new Map2D();
+
+  constructor (id, x, y, w, h) {
+    this.id = id;
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    Claim.claims.push(this);
+    for (const { x, y } of this.points()) {
+      const v = Claim.plot.get(x, y);
+      if (!v)
+        Claim.plot.set(x, y, [this.id]);
+      else
+        Claim.plot.set(x, y, [...v, this.id]);
+    }
+  }
+
+  static parseInputStr (str) {
+    return str
+      .match(/\d+/g)
+      .map(Number);
+  }
+
+  *points () {
+    for (let x = this.x; x < this.x + this.w; x++)
+      for (let y = this.y; y < this.y + this.h; y++)
+        yield { x, y };
+  }
+}
+
+const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+  .split(/[\n\r]+/)
+  .map(str => new Claim(...Claim.parseInputStr(str)))
+
+// First Star:
+console.log({ squareInchesOfFabricWithinTwoOrMoreClaims: [...Claim.plot.getAll(v => v && v.length > 1)].length });
+
+// Second Star:
+
+
