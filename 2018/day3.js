@@ -27,6 +27,10 @@ class Claim {
     }
   }
 
+  get doesOverlap () {
+    return [...Claim.plot.getAll()].some(({ value }) => value.some(id => id === this.id));
+  }
+
   static parseInputStr (str) {
     return str
       .match(/\d+/g)
@@ -40,7 +44,7 @@ class Claim {
   }
 }
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+readFileSync(__filename.replace('.js', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .map(str => new Claim(...Claim.parseInputStr(str)))
 
@@ -48,5 +52,10 @@ const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
 console.log({ squareInchesOfFabricWithinTwoOrMoreClaims: [...Claim.plot.getAll(v => v && v.length > 1)].length });
 
 // Second Star:
-
-
+const doesOverlap = [...Claim.plot.getAll()]
+  .reduce((map, { value: ids }) => {
+    if (ids.length > 1)
+      ids.forEach(id => map[id] = true);
+    return map;
+  }, {});
+console.log({ idOfClaimThatDoesNotOverlap: Claim.claims.find(claim => !doesOverlap[claim.id]).id });
