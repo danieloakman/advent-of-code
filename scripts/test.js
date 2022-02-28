@@ -27,11 +27,9 @@ function selectedText (err, res) {
     process.exit(1);
   }
   try {
-    terminal.clear();
-    const s = execSync(`node ${res.selectedText}`);
-    terminal.nextLine()(s);
+    terminal.clear()(execSync(`node ${res.selectedText}`));
   } catch (err) {
-    terminal(err.stack);
+    terminal.clear()(err.stack);
   }
   terminal.gridMenu(files, selectedText);
 }
