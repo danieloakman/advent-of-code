@@ -15,16 +15,23 @@ files = files
 
 terminal.grabInput();
 terminal.on('key', function (key, matches, data) {
-  if (key === 'CTRL_C' || key === 'ESCAPE')
+  if (key === 'CTRL_C' || key === 'ESCAPE') {
+    terminal.clear('Exited test mode.');
     process.exit();
+  }
 });
 
 function selectedText (err, res) {
-  // console.log(err, res);
+  if (err) {
+    terminal.clear(err);
+    process.exit(1);
+  }
   try {
-    execSync(`node ${res.selectedText}`);
+    terminal.clear();
+    const s = execSync(`node ${res.selectedText}`);
+    terminal.nextLine()(s);
   } catch (err) {
-    console.log(err);
+    terminal(err.stack);
   }
   terminal.gridMenu(files, selectedText);
 }
