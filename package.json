@@ -4,7 +4,8 @@
   "description": "<https://adventofcode.com>",
   "scripts": {
     "test": "node scripts/test.js",
-    "create": "node scripts/create.js"
+    "create": "node scripts/create.js",
+    "mocha": "mocha test/test-mocha.js"
   },
   "repository": {
     "type": "git",
