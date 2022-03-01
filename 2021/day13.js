@@ -6,6 +6,7 @@ const { Map2D } = require('../lib/utils');
 const EMPTY = '.';
 const DOT = '#';
 
+// TODO: fix this to work with the new Map2D
 class FoldingMap extends Map2D {
   constructor (xMax, yMax) {
     super();
