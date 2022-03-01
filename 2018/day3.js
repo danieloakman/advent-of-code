@@ -49,10 +49,10 @@ readFileSync(__filename.replace('.js', '-input'), 'utf-8')
   .map(str => new Claim(...Claim.parseInputStr(str)))
 
 // First Star:
-console.log({ squareInchesOfFabricWithinTwoOrMoreClaims: [...Claim.plot.getAll(v => v && v.length > 1)].length });
+console.log({ squareInchesOfFabricWithinTwoOrMoreClaims: [...Claim.plot.getValues(v => v.length > 1)].length });
 
 // Second Star:
-const doesOverlap = [...Claim.plot.getAll()]
+const doesOverlap = [...Claim.plot.getValues()]
   .reduce((map, { value: ids }) => {
     if (ids.length > 1)
       ids.forEach(id => map[id] = true);
