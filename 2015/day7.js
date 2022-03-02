@@ -5,6 +5,9 @@ const { readFileSync } = require('fs');
 
 const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
   .split(/[\n\r]+/)
+  .map(str => {
+    const [signalA, op, ] = str.split(' ');
+  });
 
 class Circuit {
   constructor (connections) {
@@ -14,7 +17,7 @@ class Circuit {
 }
 
 // First Star:
-
+const circuit = new Circuit(input);
 
 
 // Second Star:
