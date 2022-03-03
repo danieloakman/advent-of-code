@@ -1,25 +1,21 @@
 'use strict';
 
 const { readFileSync } = require('fs');
+const { deepStrictEqual: equal } = require('assert');
+const { sum } = require('../lib/utils');
 
-// let fish = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
-//   .split(',')
-//   .filter(v => v)
-//   .map(parseFloat);
-//   // .join('');
-
-// function stringSplice (str, index, count = 1, add = '') {
-//   return str.slice(0, index) + add + str.slice(index + count);
-// }
-
-function breedFish (numOfDays) {
-  const fishFile = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+function getInput () {
+  return readFileSync(__filename.replace('.js', '-input'), 'utf-8')
     .split(',')
     .filter(v => v)
     .map(parseFloat);
-  let numOfFish = fishFile.length;
-  while (fishFile.length) {
-    const fish = [fishFile.shift()];
+}
+const testInput = () => [3, 4, 3, 1, 2];
+
+function breedFish (numOfDays, fishArr = getInput()) {
+  let numOfFish = fishArr.length;
+  while (fishArr.length) {
+    const fish = [fishArr.shift()];
     for (let day = 0; day < numOfDays; day++) {
       const thisDaysAmountOfFish = fish.length;
       for (let i = 0; i < thisDaysAmountOfFish; i++) {
@@ -35,36 +31,27 @@ function breedFish (numOfDays) {
   return numOfFish;
 }
 
-// Silver star:
+// First star:
+equal(breedFish(18, testInput()), 26);
+equal(breedFish(80, testInput()), 5934);
 console.log('After 80 days:', breedFish(80));
 
-// for (let day = 0; day < 80; day++) {
-//   let thisDaysAmountOfFish = fish.length;
-//   for (let i = 0; i < thisDaysAmountOfFish; i++) {
-//     if (fish[i] === '0') {
-//       fish += '8';
-//       fish = stringSplice(fish, i, 1, '6');
-//     }
-//     fish = stringSplice(fish, i, 1, (parseFloat(fish[i]) - 1).toString());
-//     fish[i] = parseFloat(fish[i]--).toString();
-//     if (fish[i] === '-1') {
-//       fish.push(8);
-//       fish[i] = 6;
-//     }
-//   }
-//   console.log(`Day ${day}: ${fish.length}`);
-// }
-
-// Gold star:
-// for (let day = 0; day < 256; day++) {
-//   let thisDaysAmountOfFish = fish.length;
-//   for (let i = 0; i < thisDaysAmountOfFish; i++) {
-//     if (--fish[i] === -1) {
-//       fish.push(8);
-//       fish[i] = 6;
-//     }
-//   }
-//   console.log({ day, amountOfFish: fish.length, percChange: thisDaysAmountOfFish / fish.length });
-// }
-// console.log({ amountOfFish: fish.length });
-console.log('After 256 days:', breedFish(256));
+// Second star:
+/** Much improved algorithm. */
+function breedFish2 (numOfDays, fishArr = getInput()) {
+  fishArr = fishArr.reduce((arr, fish) => {
+    arr[fish]++;
+    return arr;
+  }, new Array(8).fill(0));
+  for (let day = 0; day < numOfDays; day++) {
+    const b = fishArr.shift();
+    fishArr[6] = (fishArr[6] || 0) + b;
+    fishArr[8] = (fishArr[8] || 0) + b;
+    // console.log({ day: day + 1, sum: fishArr.reduce(sum) });
+  }
+  return fishArr.reduce(sum);
+}
+equal(breedFish2(18, testInput()), 26);
+equal(breedFish2(80, testInput()), 5934);
+equal(breedFish2(256, testInput()), 26984457539);
+console.log('After 256 days:', breedFish2(256));
