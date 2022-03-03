@@ -52,24 +52,33 @@ function filterToOne (arr, predicate) {
   }
   return arr;
 }
+function bits (binaryNums, i) {
+  return binaryNums
+    .reduce((result, binary) => {
+      result[binary[i]]++;
+      return result;
+    }, [0, 0]);
+}
+function mostCommonBit (bits) {
+  return bits[0] > bits[1] ? '0' : '1';
+}
+function leastCommonBit (bits) {
+  return bits[0] > bits[1] ? '1' : '0';
+}
 function lifeSupportRating (binaryNums) {
   let oxy = binaryNums.slice();
   let co2 = binaryNums.slice();
-  let sorted = Array.from(new Array(binaryNums[0].length), _ => [0, 0]);
   for (let i = 0; i < binaryNums[0].length; i++) {
     if (oxy.length > 1) {
-      const oxyChar = sorted[i][0] > sorted[i][1] ? '0' : '1';
-      // oxy = oxy.filter(binary => binary[i] === oxyChar);
+      const oxyChar = mostCommonBit(bits(oxy, i));
       filterToOne(oxy, binary => binary[i] === oxyChar);
     }
     if (co2.length > 1) {
-      const co2Char = sorted[i][0] > sorted[i][1] ? '1' : '0';
-      // co2 = co2.filter(binary => binary[i] === co2Char);
+      const co2Char = leastCommonBit(bits(co2, i));
       filterToOne(co2, binary => binary[i] === co2Char);
     }
   }
   return parseInt(oxy[0], 2) * parseInt(co2[0], 2);
 }
-// NOT CORRECT:
 assert(lifeSupportRating(testBinaryNums) === 230);
 console.log({ lifeSupportRating: lifeSupportRating(input) });
