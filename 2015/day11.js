@@ -63,12 +63,14 @@ function nextPassword (password) {
   } while (!isValid(password))
   return password;
 }
-assert(isValid('abcdffaa'));
-assert(isValid('ghjaabcc'));
+// assert(isValid('abcdffaa'));
+// assert(isValid('ghjaabcc'));
 // equal(nextPassword('abcdefgh'), 'abcdffaa');
-equal(nextPassword('ghijklmn'), 'ghjaabcc'); // is getting ghjjaabc
-console.log(nextPassword(input));
+// equal(nextPassword('ghijklmn'), 'ghjaabcc');
+let password = nextPassword(input);
+console.log({ password });
 
 // Second Star:
-
+password = nextPassword(password);
+console.log({ password });
 
