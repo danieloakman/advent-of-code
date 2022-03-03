@@ -3,7 +3,7 @@
 
 const { readFileSync } = require('fs');
 const { subStrings } = require('../lib/utils');
-const { strictEqual: equal } = require('assert');
+const { strictEqual: equal, ok: assert } = require('assert');
 
 const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8');
 
@@ -25,13 +25,20 @@ function isValid (password) {
     return false;
 
   let doubles = 0;
-  for (const str of subStrings(password, 2, false)) {
-    if (str[0] === str[1])
+  let skipFlag = false;
+  for (const str of subStrings(password, 2)) {
+    if (skipFlag) {
+      skipFlag = false;
+      continue;
+    }
+    if (str[0] === str[1]) {
       doubles++;
+      skipFlag = true;
+    }
     if (doubles > 1)
       return true;
   }
-  return false;
+  return doubles > 1;
 }
 
 function nextChar (char) {
@@ -56,8 +63,10 @@ function nextPassword (password) {
   } while (!isValid(password))
   return password;
 }
-equal(nextPassword('abcdefgh'), 'abcdffaa');
-equal(nextPassword('ghijklmn'), 'ghjaabcc'); // FAILS here, todo
+assert(isValid('abcdffaa'));
+assert(isValid('ghjaabcc'));
+// equal(nextPassword('abcdefgh'), 'abcdffaa');
+equal(nextPassword('ghijklmn'), 'ghjaabcc'); // is getting ghjjaabc
 console.log(nextPassword(input));
 
 // Second Star:
