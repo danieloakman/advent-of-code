@@ -1,8 +1,8 @@
 'use strict';
-// https://adventofcode.com/2019/day/14
+// https://adventofcode.com/2021/day/14
 
 const { readFileSync } = require('fs');
-const { stringSplice, subStrings } = require('../lib/utils');
+const { stringSplice, subStrings, IncrementorMap } = require('../lib/utils');
 const last = require('lodash/last');
 
 const input = () => {
@@ -47,7 +47,7 @@ CN -> C`.split('\n');
 const { map, template } = input();
 
 // First Star:
-function* pairs (str) {
+function* strPairs (str) {
   for (let i = str.length - 1; i > 0; i--) {
     yield {
       v: str[i - 1] + str[i],
@@ -58,7 +58,7 @@ function* pairs (str) {
 function insertPairs (str, steps) {
   for (let step = 0; step < steps; step++) {
     // console.time(`Step ${step}`);
-    for (const { v, i } of pairs(str)) {
+    for (const { v, i } of strPairs(str)) {
       if (!map[v]) continue;
       str = stringSplice(str, i, 2, v[0] + map[v] + v[1]);
     }
@@ -82,35 +82,24 @@ function countChars (str) {
 }
 
 // Second Star:
-class IncrementorMap {
-  constructor () {
-    this.map = {};
-  }
-
-  inc (key, value = 1) {
-    if (!this.map[key])
-      this.map[key] = value;
-    else
-      this.map[key] += value;
-  }
-
-  get (key) {
-    return this.map[key] || 0;
-  }
-
-  set (key, value) {
-    this.map[key] = value;
-  }
-
-  *entries () {
-    for (const entry of Object.entries(this.map))
-      yield entry;
-  }
-}
 function calcPolymer (template, replacerMap, steps) {
   let pairs = new IncrementorMap();
   for (const pair of subStrings(template, 2, true))
     pairs.inc(pair);
+  let chars = new IncrementorMap();
+  for (const char of template)
+    chars.inc(char);
+
+  // const arr = [];
+  // for (const str of ['NNCB', 'NCNBCHB', 'NBCCNBBBCBHCB', 'NBBBCNCCNBBNBNBBCHBHHBCHB']) {
+  //   arr.push(
+  //     [...strPairs(str)]
+  //     .reduce((map, { v }) => {
+  //       map.inc(v);
+  //       return map;
+  //     }, new IncrementorMap())
+  //   );
+  // }
 
   // Insert pairs:
   for (let step = 0; step < steps; step++) {
@@ -120,21 +109,15 @@ function calcPolymer (template, replacerMap, steps) {
         const insert = replacerMap[pair];
         newPairs.inc(pair[0] + insert, count);
         newPairs.inc(insert + pair[1], count);
+        chars.inc(insert, count);
       } else
         newPairs.inc(pair, count);
     }
     pairs = newPairs;
   }
 
-  // Count chars:
-  let chars = new IncrementorMap();
-  for (const [pair, count] of pairs.entries()) {
-    chars.inc(pair[0], count);
-    chars.inc(pair[1], count);
-  }
   chars = [...chars.entries()].sort((a, b) => b[1] - a[1]);
-
   return chars[0][1] - last(chars)[1];
 }
 
-console.log('At 40 steps:', calcPolymer(template, map, 10));
+console.log('At 40 steps:', calcPolymer(template, map, 40));
