@@ -90,17 +90,6 @@ function calcPolymer (template, replacerMap, steps) {
   for (const char of template)
     chars.inc(char);
 
-  // const arr = [];
-  // for (const str of ['NNCB', 'NCNBCHB', 'NBCCNBBBCBHCB', 'NBBBCNCCNBBNBNBBCHBHHBCHB']) {
-  //   arr.push(
-  //     [...strPairs(str)]
-  //     .reduce((map, { v }) => {
-  //       map.inc(v);
-  //       return map;
-  //     }, new IncrementorMap())
-  //   );
-  // }
-
   // Insert pairs:
   for (let step = 0; step < steps; step++) {
     const newPairs = new IncrementorMap();
