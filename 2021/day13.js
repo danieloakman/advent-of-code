@@ -45,8 +45,6 @@ class FoldingMap extends Map2D {
         instructions.push({ axis, value: parseInt(value) });
       }
     });
-    // for (const { x, y } of map.getAll(v => v !== DOT))
-    //   map.set(x, y, EMPTY);
     return { map, instructions };
   }
 
@@ -61,7 +59,6 @@ class FoldingMap extends Map2D {
     for (const p of [...this.getValues(v => v === DOT)]) {
       if (p[axis] >= axisValue) {
         this.clear(p.x, p.y);
-        // this.set(p.x, p.y, EMPTY);
         if (p[axis] > axisValue) {
           p[axis] = FoldingMap.newAxis(p[axis], axisValue);
           this.set(p.x, p.y, DOT);
