@@ -2,17 +2,14 @@
 // https://adventofcode.com/2015/day/4
 
 const { readFileSync } = require('fs');
-const { createHash } = require('crypto');
-function md5 (input) {
-  return createHash('md5').update(input).digest('hex');
-}
+const { hash } = require('../lib/utils');
 
 const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8');
 
 // First Star:
 for (let i = 0; ; i++) {
-  const hash = md5(input + i);
-  if (hash.startsWith('00000')) {
+  const h = hash(input + i, 'md5');
+  if (h.startsWith('00000')) {
     console.log(i);
     break;
   }
@@ -20,8 +17,8 @@ for (let i = 0; ; i++) {
 
 // Second Star:
 for (let i = 0; ; i++) {
-  const hash = md5(input + i);
-  if (hash.startsWith('000000')) {
+  const h = hash(input + i, 'md5');
+  if (h.startsWith('000000')) {
     console.log(i);
     break;
   }
