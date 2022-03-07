@@ -17,10 +17,10 @@
     "url": "https://github.com/danieloakman/Advent-Of-Code/issues"
   },
   "homepage": "https://github.com/danieloakman/Advent-Of-Code#readme",
-  "dependencies": {},
   "devDependencies": {
     "argparse": "^2.0.1",
     "event-stream": "^4.0.1",
+    "iterare": "^1.2.1",
     "lodash": "^4.17.21",
     "mocha": "^9.2.1",
     "more-node-fs": "^1.2.6",
