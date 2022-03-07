@@ -17,9 +17,10 @@ const fileStr =
 // https://adventofcode.com/${year}/day/${day}/input
 
 const { readFileSync } = require('fs');
+const once = require('lodash/once');
+// const { iterate } = require('iterare');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
-  .split(/[\\n\\r]+/);
+const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8'));
 
 // First Star:
 
