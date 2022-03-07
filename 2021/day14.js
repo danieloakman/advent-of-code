@@ -2,7 +2,8 @@
 // https://adventofcode.com/2021/day/14
 
 const { readFileSync } = require('fs');
-const { stringSplice, subStrings, IncrementorMap } = require('../lib/utils');
+const { stringSplice, subStrings } = require('../lib/utils');
+const IncrementorMap = require('../lib/IncrementorMap');
 const last = require('lodash/last');
 
 const input = () => {

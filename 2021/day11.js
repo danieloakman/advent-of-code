@@ -1,7 +1,7 @@
 'use strict';
 
 const { readFileSync } = require('fs');
-const { Map2D } = require('../lib/utils');
+const Map2D = require('../lib/Map2D');
 const { deepStrictEqual: equal } = require('assert');
 
 class OctopusMap extends Map2D {

@@ -4,7 +4,7 @@
 
 const { readFileSync } = require('fs');
 
-const { Map2D } = require('../lib/utils');
+const Map2D = require('../lib/Map2D');
 
 class Claim {
   /** @type {Claim[]} */
