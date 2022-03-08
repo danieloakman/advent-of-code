@@ -1,12 +1,19 @@
 'use strict';
+// https://adventofcode.com/2021/day/11
 
 const { readFileSync } = require('fs');
 const Map2D = require('../lib/Map2D');
 const { deepStrictEqual: equal } = require('assert');
 
 class OctopusMap extends Map2D {
-  constructor() {
-    super();
+  static create (input) {
+    const map = new OctopusMap();
+    input.split(/[\n\r]+/).forEach((str, y) => {
+      const row = str.split('').map(Number);
+      for (let x = 0; x < row.length; x++)
+        map.set(x, y, row[x]);
+    });
+    return map;
   }
 
   inc (x, y) {
@@ -16,18 +23,8 @@ class OctopusMap extends Map2D {
       this.map[`${x},${y}`] = 1;
   }
 }
-
-function createMap (input) {
-  const map = new OctopusMap();
-  input.split(/[\n\r]+/).forEach((str, y) => {
-    const row = str.split('').map(Number);
-    for (let x = 0; x < row.length; x++)
-      map.set(x, y, row[x]);
-  });
-  return map;
-}
-const inputMap = () => createMap(readFileSync(__filename.replace('.js', '-input'), 'utf-8'));
-const testMap = () => createMap(
+const inputMap = () => OctopusMap.create(readFileSync(__filename.replace('.js', '-input'), 'utf-8'));
+const testMap1 = () => OctopusMap.create(
 `5483143223
 2745854711
 5264556173
@@ -39,6 +36,13 @@ const testMap = () => createMap(
 4846848554
 5283751526`
 );
+const testMap2 = () => OctopusMap.create(
+`11111
+19991
+19191
+19991
+11111`
+);
 
 // First star:
 /**
@@ -46,9 +50,10 @@ const testMap = () => createMap(
  * @param {OctopusMap} map
  * @returns {number} Number of flashes.
  */
-function simulate (steps, map) {
+function simulate (steps, map, returnFirstAllFlashStep = false) {
   let flashes = 0;
   for (let step = 0; step < steps; step++) {
+    // console.log(`\nStep: ${step}\n` + map.toString());
     const hasFlashed = new Map2D();
     function flash (x, y) {
       if (map.get(x, y) > 9 && !hasFlashed.get(x, y)) {
@@ -68,13 +73,19 @@ function simulate (steps, map) {
       if (map.get(x, y) > 9)
         map.set(x, y, 0);
 
-    // if (hasFlashed.every(row => row.every(v => v)))
-    //   console.log(`Every cell has flashed on step ${step + 1}.`);
+    if (
+      returnFirstAllFlashStep &&
+      [...hasFlashed.getValues()].length === [...map.getValues()].length
+    ) return step + 1;
   }
+  // console.log(`\nStep: ${steps}\n` + map.toString());
   return flashes;
 }
-equal(simulate(10, testMap()), 204);
-equal(simulate(100, testMap()), 1656);
-console.log({ flashes: simulate(1000, inputMap()) });
+equal(simulate(2, testMap2()), 9);
+equal(simulate(10, testMap1()), 204);
+equal(simulate(100, testMap1()), 1656);
+console.log({ flashes: simulate(100, inputMap()) });
 
 // Second star:
+equal(simulate(Infinity, testMap1(), true), 195);
+console.log({ firstAllFlashStep: simulate(Infinity, inputMap(), true) });
