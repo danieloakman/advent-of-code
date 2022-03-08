@@ -20,7 +20,7 @@ const { readFileSync } = require('fs');
 const once = require('lodash/once');
 // const { iterate } = require('iterare');
 
-const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8'));
+const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\\n\\r]+/));
 
 // First Star:
 
