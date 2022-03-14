@@ -3,7 +3,6 @@
 const { walkdir } = require('more-node-fs');
 const { join } = require('path');
 const { groupBy } = require('../lib/utils');
-const { execSync } = require('child_process');
 
 let files = [];
 for (const { path, stats } of walkdir(join(__dirname, '..'))) {
