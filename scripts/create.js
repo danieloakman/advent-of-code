@@ -44,5 +44,5 @@ if (!existsSync(fileInputPath))
 else
   console.log(`"${fileInputPath}" already exists.`);
 
-downloadInput(year, day)
+downloadInput(year, day);
 execSync(`code ${fileInputPath} && code ${jsFilePath}`);
