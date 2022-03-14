@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/danieloakman/Advent-Of-Code#readme",
   "dependencies": {
+    "argparse": "^2.0.1",
     "event-stream": "^4.0.1",
     "iterare": "^1.2.1",
     "lodash": "^4.17.21",
@@ -34,7 +35,6 @@
     "@babel/eslint-parser": "^7.17.0",
     "@babel/eslint-plugin": "^7.17.7",
     "@babel/preset-env": "^7.16.11",
-    "argparse": "^2.0.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.10.0",
     "eslint-config-standard": "^16.0.3",

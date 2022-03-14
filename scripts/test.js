@@ -11,10 +11,10 @@ for (const { path, stats } of walkdir(join(__dirname, '../')))
     files.push({ path, stats });
 files = files
   .sort((a, b) => b.stats.mtimeMs - a.stats.mtimeMs)
-  .map(({ path }) => path.replace(process.cwd() + '\\', ''))
+  .map(({ path }) => path.replace(process.cwd() + '\\', ''));
 
 terminal.grabInput();
-terminal.on('key', function (key, matches, data) {
+terminal.on('key', function (key, _matches, _data) {
   if (key === 'CTRL_C' || key === 'ESCAPE') {
     terminal.clear('Exited test mode.');
     process.exit();
