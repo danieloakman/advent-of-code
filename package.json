@@ -9,6 +9,9 @@
     "mocha": "mocha test/test-mocha.js",
     "lint": "eslint ."
   },
+  "engines": {
+    "node": ">=16.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/danieloakman/Advent-Of-Code.git"
