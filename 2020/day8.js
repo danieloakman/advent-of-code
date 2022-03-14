@@ -5,12 +5,12 @@ const { join } = require('path');
 
 function getInstructions () {
   return readFileSync(join(__dirname, 'day8-input'), { encoding: 'utf-8' })
-  .split(/[\n\r]+/)
-  .filter(v => v)
-  .map(v => {
-    const { 0: op, 1: arg } = v.split(' ');
-    return { op, arg: parseInt(arg), exe: 0 };
-  });
+    .split(/[\n\r]+/)
+    .filter(v => v)
+    .map(v => {
+      const { 0: op, 1: arg } = v.split(' ');
+      return { op, arg: parseInt(arg), exe: 0 };
+    });
 }
 
 // Gold Star:
