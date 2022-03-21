@@ -13,6 +13,7 @@ const { year, day } = argparser.parse_args();
 
 const fileStr =
 `'use strict';
+// @ts-check
 // https://adventofcode.com/${year}/day/${day}
 // https://adventofcode.com/${year}/day/${day}/input
 
