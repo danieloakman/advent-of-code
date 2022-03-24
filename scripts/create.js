@@ -1,3 +1,4 @@
+// @ts-check
 'use strict';
 const { writeFileSync, existsSync, mkdirSync } = require('fs');
 const { ArgumentParser } = require('argparse');
