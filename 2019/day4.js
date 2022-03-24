@@ -5,7 +5,8 @@
 
 const { readFileSync } = require('fs');
 const once = require('lodash/once');
-const { range } = require('../lib/utils');
+const { range, subStrings } = require('../lib/utils');
+const { ok: assert } = require('assert');
 // const { iterate } = require('iterare');
 
 const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8').split('-').map(Number));
@@ -17,9 +18,9 @@ const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-
  */
 function validPasswords (min, max) {
   return range(min, max + 1)
-    .map(password => password.toString())
-    .filter(password => {
-      const digits = password.split('');
+    .map(num => num.toString())
+    .filter(str => {
+      const digits = str.split('');
       // Has an adjacent double:
       return digits.some((_, i) => digits[i] === digits[i + 1]) &&
         // Has a non-decreasing sequence:
@@ -30,7 +31,29 @@ function validPasswords (min, max) {
 console.log({ numOfValidPasswords: validPasswords(...input()).length });
 
 // Second Star:
-function validPasswords2 (min, max) {
-  
+function isValid2 (password) {
+  const pairs = subStrings(password, 2, true).toArray();
+  if (!pairs.every(pair => pair[0] <= pair[1]))
+    return false;
+  let hasDouble = false;
+  for (const pair of pairs) {
+    if (pair[0] === pair[1])
+      if (hasDouble)
+        return false;
+      else
+        hasDouble = true;
+    else if (hasDouble)
+      return true;
+  }
+  return hasDouble;
 }
-
+function validPasswords2 (min, max) {
+  return range(min, max + 1)
+    .map(num => num.toString())
+    .filter(isValid2)
+    .toArray();
+}
+assert(isValid2('112233'));
+assert(!isValid2('123444'));
+assert(isValid2('111122')); // Fix for this
+console.log({ numOfValidPasswords2: validPasswords2(...input()).length });
