@@ -35,17 +35,18 @@ function isValid2 (password) {
   const pairs = subStrings(password, 2, true).toArray();
   if (!pairs.every(pair => pair[0] <= pair[1]))
     return false;
-  let hasDouble = false;
-  for (const pair of pairs) {
-    if (pair[0] === pair[1])
-      if (hasDouble)
-        return false;
+  for (let pairIdx = 0; pairIdx < pairs.length; pairIdx++) {
+    if (pairs[pairIdx][0] === pairs[pairIdx][1]) {
+      if (
+        (pairIdx === 0 || pairs[pairIdx - 1][0] !== pairs[pairIdx - 1][1]) &&
+        (pairIdx === pairs.length - 1 || pairs[pairIdx + 1][0] !== pairs[pairIdx + 1][1])
+      )
+        return true;
       else
-        hasDouble = true;
-    else if (hasDouble)
-      return true;
+        pairIdx++;
+    }
   }
-  return hasDouble;
+  return false;
 }
 function validPasswords2 (min, max) {
   return range(min, max + 1)
