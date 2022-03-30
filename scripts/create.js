@@ -15,20 +15,20 @@ const { year, day } = argparser.parse_args();
 const fileStr =
 `'use strict';
 // @ts-check
-// https://adventofcode.com/${year}/day/${day}
-// https://adventofcode.com/${year}/day/${day}/input
 
 const { readFileSync } = require('fs');
 const once = require('lodash/once');
-// const { iterate } = require('iterare');
+const { iterate } = require('iterare');
+// const { ok: assert, deepStrictEqual: equals } = require('assert');
+// const {  } = require('../lib/utils');
 
-const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\\n\\r]+/));
+/** @see https://adventofcode.com/${year}/day/${day}/input */
+const input = once(() => iterate(readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\\n\\r]+/)));
 
-// First Star:
+// https://adventofcode.com/${year}/day/${day} First Star:
 
 
-// Second Star:
-
+// https://adventofcode.com/${year}/day/${day}#part2 Second Star:
 
 `;
 
