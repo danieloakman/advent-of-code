@@ -16,7 +16,7 @@ specifiers:
   eslint-config-prettier: ^8.5.0
   event-stream: ^4.0.1
   husky: ^8.0.0
-  iteragain: ^3.9.0
+  iteragain: ^3.10.1
   lodash: ^4.17.21
   mocha: 9.2.2
   more-node-fs: ^2.0.1
@@ -47,7 +47,7 @@ devDependencies:
   eslint-config-prettier: 8.5.0_eslint@8.25.0
   event-stream: 4.0.1
   husky: 8.0.1
-  iteragain: 3.9.0
+  iteragain: 3.10.1
   lodash: 4.17.21
   mocha: 9.2.2
   more-node-fs: 2.0.2
@@ -1284,8 +1284,8 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
-  /iteragain/3.9.0:
-    resolution: {integrity: sha512-cRbWghgUIGKgJM7vMyW9AcrW389gMoIU3I90/O6+zqpKkkAfOIIIAYvJdFvyG0Nc8ZWWLE7I6DstNdnh/gRLiQ==}
+  /iteragain/3.10.1:
+    resolution: {integrity: sha512-nIyKyOmGSBc/D0//gDLPlTth1dwhH4bcRIxNrcqn0lsXzR29iFS22K4rGfxppVMnEOInUsZheh2tIOXwwEpCwQ==}
     engines: {node: '>14.x'}
     dev: true
 

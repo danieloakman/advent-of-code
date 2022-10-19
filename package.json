@@ -39,7 +39,7 @@
     "eslint-config-prettier": "^8.5.0",
     "event-stream": "^4.0.1",
     "husky": "^8.0.0",
-    "iteragain": "^3.9.0",
+    "iteragain": "^3.10.1",
     "lodash": "^4.17.21",
     "mocha": "9.2.2",
     "more-node-fs": "^2.0.1",
