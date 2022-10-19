@@ -105,3 +105,6 @@ dist
 
 # Advent of code session cookie:
 sessionCookie.txt
+
+# Use pnpm-lock.yaml instead. As in use `pnpm` command instead of `npm`
+package-lock.json

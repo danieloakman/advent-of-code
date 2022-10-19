@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": false,
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "outDir": "dist",
+    "declaration": true,
+    "alwaysStrict": true,
+    "checkJs": false,
+    "allowJs": true,
+    "declarationMap": false,
+    "lib": ["ES2015"]
+  },
+  "exclude": ["node_modules", "test", "dist", "benchmark"]
+}

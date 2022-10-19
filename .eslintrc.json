@@ -1,67 +1,59 @@
 {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
     "plugins": [
-        "@babel",
-        "import",
-        "node",
-        "promise",
-        "standard"
+      "@typescript-eslint"
     ],
-    "parser": "@babel/eslint-parser",
     "extends": [
-        "eslint:recommended",
-        "plugin:node/recommended",
-        "plugin:promise/recommended",
-        "plugin:import/errors",
-        "plugin:import/typescript",
-        "plugin:import/warnings"
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
     ],
-    "rules": {
-        "no-console": "off",
-        "no-constant-condition": ["warn", { "checkLoops": false }],
-        "no-undef": "error",
-        "no-unused-vars": ["error", { "argsIgnorePattern": "^_"}],
-        "node/no-missing-require": ["error",{
-            "tryExtensions": [".js", ".json", ".node", ".ts"]
-        }],
-        "semi": [
-            2,
-            "always"
-        ],
-        "indent": [
-            2,
-            2,
-            {
-                "SwitchCase": 1
-            }
-        ],
-        "linebreak-style": [
-            "off"
-        ],
-        "max-len": [
-            2,
-            {
-                "code": 1000
-            }
-        ],
-        "no-process-exit": "off"
-    },
     "env": {
-        "node": true,
-        "mocha": true
+      "node": true,
+      "mocha": true
     },
-    "parserOptions": {
-        "ecmaVersion": 12,
-        "ecmaFeatures": {
-            "impliedStrict": true
+    "rules": {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "no-console": "off",
+      "no-constant-condition": ["warn", { "checkLoops": false }],
+      "no-undef": "error",
+      "no-unused-vars": "off",
+      "semi": [
+        2,
+        "always"
+      ],
+      "indent": [
+        2,
+        2,
+        {
+          "SwitchCase": 1
         }
-    },
-    "settings": {
-    },
-    "globals": {
-        "API_URI": true,
-        "ENVIRONMENT_TYPE": true,
-        "APPLICATION_VERSION": true,
-        "__SEQ_URI__": true,
-        "__SEQ_API_KEY__": true
+      ],
+      "max-len": [
+        2,
+        {
+          "code": 1000 // prettier handles this
+        }
+      ],
+      // Prevent TypeScript-specific constructs from being erroneously flagged as unused
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_"}],
+      // Require PascalCased class and interface names
+      // "@typescript-eslint/class-name-casing": "error",
+      // Require a specific member delimiter style for interfaces and type literals
+      // Default Semicolon style
+      "@typescript-eslint/member-delimiter-style": "error",
+      // Require a consistent member declaration order
+      "@typescript-eslint/member-ordering": "error",
+      // Require consistent spacing around type annotations
+      "@typescript-eslint/type-annotation-spacing": "error",
+      "quotes": [2, "single", "avoid-escape"],
+      "no-duplicate-imports": "error",
+      "curly": ["error", "multi"],
+      "no-else-return": "error",
+      "no-trailing-spaces": "error"
     }
-}
+  }

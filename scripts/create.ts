@@ -1,10 +1,11 @@
+/* eslint-disable no-console */
 // @ts-check
 'use strict';
-const { writeFileSync, existsSync, mkdirSync } = require('fs');
-const { ArgumentParser } = require('argparse');
-const { join } = require('path');
-const { execSync } = require('child_process');
-const { downloadInput } = require('../lib/downloadInput');
+import { writeFileSync, existsSync, mkdirSync } from 'fs';
+import { ArgumentParser } from 'argparse';
+import { join } from 'path';
+import { execSync } from 'child_process';
+import { downloadInput } from '../lib/downloadInput';
 
 // Get command line arguments:
 const argparser = new ArgumentParser({ description: 'Sync-Local-and-Cloud' });
@@ -16,14 +17,14 @@ const fileStr =
 `'use strict';
 // @ts-check
 
-const { readFileSync } = require('fs');
-const once = require('lodash/once');
-const { iterate } = require('iterare');
-// const { ok: assert, deepStrictEqual: equals } = require('assert');
-// const {  } = require('../lib/utils');
+import { readFileSync } from 'fs';
+import once from 'lodash/once';
+import { iter } from 'iteragain';
+// import { ok as assert, deepStrictEqual as equals } from 'assert';
+// import * as utils from '../lib/utils';
 
 /** @see https://adventofcode.com/${year}/day/${day}/input */
-const input = once(() => iterate(readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\\n\\r]+/)));
+const input = once(() => iter(readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\\n\\r]+/)));
 
 // https://adventofcode.com/${year}/day/${day} First Star:
 
@@ -32,7 +33,7 @@ const input = once(() => iterate(readFileSync(__filename.replace('.js', '-input'
 
 `;
 
-const jsFilePath = join(__dirname, '../', `${year}/day${day}.js`);
+const jsFilePath = join(__dirname, '../', `${year}/day${day}.ts`);
 const fileInputPath = join(__dirname, '../', `${year}/day${day}-input`);
 const dir = join(__dirname, '../', `${year}`);
 if (!existsSync(dir))

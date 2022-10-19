@@ -5,7 +5,7 @@ const { readFileSync } = require('fs');
 const { join } = require('path');
 const nums = readFileSync(join(__dirname, 'day1-input'), { encoding: 'utf-8' })
   .split('\n')
-  .map(parseFloat)
+  .map(parseFloat);
 
 // Silver star:
 let numOfIncreases = 0;

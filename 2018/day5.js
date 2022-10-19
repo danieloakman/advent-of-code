@@ -5,7 +5,7 @@
 
 const { readFileSync } = require('fs');
 const once = require('lodash/once');
-// const { iterate } = require('iterare');
+// import { iter as iterate } from 'iteragain';
 const { deepStrictEqual: equals } = require('assert');
 const { stringSplice } = require('../lib/utils');
 
@@ -13,13 +13,12 @@ const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-
 
 // First Star:
 /**
- * @param {string} polymer 
+ * @param {string} polymer
  */
-function processPolymer (polymer) {
+function processPolymer(polymer) {
   for (let i = polymer.length; i > 1; i--) {
     const [a, b] = polymer.slice(i - 2, i);
-    if (a && b && a.toLowerCase() === b.toLowerCase() && a !== b)
-      polymer = stringSplice(polymer, i - 2, 2);
+    if (a && b && a.toLowerCase() === b.toLowerCase() && a !== b) polymer = stringSplice(polymer, i - 2, 2);
   }
   return polymer;
 }
@@ -27,7 +26,7 @@ equals(processPolymer('dabAcCaCBAcCcaDA'), 'dabCBAcaDA');
 console.log('First Star:', processPolymer(input()).length);
 
 // Second Star:
-function processPolymer2 (polymer) {
+function processPolymer2(polymer) {
   const chars = new Set(polymer.toLowerCase().split(''));
   let best = Infinity;
   for (const char of chars) {

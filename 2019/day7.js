@@ -4,7 +4,7 @@
 
 const { readFileSync } = require('fs');
 const once = require('lodash/once');
-const { iterate } = require('iterare');
+import { iter as iterate } from 'iteragain';
 const { deepCopy } = require('../lib/utils');
 const { deepStrictEqual: equal } = require('assert');
 
@@ -15,13 +15,12 @@ const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-
  * @param {number[]} integers
  * @param {number[]} inputs
  */
-function intCodeProcess (integers, inputs = [1]) {
+function intCodeProcess(integers, inputs = [1]) {
   integers = deepCopy(integers);
 
   const value = (i, mode) => {
     const v = mode === 1 ? i : integers[i];
-    if (isNaN(v) || typeof v !== 'number')
-      throw new Error(`Invalid value: ${v}, mode: ${mode}, i: ${i}`);
+    if (isNaN(v) || typeof v !== 'number') throw new Error(`Invalid value: ${v}, mode: ${mode}, i: ${i}`);
     return v;
   };
   const parseInstruction = num => {
@@ -32,7 +31,7 @@ function intCodeProcess (integers, inputs = [1]) {
   };
 
   const outputs = [];
-  loop: for (let i = 0; i < integers.length;) {
+  loop: for (let i = 0; i < integers.length; ) {
     const { op, modes } = parseInstruction(integers[i]);
     const [a, b, c] = integers.slice(i + 1, i + 4);
     switch (op) {
@@ -40,35 +39,42 @@ function intCodeProcess (integers, inputs = [1]) {
         integers[c] = value(a, modes.shift()) + value(b, modes.shift());
         i += 4;
         break;
-      } case 2: {
+      }
+      case 2: {
         integers[c] = value(a, modes.shift()) * value(b, modes.shift());
         i += 4;
         break;
-      } case 3: {
-        if (!inputs.length)
-          throw new Error('No more input');
+      }
+      case 3: {
+        if (!inputs.length) throw new Error('No more input');
         integers[a] = inputs.shift();
         i += 2;
         break;
-      } case 4: {
+      }
+      case 4: {
         outputs.push(value(a, modes.shift()));
         i += 2;
         break;
-      } case 5: {
+      }
+      case 5: {
         i = value(a, modes.shift()) !== 0 ? value(b, modes.shift()) : i + 3;
         break;
-      } case 6: {
+      }
+      case 6: {
         i = value(a, modes.shift()) === 0 ? value(b, modes.shift()) : i + 3;
         break;
-      } case 7: {
+      }
+      case 7: {
         integers[c] = value(a, modes.shift()) < value(b, modes.shift()) ? 1 : 0;
         i += 4;
         break;
-      } case 8: {
+      }
+      case 8: {
         integers[c] = value(a, modes.shift()) === value(b, modes.shift()) ? 1 : 0;
         i += 4;
         break;
-      } case 99:
+      }
+      case 99:
         break loop;
     }
   }
@@ -79,7 +85,7 @@ function intCodeProcess (integers, inputs = [1]) {
  * @param {number[]} integers
  * @param {[number, number, number, number, number]} phaseInputs
  */
-function processPhases (integers, phaseInputs, feedbackLoop = false) {
+function processPhases(integers, phaseInputs, feedbackLoop = false) {
   let output = 0;
   while (phaseInputs.length) {
     const processed = intCodeProcess(integers, [phaseInputs.shift(), output]);
@@ -93,26 +99,29 @@ function processPhases (integers, phaseInputs, feedbackLoop = false) {
  * @param {number} min
  * @param {number} max
  */
-function phases (min, max) {
-  return iterate((function* () {
-    for (let a = min; a <= max; a++)
-      for (let b = min; b <= max; b++)
-        if (b !== a)
-          for (let c = min; c <= max; c++)
-            if (c !== a && c !== b)
-              for (let d = min; d <= max; d++)
-                if (d !== a && d !== b && d !== c)
-                  for (let e = min; e <= max; e++)
-                    if (e !== a && e !== b && e !== c && e !== d)
-                      yield [a, b, c, d, e];
-  })());
+function phases(min, max) {
+  return iterate(
+    (function* () {
+      for (let a = min; a <= max; a++)
+        for (let b = min; b <= max; b++)
+          if (b !== a)
+            for (let c = min; c <= max; c++)
+              if (c !== a && c !== b)
+                for (let d = min; d <= max; d++)
+                  if (d !== a && d !== b && d !== c)
+                    for (let e = min; e <= max; e++)
+                      if (e !== a && e !== b && e !== c && e !== d) yield [a, b, c, d, e];
+    })(),
+  );
 }
 
-function findBestSignal (integers, feedbackLoop = false) {
-  return phases(...(feedbackLoop ? [5, 9] : [0, 4]))
-    .reduce((best, p) => Math.max(best, processPhases(integers, p, feedbackLoop)), 0);
+function findBestSignal(integers, feedbackLoop = false) {
+  return phases(...(feedbackLoop ? [5, 9] : [0, 4])).reduce(
+    (best, p) => Math.max(best, processPhases(integers, p, feedbackLoop)),
+    0,
+  );
 }
-equal(processPhases([3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0], [4,3,2,1,0]), 43210);
+equal(processPhases([3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0], [4, 3, 2, 1, 0]), 43210);
 console.log({ bestSignal: findBestSignal(input()) });
 
 // Second Star: TODO

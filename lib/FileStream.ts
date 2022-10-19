@@ -1,29 +1,25 @@
 'use strict';
 // @ts-check
 
-const { createReadStream, createWriteStream } = require('fs');
-const es = require('event-stream');
-const Event = require('events');
+import { createReadStream, createWriteStream, WriteStream } from 'fs';
+import { MapStream, split, mapSync } from 'event-stream';
+import Event = require('events');
 
-module.exports = class FileStream {
-  /**
-   * @param {string} fileName 
-   * @param {string|RegExp} separator 
-   */
-  constructor(fileName, separator = /[\n\r]+/) {
-    /** @readonly */
+export class FileStream {
+  public lineNum: number;
+  private eof: boolean;
+  private separator: string | RegExp;
+  private fileName: string;
+  private event: Event;
+  private reader: MapStream;
+  private writer: WriteStream;
+
+  constructor(fileName: string, separator: string | RegExp = /[\n\r]+/) {
     this.lineNum = 0;
-    /** @private */
     this.separator = separator;
-    /** @private */
     this.fileName = fileName;
     this.event = new Event();
-    /**
-     * @private
-     * @type {import('event-stream').MapStream}
-     */
     this.reader = null;
-    /** @private Private property. */
     this.writer = createWriteStream(fileName, { flags: 'a' });
 
     this.resetReader();
@@ -34,7 +30,7 @@ module.exports = class FileStream {
    * @param {RegExp|string} separator
    * @returns {AsyncGenerator<string, void, unknown>}
    */
-  static async *fileLines (file, separator = /[\n\r]+/) {
+  static async *fileLines (file: string, separator: RegExp | string = /[\n\r]+/): AsyncGenerator<string, void, unknown> {
     const reader = new FileStream(file, separator);
     while (true) {
       const line = await reader.nextLine();
@@ -43,8 +39,7 @@ module.exports = class FileStream {
     }
   }
 
-  /** @returns {Promise<null|string>} */
-  nextLine () {
+  nextLine (): Promise<null | string> {
     return this.eof
       ? null
       : new Promise(resolve => {
@@ -57,12 +52,11 @@ module.exports = class FileStream {
       });
   }
 
-  /** @returns {Promise<string[]>} */
-  async allLines () {
+  async allLines (): Promise<string[]> {
     const lines = [];
     await new Promise(resolve => {
       this.event.on('data', data => lines.push(data));
-      this.event.on('error', _ => resolve());
+      this.event.on('error', _ => resolve(undefined));
       this.event.on('end', resolve);
       this.reader.resume();
     });
@@ -74,9 +68,9 @@ module.exports = class FileStream {
     this.lineNum = 0;
     this.eof = false;
     this.reader = createReadStream(this.fileName)
-      .pipe(es.split(this.separator))
+      .pipe(split(this.separator))
       .pipe(
-        es.mapSync(line => {
+        mapSync(line => {
           this.lineNum++;
           this.event.emit('data', line);
         })
@@ -92,11 +86,7 @@ module.exports = class FileStream {
     this.reader.pause();
   }
 
-  /**
-   * @param {string} str
-   * @returns {Promise<void>} void
-   */
-  write (str) {
+  write (str: string): Promise<void> {
     return new Promise(resolve => {
       this.writer.write(str, err => {
         if (err) {
