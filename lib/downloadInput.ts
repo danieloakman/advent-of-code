@@ -12,24 +12,24 @@ import https = require('https');
 const SESSION_COOKIE_PATH = join(__dirname, '../sessionCookie.txt');
 let document: any;
 
-export async function downloadInput(year: number, day: number) {
-  const browser = await puppeteer.connect({
-    browserWSEndpoint: await openChrome(),
-  });
-  const page = (await browser.pages())[0];
-  page.on('console', message => {
-    if (!message.text().includes('ERR_BLOCKED_BY_CLIENT')) console.log(message.text());
-  });
-  await page.waitForNetworkIdle({ timeout: 10000 });
+// export async function downloadInput(year: number, day: number) {
+//   const browser = await puppeteer.connect({
+//     browserWSEndpoint: await openChrome(),
+//   });
+//   const page = (await browser.pages())[0];
+//   page.on('console', message => {
+//     if (!message.text().includes('ERR_BLOCKED_BY_CLIENT')) console.log(message.text());
+//   });
+//   await page.waitForNetworkIdle({ timeout: 10000 });
 
-  await page.goto(`https://adventofcode.com/${year}/day/${day}/input`, { waitUntil: 'networkidle0' });
+//   await page.goto(`https://adventofcode.com/${year}/day/${day}/input`, { waitUntil: 'networkidle0' });
 
-  // eslint-disable-next-line no-undef
-  const input = await page.evaluate(() => document.querySelector('pre').innerText);
-  await Promise.all([browser.close(), writeFile(join(__dirname, '../', `${year}/day${day}-input`), input.trim())]);
-}
+//   // eslint-disable-next-line no-undef
+//   const input = await page.evaluate(() => document.querySelector('pre').innerText);
+//   await Promise.all([browser.close(), writeFile(join(__dirname, '../', `${year}/day${day}-input`), input.trim())]);
+// }
 
-function getInput(year, day, sessionCookie) {
+function getInput(year: string, day: string, sessionCookie: string): Promise<string> {
   return new Promise(resolve => {
     https.get(
       `https://adventofcode.com/${year}/day/${day}/input`,
@@ -74,7 +74,7 @@ async function newSessionCookie() {
   return sessionCookie;
 }
 
-module.exports.downloadInput = async function downloadInput(year, day) {
+export async function downloadInput(year: string, day: string) {
   let sessionCookie = await readFile(SESSION_COOKIE_PATH, 'utf-8').catch(() => newSessionCookie());
 
   let input = '';
@@ -83,4 +83,4 @@ module.exports.downloadInput = async function downloadInput(year, day) {
     if (!input) sessionCookie = await newSessionCookie();
   } while (!input);
   await writeFile(join(__dirname, '../', `${year}/day${day}-input`), input);
-};
+}
