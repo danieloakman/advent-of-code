@@ -8,18 +8,27 @@ import { main } from '../lib/utils';
 export function fileStr(year: string, day: string) {
   return `import { readFileSync } from 'fs';
 import once from 'lodash/once';
+import { main } from '../lib/utils';
 import iter from 'iteragain/iter';
 // import { ok as assert, deepStrictEqual as equals } from 'assert';
-// import * as utils from '../lib/utils';
 
 /** @see https://adventofcode.com/${year}/day/${day}/input */
-const input = once(() => iter(readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\\n\\r]+/)));
+export const input = once(() => readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\\n\\r]+/));
 
-// https://adventofcode.com/${year}/day/${day} First Star:
+/** https://adventofcode.com/${year}/day/${day} First Star */
+export async function firstStar() {
+  //
+}
 
+/** https://adventofcode.com/${year}/day/${day}#part2 Second Star */
+export async function secondStar() {
+  //
+}
 
-// https://adventofcode.com/${year}/day/${day}#part2 Second Star:
-
+main(module, async () => {
+  await firstStar();
+  await secondStar();
+});
 `;
 }
 
@@ -37,6 +46,8 @@ export function createFiles(year: string, day: string) {
   execSync(`code ${fileInputPath} && code ${tsFilePath}`);
   return { tsFilePath, fileInputPath };
 }
+
+export type AdventOfCodeFile = ReturnType<typeof createFiles>;
 
 main(module, async () => {
   // Get command line arguments:
