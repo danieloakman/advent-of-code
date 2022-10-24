@@ -270,3 +270,13 @@ import _range from 'iteragain/range';
 export function range(...args: Parameters<typeof _range>) {
   return iterate(_range(...args));
 }
+
+/**
+ * Declares and runs a main function if the entry point to the program is `module`.
+ * @param module The NodeModule where this main function is running from.
+ * @param mainFunction The main function to run.
+ */
+export function main(module: any, mainFunction: () => Promise<void>) {
+  if (require?.main !== module) return;
+  return mainFunction();
+}
