@@ -15,12 +15,12 @@ import iter from 'iteragain/iter';
 /** @see https://adventofcode.com/${year}/day/${day}/input */
 export const input = once(() => readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\\n\\r]+/));
 
-/** https://adventofcode.com/${year}/day/${day} First Star */
+/** @see https://adventofcode.com/${year}/day/${day} First Star */
 export async function firstStar() {
   //
 }
 
-/** https://adventofcode.com/${year}/day/${day}#part2 Second Star */
+/** @see https://adventofcode.com/${year}/day/${day}#part2 Second Star */
 export async function secondStar() {
   //
 }
