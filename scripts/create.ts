@@ -12,10 +12,7 @@ argparser.add_argument('day');
 const { year, day } = argparser.parse_args();
 
 const fileStr =
-`'use strict';
-// @ts-check
-
-import { readFileSync } from 'fs';
+`import { readFileSync } from 'fs';
 import once from 'lodash/once';
 import iter from 'iteragain/iter';
 // import { ok as assert, deepStrictEqual as equals } from 'assert';
