@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import once from 'lodash/once';
-import { main, logReturn } from '../lib/utils';
+import { main } from '../lib/utils';
 import iter from 'iteragain/iter';
 import { ok as assert /* , deepStrictEqual as equals */ } from 'assert';
 import range from 'iteragain/range';
