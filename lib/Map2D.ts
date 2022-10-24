@@ -95,3 +95,5 @@ export class Map2D<T> {
     );
   }
 }
+
+export default Map2D;
