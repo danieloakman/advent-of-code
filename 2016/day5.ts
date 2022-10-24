@@ -2,17 +2,18 @@
 // https://adventofcode.com/2016/day/5
 // https://adventofcode.com/2016/day/5/input
 
-const { readFileSync } = require('fs');
-const once = require('lodash/once');
-// import { iter as iterate } from 'iteragain';
-const { deepStrictEqual: equal } = require('assert');
-const { hash, range } = require('../lib/utils');
+import { readFileSync } from 'fs';
+import once from 'lodash/once';
+import iter from 'iteragain/iter';
+// import { deepStrictEqual as equal } from 'assert';
+import { hash } from '../lib/utils';
+import range from 'iteragain/range';
 
 const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8'));
 
 // First Star:
 function findPassword(doorID, endRange = Infinity) {
-  return range(0, endRange)
+  return iter(range(0, endRange))
     .map(int => hash(`${doorID}${int}`, 'md5'))
     .filter(h => h.startsWith('00000'))
     .map(h => h[5])
@@ -25,10 +26,10 @@ console.log({ password: findPassword(input()) });
 // Second Star:
 function findPassword2(doorID, endRange = Infinity) {
   const password = [];
-  const positions = range(8)
+  const positions = iter(range(8))
     .map(n => n.toString())
     .toSet();
-  for (const { pos, char } of range(0, endRange, 1)
+  for (const { pos, char } of iter(range(0, endRange, 1))
     .map(int => hash(`${doorID}${int}`, 'md5'))
     .filter(h => h.startsWith('00000'))
     .map(h => ({ pos: h[5], char: h[6] }))

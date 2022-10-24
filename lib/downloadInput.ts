@@ -4,13 +4,13 @@
 
 import { promises, existsSync } from 'fs';
 const { writeFile, readFile } = promises;
-import puppeteer = require('puppeteer');
+import puppeteer from 'puppeteer';
 import { join } from 'path';
 import { openChrome } from './utils';
-import https = require('https');
+import https from 'https';
 
 const SESSION_COOKIE_PATH = join(__dirname, '../sessionCookie.txt');
-let document: any;
+// let document: any;
 
 // export async function downloadInput(year: number, day: number) {
 //   const browser = await puppeteer.connect({

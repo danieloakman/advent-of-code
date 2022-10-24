@@ -1,4 +1,4 @@
-export class Map2D {
+export class Map2D<T> {
   public get = Object.defineProperties((x: number, y: number) => this.map[`${x},${y}`], {
     'up': { value: (x: number, y: number) => this.map[`${x},${y - 1}`] },
     'down': { value: (x: number, y: number) => this.map[`${x},${y + 1}`] },
@@ -13,7 +13,7 @@ export class Map2D {
   public xMax: number;
   public yMin: number;
   public yMax: number;
-  private map: Record<string, any> = {};
+  private map: Record<string, T> = {};
 
   constructor({ xMin, xMax, yMin, yMax }: { xMin?: number; xMax?: number; yMin?: number; yMax?: number } = {}) {
     this.xMin = xMin || 0;
@@ -35,7 +35,7 @@ export class Map2D {
     Object.keys(this.map).forEach(key => this.setBounds(...key.split(',').map(parseFloat)));
   }
 
-  set(x: number, y: number, value: any) {
+  set(x: number, y: number, value: T) {
     this.setBounds(x, y);
     this.map[`${x},${y}`] = value;
   }
@@ -49,9 +49,9 @@ export class Map2D {
   }
 
   toArray() {
-    const arr = [];
+    const arr: T[][] = [];
     for (let y = this.yMin; y <= this.yMax; y++) {
-      const row = [];
+      const row: T[] = [];
       for (let x = this.xMin; x <= this.xMax; x++) row.push(this.map[`${x},${y}`]);
       arr.push(row);
     }

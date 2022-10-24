@@ -1,5 +1,5 @@
 export class IncrementorMap {
-  private map: Record<string, any> = {};
+  private map: Record<string, number> = {};
 
   inc(key: string, value = 1) {
     if (!this.map[key]) this.map[key] = value;
@@ -15,7 +15,7 @@ export class IncrementorMap {
   }
 
   *entries() {
-    for (const key in this.map) yield [key, this.map[key]];
+    for (const key in this.map) yield [key, this.map[key]] as const;
   }
 
   isEqual(other: IncrementorMap) {

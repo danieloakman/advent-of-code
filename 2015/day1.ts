@@ -1,7 +1,6 @@
-'use strict';
 // https://adventofcode.com/2015/day/1
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 
 const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8');
 

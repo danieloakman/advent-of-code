@@ -6,8 +6,8 @@ import { join } from 'path';
 import { execSync } from 'child_process';
 import iter from 'iteragain/iter';
 
-const files = iter(walkdirSync(join(__dirname, '../')))
-  .filterMap(file => file.stats.isFile() && /day\d+\.js/.test(file.path) ? file : null)
+const files = iter(walkdirSync(join(__dirname, '../'), { ignore: /node_modules/i }))
+  .filterMap(file => file.stats.isFile() && /day\d+\.[tj]s/.test(file.path) ? file : null)
   .toArray()
   .sort((a, b) => b.stats.mtimeMs - a.stats.mtimeMs)
   .map(({ path }) => path.replace(process.cwd() + '\\', ''));
@@ -26,7 +26,7 @@ function selectedText (err, res) {
     process.exit(1);
   }
   try {
-    terminal.clear()(execSync(`npx ts-node ${res.selectedText}`));
+    terminal.clear()(execSync(`npx ts-node --transpileOnly ${res.selectedText}`));
   } catch (err) {
     terminal.clear()(err.stack);
   }

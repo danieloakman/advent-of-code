@@ -1,13 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-// @ts-check
-'use strict';
 import { spawn } from 'child_process';
-import once = require('lodash/once');
-import memoize = require('lodash/memoize');
+import once from 'lodash/once';
+import memoize from 'lodash/memoize';
 import { existsSync } from 'fs';
 import { BinaryLike, BinaryToTextEncoding, createHash } from 'crypto';
-import { iter as iterate } from 'iteragain';
-import readline = require('readline');
+import iterate from 'iteragain/iter';
+import readline from 'readline';
 
 export function sleep(ms = 1000): Promise<void> {
   // console.log(`Sleeping for ${ms}ms`);
@@ -52,7 +49,7 @@ export function matches(regex: RegExp, string: string) {
       if (!(regex instanceof RegExp) || !regex.flags.includes('g'))
         throw new Error("regex parameter must be a RegExp and have the global 'g' flag assigned to it.");
 
-      let match: RegExpMatchArray;
+      let match: RegExpMatchArray | null;
       while ((match = regex.exec(string)) !== null) yield match;
     })(),
   );
@@ -79,6 +76,7 @@ const CHROME_EXE_PATH = once(() => {
     'C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Google Chrome.lnk',
   ])
     if (existsSync(path)) return path;
+  throw new Error('Could not find Chrome executable on this device.');
 });
 
 /**
@@ -127,13 +125,14 @@ export function subStrings(str: string, subStringLength: number, canOverlap = tr
 export const deepCopy = (() => {
   // Memoizes the creation of the deep copy function.
   const rfdc = memoize(
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     options => require('rfdc')(options),
     options => JSON.stringify(options),
   );
   return <T>(obj: T, options?: { proto?: boolean; circles?: boolean }) => rfdc(options ?? {})(obj) as T;
 })();
 
-export const partitionArray = function partitionArray(array, numOfPartitions) {
+export function partitionArray<T>(array: T[], numOfPartitions: number) {
   return new Array(numOfPartitions).fill(1).map((_, i, arr) => {
     return array.slice(Math.floor(array.length * (i / arr.length)), Math.floor(array.length * ((i + 1) / arr.length)));
   });
@@ -178,7 +177,7 @@ export function groupBy<T>(objects: T[], props: string[]): { [key: string]: T[] 
  * is every property value for that particular property. 3rd dimension is every object that
  * has that property value.
  */
-export function groupByAll<T>(objects: T[]): { [key: string]: { [key: string]: T[] } } {
+export function groupByAll<T extends Record<PropertyKey, any>>(objects: T[]): { [key: string]: { [key: string]: T[] } } {
   const groups = {};
   for (const object of objects)
     for (const prop of Object.keys(object)) {
@@ -191,25 +190,7 @@ export function groupByAll<T>(objects: T[]): { [key: string]: { [key: string]: T
   return groups;
 };
 
-/**
- * Similar to lodash's take method except this function works with iterator/generator functions.
- * On arrays, calling take(arr, 1) is functionally the same as arr.shift().
- * @param iterable Array or iterator/generator.
- * @param takeNum Number of elements starting from the front of iterable to
- * take (default: 1). Set to -1 to take all until iterable is empty.
- * @returns Returns the array of elements taken from the front.
- */
-export function take<T>(iterable: T[] | Generator<T>, takeNum = 1): T[] {
-  const results = [];
-  if (Array.isArray(iterable)) while (takeNum-- !== 0 && iterable.length) results.push(iterable.shift());
-  else {
-    let next;
-    while (takeNum-- !== 0 && !(next = iterable.next()).done) results.push(next.value);
-  }
-  return results;
-};
-
-export const midNum = function middle(a: number, b: number) {
+export function middle(a: number, b: number) {
   return (a + b) / 2;
 };
 
@@ -263,44 +244,7 @@ export function hash(data: BinaryLike, algorithm = 'md4', encoding: BinaryToText
   return createHash(algorithm).update(data).digest(encoding);
 }
 
-/**
- * Returns a generator/iterator for all numbers starting at the start index and one step before
- * the stop index.
- * @see https://lodash.com/docs/4.17.15#range Similar to lodash.range but this is a generator
- * function instead.
- * @param {number} start The start index (inclusive) (default: 0).
- * @param {number} stop The stop index (exclusive).
- * @param {number} step The optional amount to increment each step by, can be positive or
- * negative (default: Math.sign(stop - start)).
- * @returns
- * @example
- * for (const i of range(10).map(i => i * 2))
- *     console.log(i);
- * // logs: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18
- * for (const i of range(0, 10, 1))
- *     console.log(i);
- * // logs: 0 1 2 3 4 5 6 7 8 9
- *
- * for (const i of range(5, 0, -1))
- *     console.log(i);
- * // logs: 5 4 3 2 1
- */
-export const range = function (...params) {
-  return iterate(
-    (function* () {
-      let start = 0,
-        stop = 0,
-        step = null;
-      if (params.length === 1) stop = params[0];
-      else if (params.length > 1) [start, stop, step] = params;
-      if (typeof step !== 'number') step = Math.sign(stop - start);
-      const notDone = start < stop ? (stop, i) => stop > i : (stop, i) => stop < i;
-      for (let i = start; notDone(stop, i); i += step) yield i;
-    })(),
-  );
-};
-
-/** Returns true if debugging. */
+/** Returns true if node is debugging. */
 export const isInDebug = function () {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   return typeof require('inspector').url() !== 'undefined';
@@ -321,3 +265,8 @@ export const question = async function (questionStr, defaultAnswer = undefined) 
     }
   });
 };
+
+import _range from 'iteragain/range';
+export function range(...args: Parameters<typeof _range>) {
+  return iterate(_range(...args));
+}

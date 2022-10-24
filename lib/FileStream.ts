@@ -3,7 +3,7 @@
 
 import { createReadStream, createWriteStream, WriteStream } from 'fs';
 import { MapStream, split, mapSync } from 'event-stream';
-import Event = require('events');
+import Event from 'events';
 
 export class FileStream {
   public lineNum: number;
@@ -19,7 +19,6 @@ export class FileStream {
     this.separator = separator;
     this.fileName = fileName;
     this.event = new Event();
-    this.reader = null;
     this.writer = createWriteStream(fileName, { flags: 'a' });
 
     this.resetReader();
@@ -39,7 +38,7 @@ export class FileStream {
     }
   }
 
-  nextLine (): Promise<null | string> {
+  async nextLine (): Promise<null | string> {
     return this.eof
       ? null
       : new Promise(resolve => {
@@ -53,7 +52,7 @@ export class FileStream {
   }
 
   async allLines (): Promise<string[]> {
-    const lines = [];
+    const lines: string[] = [];
     await new Promise(resolve => {
       this.event.on('data', data => lines.push(data));
       this.event.on('error', _ => resolve(undefined));
