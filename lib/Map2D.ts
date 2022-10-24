@@ -64,11 +64,11 @@ export class Map2D<T> {
       .join('\n');
   }
 
-  getAll(predicate: (value: any, x: number, y: number) => any = v => typeof v !== 'undefined') {
+  getAll(predicate: (value: T, x: number, y: number) => any = v => typeof v !== 'undefined') {
     return this.getInside({ xMin: this.xMin, xMax: this.xMax, yMin: this.yMin, yMax: this.yMax }, predicate);
   }
 
-  *getValues(predicate: (value: any, x: number, y: number) => any = v => typeof v !== 'undefined') {
+  *getValues(predicate: (value: T, x: number, y: number) => any = v => typeof v !== 'undefined') {
     for (const key in this.map) {
       const [x, y] = key.split(',').map(Number);
       const value = this.map[key];
@@ -78,14 +78,13 @@ export class Map2D<T> {
 
   *getInside(
     bounds = { xMin: this.xMin, xMax: this.xMax, yMin: this.yMin, yMax: this.yMax },
-    predicate: (value: any, x: number, y: number) => any = v => typeof v !== undefined,
+    predicate: (value: T, x: number, y: number) => any = v => typeof v !== undefined,
   ) {
     for (let y = bounds.yMin; y <= bounds.yMax; y++)
       for (let x = bounds.xMin; x <= bounds.xMax; x++) {
         const value = this.map[`${x},${y}`];
         if (predicate(value, x, y)) yield { x, y, value };
       }
-
   }
 
   getNeighbours(x: number, y: number, yieldUndefinedNeighbours = true) {
