@@ -22,7 +22,7 @@ import iter from 'iteragain/iter';
 // import * as utils from '../lib/utils';
 
 /** @see https://adventofcode.com/${year}/day/${day}/input */
-const input = once(() => iter(readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\\n\\r]+/)));
+const input = once(() => iter(readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\\n\\r]+/)));
 
 // https://adventofcode.com/${year}/day/${day} First Star:
 
