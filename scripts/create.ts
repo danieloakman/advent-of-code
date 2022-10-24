@@ -1,6 +1,4 @@
 /* eslint-disable no-console */
-// @ts-check
-'use strict';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { ArgumentParser } from 'argparse';
 import { join } from 'path';
@@ -19,7 +17,7 @@ const fileStr =
 
 import { readFileSync } from 'fs';
 import once from 'lodash/once';
-import { iter } from 'iteragain';
+import iter from 'iteragain/iter';
 // import { ok as assert, deepStrictEqual as equals } from 'assert';
 // import * as utils from '../lib/utils';
 
