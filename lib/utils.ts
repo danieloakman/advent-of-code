@@ -5,6 +5,8 @@ import { existsSync } from 'fs';
 import { BinaryLike, BinaryToTextEncoding, createHash } from 'crypto';
 import iterate from 'iteragain/iter';
 import readline from 'readline';
+import _range from 'iteragain/range';
+import { Tuple } from 'iteragain/internal/types';
 
 export function sleep(ms = 1000): Promise<void> {
   // console.log(`Sleeping for ${ms}ms`);
@@ -136,7 +138,7 @@ export function partitionArray<T>(array: T[], numOfPartitions: number) {
   return new Array(numOfPartitions).fill(1).map((_, i, arr) => {
     return array.slice(Math.floor(array.length * (i / arr.length)), Math.floor(array.length * ((i + 1) / arr.length)));
   });
-};
+}
 
 export function subArrays<T>(array: T[], subArrayLength: number, canOverlap = true) {
   return iterate(
@@ -145,7 +147,7 @@ export function subArrays<T>(array: T[], subArrayLength: number, canOverlap = tr
       for (let i = 0; i < array.length - (subArrayLength - 1); i += inc) yield array.slice(i, i + subArrayLength);
     })(),
   );
-};
+}
 
 // @ts-ignore
 export const sum = <T extends string | number>(a: T, b: T): T => a + b;
@@ -168,7 +170,7 @@ export function groupBy<T>(objects: T[], props: string[]): { [key: string]: T[] 
     else groups[propsStr].push(object);
   }
   return groups;
-};
+}
 
 /**
  * Does a group by for every property in every object in objects.
@@ -177,7 +179,9 @@ export function groupBy<T>(objects: T[], props: string[]): { [key: string]: T[] 
  * is every property value for that particular property. 3rd dimension is every object that
  * has that property value.
  */
-export function groupByAll<T extends Record<PropertyKey, any>>(objects: T[]): { [key: string]: { [key: string]: T[] } } {
+export function groupByAll<T extends Record<PropertyKey, any>>(
+  objects: T[],
+): { [key: string]: { [key: string]: T[] } } {
   const groups = {};
   for (const object of objects)
     for (const prop of Object.keys(object)) {
@@ -188,11 +192,11 @@ export function groupByAll<T extends Record<PropertyKey, any>>(objects: T[]): { 
     }
 
   return groups;
-};
+}
 
 export function middle(a: number, b: number) {
   return (a + b) / 2;
-};
+}
 
 export function fibonacci(n = Infinity) {
   return iterate(
@@ -205,7 +209,7 @@ export function fibonacci(n = Infinity) {
       }
     })(),
   );
-};
+}
 
 /** Multiply some degrees by this to get the radian conversion. */
 export const RADIANS_MULT = Math.PI / 180;
@@ -266,17 +270,27 @@ export const question = async function (questionStr, defaultAnswer = undefined) 
   });
 };
 
-import _range from 'iteragain/range';
+/** @deprecated Just use iteragain's range and iter separately, it's redundant to use this. */
 export function range(...args: Parameters<typeof _range>) {
   return iterate(_range(...args));
 }
 
 /**
- * Declares and runs a main function if the entry point to the program is `module`.
+ * Declares and runs a main function if the entry point to the program is `module`. This is esstentially the same as
+ * python's `if __name__ == '__main__'` block.
  * @param module The NodeModule where this main function is running from.
  * @param mainFunction The main function to run.
  */
 export function main(module: any, mainFunction: () => Promise<void>) {
   if (require?.main !== module) return;
   return mainFunction();
+}
+
+export function lazyTuple<T, Size extends number>(size: Size, getter: (index: number) => T): Readonly<Tuple<T, Size>> {
+  const array = [];
+  for (let i = 0; i < size; i++)
+    Object.defineProperty(array, i, {
+      get: once(() => getter(i)),
+    });
+  return array as Tuple<T, Size>;
 }
