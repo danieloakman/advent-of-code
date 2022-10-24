@@ -6,7 +6,7 @@ import { groupBy } from '../lib/utils';
 
 const files: { path: string; day: number; year: number; stats: import('fs').Stats }[] = [];
 for (const { path, stats } of walkdirSync(join(__dirname, '..')))
-  if (/day\d+\.js$/i.test(path)) {
+  if (/day\d+\.[tj]s$/i.test(path)) {
     const nums = path
       .match(/\d+/g)
       ?.map(Number);
