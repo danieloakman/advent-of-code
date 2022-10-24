@@ -4,10 +4,10 @@
 
 import { promises, existsSync } from 'fs';
 const { writeFile, readFile } = promises;
-import puppeteer from 'puppeteer';
+import * as puppeteer from 'puppeteer';
 import { join } from 'path';
 import { openChrome } from './utils';
-import https from 'https';
+import * as https from 'https';
 
 const SESSION_COOKIE_PATH = join(__dirname, '../sessionCookie.txt');
 // let document: any;

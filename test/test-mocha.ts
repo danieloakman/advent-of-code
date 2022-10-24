@@ -16,7 +16,7 @@ for (const { path, stats } of walkdirSync(join(__dirname, '..')))
   }
 const groupedFiles = groupBy(files, ['year']);
 
-for (const year in files)
+for (const year in groupedFiles)
   describe(`${year.toString()} - ${groupedFiles[year].length}`, function () {
     for (const file of groupedFiles[year].sort((a, b) => a.day - b.day))
       it(file.day.toString(), async function () {
