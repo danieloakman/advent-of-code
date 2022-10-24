@@ -1,18 +1,12 @@
 /* eslint-disable no-console */
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
-import { ArgumentParser } from 'argparse';
 import { join } from 'path';
 import { execSync } from 'child_process';
 import { downloadInput } from '../lib/downloadInput';
+import { main } from '../lib/utils';
 
-// Get command line arguments:
-const argparser = new ArgumentParser({ description: 'Sync-Local-and-Cloud' });
-argparser.add_argument('year');
-argparser.add_argument('day');
-const { year, day } = argparser.parse_args();
-
-const fileStr =
-`import { readFileSync } from 'fs';
+export function fileStr(year: string, day: string) {
+  return `import { readFileSync } from 'fs';
 import once from 'lodash/once';
 import iter from 'iteragain/iter';
 // import { ok as assert, deepStrictEqual as equals } from 'assert';
@@ -27,20 +21,30 @@ const input = once(() => iter(readFileSync(__filename.replace(/.[tj]s/, '-input'
 // https://adventofcode.com/${year}/day/${day}#part2 Second Star:
 
 `;
+}
 
-const jsFilePath = join(__dirname, '../', `${year}/day${day}.ts`);
-const fileInputPath = join(__dirname, '../', `${year}/day${day}-input`);
-const dir = join(__dirname, '../', `${year}`);
-if (!existsSync(dir))
-  mkdirSync(dir);
-if (!existsSync(jsFilePath))
-  writeFileSync(jsFilePath, fileStr);
-else
-  console.log(`"${jsFilePath}" already exists.`);
-if (!existsSync(fileInputPath))
-  writeFileSync(fileInputPath, '');
-else
-  console.log(`"${fileInputPath}" already exists.`);
+export function createFiles(year: string, day: string) {
+  const tsFilePath = join(__dirname, '../', `${year}/day${day}.ts`);
+  const fileInputPath = join(__dirname, '../', `${year}/day${day}-input`);
+  const dir = join(__dirname, '../', `${year}`);
+  if (!existsSync(dir)) mkdirSync(dir);
+  if (!existsSync(tsFilePath)) writeFileSync(tsFilePath, fileStr(year, day));
+  else console.log(`"${tsFilePath}" already exists.`);
+  if (!existsSync(fileInputPath)) writeFileSync(fileInputPath, '');
+  else console.log(`"${fileInputPath}" already exists.`);
 
-downloadInput(year, day);
-execSync(`code ${fileInputPath} && code ${jsFilePath}`);
+  downloadInput(year, day);
+  execSync(`code ${fileInputPath} && code ${tsFilePath}`);
+  return { tsFilePath, fileInputPath };
+}
+
+main(module, async () => {
+  // Get command line arguments:
+  const { ArgumentParser } = await import('argparse');
+  const argparser = new ArgumentParser({ description: 'Sync-Local-and-Cloud' });
+  argparser.add_argument('year');
+  argparser.add_argument('day');
+  const { year, day } = argparser.parse_args();
+
+  createFiles(year, day);
+});
