@@ -26,8 +26,8 @@ export async function secondStar() {
 }
 
 main(module, async () => {
-  await firstStar();
-  await secondStar();
+  console.log('First star:', await firstStar());
+  console.log('Second star:', await secondStar());
 });
 `;
 }
