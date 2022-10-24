@@ -1,3 +1,5 @@
+import iter from 'iteragain/iter';
+
 export class IncrementorMap {
   private map: Record<string, number> = {};
 
@@ -13,8 +15,18 @@ export class IncrementorMap {
     this.map[key] = value;
   }
 
-  *entries() {
-    for (const key in this.map) yield [key, this.map[key]] as const;
+  minmax(): [string, string] {
+    let min: [string, number] = ['', Infinity];
+    let max: [string, number] = ['', -Infinity];
+    for (const [pair, count] of this.entries()) {
+      if (count < min[1]) min = [pair, count];
+      if (count > max[1]) max = [pair, count];
+    }
+    return [min[0], max[0]];
+  }
+
+  entries() {
+    return iter(Object.entries(this.map));
   }
 
   isEqual(other: IncrementorMap) {
