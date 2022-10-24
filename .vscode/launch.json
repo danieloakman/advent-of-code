@@ -13,7 +13,8 @@
       "autoAttachChildProcesses": false,
       "outputCapture": "std",
       "skipFiles": [
-          "<node_internals>/**"
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**"
       ],
       "runtimeArgs": [
           "-r",
