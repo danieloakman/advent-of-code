@@ -2,8 +2,7 @@ export class IncrementorMap {
   private map: Record<string, number> = {};
 
   inc(key: string, value = 1) {
-    if (!this.map[key]) this.map[key] = value;
-    else this.map[key] += value;
+    this.map[key] = (this.map[key] || 0) + value;
   }
 
   get(key: string) {
@@ -24,3 +23,5 @@ export class IncrementorMap {
     return true;
   }
 }
+
+export default IncrementorMap;
