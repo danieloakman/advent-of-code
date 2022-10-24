@@ -4,12 +4,11 @@ import { terminal } from 'terminal-kit';
 import { walkdirSync } from 'more-node-fs';
 import { join } from 'path';
 import { execSync } from 'child_process';
+import iter from 'iteragain/iter';
 
-let files = [];
-for (const { path, stats } of walkdirSync(join(__dirname, '../')))
-  if (stats.isFile() && /day\d+\.js/.test(path))
-    files.push({ path, stats });
-files = files
+const files = iter(walkdirSync(join(__dirname, '../')))
+  .filterMap(file => file.stats.isFile() && /day\d+\.js/.test(file.path) ? file : null)
+  .toArray()
   .sort((a, b) => b.stats.mtimeMs - a.stats.mtimeMs)
   .map(({ path }) => path.replace(process.cwd() + '\\', ''));
 
