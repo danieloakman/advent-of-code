@@ -14,9 +14,7 @@ class Screen extends Map2D<string> {
 
   constructor(public width: number, public height: number) {
     super({ xMax: width - 1, yMax: height - 1 });
-    for (let i = 0; i < height; i++)
-      for (let j = 0; j < width; j++)
-        this.set(j, i, Screen.EMPTY);
+    this.rect(width, height, Screen.EMPTY);
   }
 
   doCommand(str: string) {
@@ -32,8 +30,8 @@ class Screen extends Map2D<string> {
     }
   }
 
-  rect(x: number, y: number) {
-    for (let i = 0; i < y; i++) for (let j = 0; j < x; j++) this.set(j, i, Screen.FILLED);
+  rect(x: number, y: number, char = Screen.FILLED) {
+    for (let i = 0; i < y; i++) for (let j = 0; j < x; j++) this.set(j, i, char);
   }
 
   rotateRow(y: number, by: number) {
