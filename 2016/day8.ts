@@ -8,9 +8,15 @@ import Map2D from '../lib/Map2D';
 /** @see https://adventofcode.com/2016/day/8/input */
 export const input = once(() => readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\n\r]+/));
 
-class Screen extends Map2D<boolean> {
+class Screen extends Map2D<string> {
+  public static FILLED = '#';
+  public static EMPTY = '.';
+
   constructor(public width: number, public height: number) {
     super({ xMax: width - 1, yMax: height - 1 });
+    for (let i = 0; i < height; i++)
+      for (let j = 0; j < width; j++)
+        this.set(j, i, Screen.EMPTY);
   }
 
   doCommand(str: string) {
@@ -27,7 +33,7 @@ class Screen extends Map2D<boolean> {
   }
 
   rect(x: number, y: number) {
-    for (let i = 0; i < y; i++) for (let j = 0; j < x; j++) this.set(j, i, true);
+    for (let i = 0; i < y; i++) for (let j = 0; j < x; j++) this.set(j, i, Screen.FILLED);
   }
 
   rotateRow(y: number, by: number) {
@@ -56,10 +62,10 @@ export async function firstStar() {
 export async function secondStar() {
   const screen = new Screen(50, 6);
   for (const line of input()) screen.doCommand(line);
-  return screen.toString(); // TODO: print the screen properly
+  return screen.toString();
 }
 
 main(module, async () => {
   console.log('First star:', await firstStar());
-  console.log('Second star:\n', await secondStar());
+  console.log('Second star:\n' + await secondStar());
 });
