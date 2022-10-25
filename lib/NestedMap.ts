@@ -1,56 +1,94 @@
-export class NestedMap<K extends string | number = string | number, V = any> implements Map<K, V> {
-  protected dict: Record<K, V> = {};
-  // constructor()
+import map from 'iteragain/map';
+import ObjectIterator from 'iteragain/internal/ObjectIterator';
 
-  clear(): void {
-    throw new Error('Method not implemented.');
+export class NestedMap<V = any> implements Map<string, V> {
+  public [Symbol.toStringTag] = 'NestedMap';
+  protected _dict: any = {};
+
+  public get size(): number {
+    return Object.keys(this._dict).length;
   }
 
-  delete(key: K): boolean {
-    throw new Error('Method not implemented.');
+  public clear(): void {
+    this._dict = {} as Record<string, V>;
   }
 
-  forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
-    throw new Error('Method not implemented.');
-  }
-
-  get(key: K): V;
-  get(...keys: K[]): V {
-    throw new Error('Method not implemented.');
-  }
-
-  has(key: K): boolean {
-    throw new Error('Method not implemented.');
-  }
-
-  set(key: K, value: V): this;
-  set(keys: K[], value: V): this;
-  set(keyOrKeys: K | K [], value: V): this {
+  public delete(key: string): boolean;
+  public delete(keys: string[]): boolean;
+  public delete(keyOrKeys: string | string[]): boolean {
     const keys = Array.isArray(keyOrKeys) ? keyOrKeys : [keyOrKeys];
-    while (keys.length > 1) {
-      const key = keys.shift();
-      if (!this.dict[key]) this.dict[key] = {};
-      this.dict = this.dict[key];
+    let dict = this._dict;
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (!dict[keys[i]]) return false;
+      dict = dict[keys[i]];
     }
+    const key = keys[keys.length - 1];
+    if (key) delete dict[key];
+    return true;
+  }
+
+  public forEach(callbackfn: (value: V, key: string, map: Map<string, V>) => void, thisArg?: any): void {
+    const it = this.entries();
+    let next: IteratorResult<[string, V]>;
+    while (!(next = it.next()).done) callbackfn.call(thisArg, next.value[1], next.value[0], this);
+  }
+
+  public get(...keys: string[]): V | undefined {
+    let dict = this._dict;
+    for (const key of keys) {
+      if (dict[key] === undefined) return undefined;
+      dict = dict[key];
+    }
+    return dict;
+  }
+
+  public has(...keys: string[]): boolean {
+    return this.get(...keys) !== undefined;
+  }
+
+  public set(key: string, value: V): this;
+  public set(keys: string[], value: V): this;
+  public set(keyOrKeys: string | string[], value: V): this {
+    let dict = this._dict;
+    const keys = Array.isArray(keyOrKeys) ? keyOrKeys : [keyOrKeys];
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (dict[keys[i]] === undefined) dict[keys[i]] = {};
+      dict = dict[keys[i]];
+    }
+    dict[keys[keys.length - 1]] = value;
     return this;
   }
 
-  size: number;
-  entries(): IterableIterator<[K, V]> {
-    throw new Error('Method not implemented.');
+  public entries(): IterableIterator<[string, V]> {
+    return map(new ObjectIterator(this._dict), ([key, value]) => [key, value] as [string, V]);
   }
 
-  keys(): IterableIterator<K> {
-    throw new Error('Method not implemented.');
+  public keys(): IterableIterator<string> {
+    return map(new ObjectIterator(this._dict), ([k]) => k as string);
   }
 
-  values(): IterableIterator<V> {
-    throw new Error('Method not implemented.');
+  public values(): IterableIterator<V> {
+    return map(new ObjectIterator(this._dict), ([, v]) => v);
   }
 
-  [Symbol.iterator](): IterableIterator<[K, V]> {
-    throw new Error('Method not implemented.');
+  public [Symbol.iterator](): IterableIterator<[string, V]> {
+    return this.entries();
   }
 
-  [Symbol.toStringTag]: string;
+  public toJSON(): Record<string, V> {
+    return this._dict;
+  }
+
+  public toString(): string {
+    return JSON.stringify(this._dict);
+  }
 }
+
+export default NestedMap;
+
+// const nestedMap = new NestedMap<number>();
+// nestedMap.set(['a', 'b'], 1);
+// console.log([...nestedMap.values()]);
+// nestedMap.delete(['a', 'b']);
+// console.log([...nestedMap.values()]);
+// console.log([...nestedMap.keys()]);
