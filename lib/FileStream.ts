@@ -1,4 +1,3 @@
-'use strict';
 // @ts-check
 
 import { createReadStream, createWriteStream, WriteStream } from 'fs';
@@ -29,7 +28,7 @@ export class FileStream {
    * @param {RegExp|string} separator
    * @returns {AsyncGenerator<string, void, unknown>}
    */
-  static async *fileLines (file: string, separator: RegExp | string = /[\n\r]+/): AsyncGenerator<string, void, unknown> {
+  static async *fileLines(file: string, separator: RegExp | string = /[\n\r]+/): AsyncGenerator<string, void, unknown> {
     const reader = new FileStream(file, separator);
     while (true) {
       const line = await reader.nextLine();
@@ -38,7 +37,7 @@ export class FileStream {
     }
   }
 
-  async nextLine (): Promise<null | string> {
+  async nextLine(): Promise<null | string> {
     return this.eof
       ? null
       : new Promise(resolve => {
@@ -51,7 +50,7 @@ export class FileStream {
       });
   }
 
-  async allLines (): Promise<string[]> {
+  async allLines(): Promise<string[]> {
     const lines: string[] = [];
     await new Promise(resolve => {
       this.event.on('data', data => lines.push(data));
@@ -63,7 +62,7 @@ export class FileStream {
     return lines;
   }
 
-  resetReader () {
+  resetReader() {
     this.lineNum = 0;
     this.eof = false;
     this.reader = createReadStream(this.fileName)
@@ -80,12 +79,12 @@ export class FileStream {
           .on('end', () => {
             this.event.emit('end');
             this.eof = true;
-          })
+          }),
       );
     this.reader.pause();
   }
 
-  write (str: string): Promise<void> {
+  write(str: string): Promise<void> {
     return new Promise(resolve => {
       this.writer.write(str, err => {
         if (err) {
@@ -96,7 +95,7 @@ export class FileStream {
       });
     });
   }
-};
+}
 
 // (async () => {
 //   const file = new (module.exports)('./test.txt');

@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-console */
-'use strict';
-
 import { promises, existsSync } from 'fs';
 const { writeFile, readFile } = promises;
 import * as puppeteer from 'puppeteer';

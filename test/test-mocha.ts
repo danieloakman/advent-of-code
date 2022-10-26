@@ -1,5 +1,3 @@
-'use strict';
-
 import { walkdirSync } from 'more-node-fs';
 import { join } from 'path';
 import { groupBy } from '../lib/utils';
@@ -7,9 +5,7 @@ import { groupBy } from '../lib/utils';
 const files: { path: string; day: number; year: number; stats: import('fs').Stats }[] = [];
 for (const { path, stats } of walkdirSync(join(__dirname, '..')))
   if (/day\d+\.[tj]s$/i.test(path)) {
-    const nums = path
-      .match(/\d+/g)
-      ?.map(Number);
+    const nums = path.match(/\d+/g)?.map(Number);
     const [day, year] = [nums?.pop(), nums?.pop()];
     if (!(day && year)) continue;
     files.push({ path, day, year, stats });
