@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs';
 import once from 'lodash/once';
-import { main } from '../lib/utils';
+import { main } from '../../lib/utils';
 import iter from 'iteragain/iter';
-import Map2D from '../lib/Map2D';
+import Map2D from '../../lib/Map2D';
 // import { ok as assert, deepStrictEqual as equals } from 'assert';
 
 /** @see https://adventofcode.com/2016/day/8/input */
