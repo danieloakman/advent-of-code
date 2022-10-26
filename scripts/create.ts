@@ -8,7 +8,7 @@ import { main } from '../lib/utils';
 export function fileStr(year: string, day: string) {
   return `import { readFileSync } from 'fs';
 import once from 'lodash/once';
-import { main } from '../lib/utils';
+import { main } from '../../lib/utils';
 import iter from 'iteragain/iter';
 // import { ok as assert, deepStrictEqual as equals } from 'assert';
 
@@ -33,9 +33,9 @@ main(module, async () => {
 }
 
 export function createFiles(year: string, day: string) {
-  const tsFilePath = join(__dirname, '../', `${year}/day${day}.ts`);
-  const fileInputPath = join(__dirname, '../', `${year}/day${day}-input`);
-  const dir = join(__dirname, '../', `${year}`);
+  const tsFilePath = join(__dirname, '../', `years/${year}/day${day}.ts`);
+  const fileInputPath = join(__dirname, '../', `years/${year}/day${day}-input`);
+  const dir = join(__dirname, '../', `years/${year}`);
   if (!existsSync(dir)) mkdirSync(dir);
   if (!existsSync(tsFilePath)) writeFileSync(tsFilePath, fileStr(year, day));
   else console.log(`"${tsFilePath}" already exists.`);

@@ -82,5 +82,5 @@ export async function downloadInput(year: string, day: string) {
     input = await getInput(year, day, sessionCookie);
     if (!input) sessionCookie = await newSessionCookie();
   } while (!input);
-  await writeFile(join(__dirname, '../', `${year}/day${day}-input`), input);
+  await writeFile(join(__dirname, '../', `years/${year}/day${day}-input`), input);
 }
