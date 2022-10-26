@@ -108,3 +108,5 @@ sessionCookie.txt
 
 # Use pnpm-lock.yaml instead. As in use `pnpm` command instead of `npm`
 package-lock.json
+
+.vscode
