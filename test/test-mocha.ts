@@ -16,6 +16,7 @@ for (const year in groupedFiles)
   describe(`${year.toString()} - ${groupedFiles[year].length}`, function () {
     for (const file of groupedFiles[year].sort((a, b) => a.day - b.day))
       it(file.day.toString(), async function () {
+        this.timeout(1e3 * 30);
         require(file.path);
       });
   });
