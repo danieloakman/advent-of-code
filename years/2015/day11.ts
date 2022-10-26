@@ -4,7 +4,7 @@ const { readFileSync } = require('fs');
 const { subStrings } = require('../lib/utils');
 const { strictEqual: equal, ok: assert } = require('assert');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8');
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8');
 
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
 const FORBIDDEN_CHARS = /[iol]/;

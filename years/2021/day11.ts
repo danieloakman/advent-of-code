@@ -19,7 +19,7 @@ class OctopusMap extends Map2D {
     else this.map[`${x},${y}`] = 1;
   }
 }
-const inputMap = () => OctopusMap.create(readFileSync(__filename.replace('.js', '-input'), 'utf-8'));
+const inputMap = () => OctopusMap.create(readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));
 const testMap1 = () =>
   OctopusMap.create(
     `5483143223

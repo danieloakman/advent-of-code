@@ -4,7 +4,7 @@
 const { readFileSync } = require('fs');
 const { groupBy } = require('../lib/utils');
 
-const ingredients = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+const ingredients = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .map(str => {
     const [capacity, durability, flavour, texture, calories] = str.match(/-?\d+/g).map(Number);

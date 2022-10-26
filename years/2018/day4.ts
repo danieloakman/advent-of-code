@@ -3,7 +3,7 @@
 
 const { readFileSync } = require('fs');
 
-const events = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+const events = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .map(str => {
     const [year, month, day, hour, min] = str.match(/\d+/g).map(Number);

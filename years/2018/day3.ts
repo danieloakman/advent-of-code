@@ -37,7 +37,7 @@ class Claim {
   }
 }
 
-readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .map(str => new Claim(...Claim.parseInputStr(str)));
 

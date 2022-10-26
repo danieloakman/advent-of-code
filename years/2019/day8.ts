@@ -7,7 +7,7 @@ const { /* ok: assert, */ deepStrictEqual: equals } = require('assert');
 const { partitionArray } = require('../lib/utils');
 
 /** @see https://adventofcode.com/2019/day/8/input */
-const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8').split('').map(Number));
+const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split('').map(Number));
 
 // https://adventofcode.com/2019/day/8 First Star:
 class Image {

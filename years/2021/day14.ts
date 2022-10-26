@@ -6,7 +6,7 @@ const IncrementorMap = require('../lib/IncrementorMap');
 const last = require('lodash/last');
 
 const input = () => {
-  const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\n\r]+/);
+  const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/);
   const template = input[0];
   const map = input.slice(1).reduce((map, line) => {
     const pair = line.split(' -> ');

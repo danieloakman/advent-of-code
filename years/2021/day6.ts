@@ -3,7 +3,7 @@ const { deepStrictEqual: equal } = require('assert');
 const { sum } = require('../lib/utils');
 
 function getInput() {
-  return readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+  return readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
     .split(',')
     .filter(v => v)
     .map(parseFloat);

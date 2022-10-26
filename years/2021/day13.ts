@@ -30,7 +30,7 @@ const testInput = () =>
 fold along y=7
 fold along x=5`);
 
-const input = () => FoldingMap.createMap(readFileSync(__filename.replace('.js', '-input'), 'utf-8'));
+const input = () => FoldingMap.createMap(readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));
 
 class FoldingMap extends Map2D {
   static createMap(input) {

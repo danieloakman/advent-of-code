@@ -5,7 +5,7 @@ const { readFileSync } = require('fs');
 const { ok: assert } = require('assert');
 const { sum } = require('../lib/utils');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .map(Number);
 

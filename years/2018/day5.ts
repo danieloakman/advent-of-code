@@ -8,7 +8,7 @@ const once = require('lodash/once');
 const { deepStrictEqual: equals } = require('assert');
 const { stringSplice } = require('../lib/utils');
 
-const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8'));
+const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));
 
 // First Star:
 /**

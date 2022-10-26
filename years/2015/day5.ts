@@ -1,6 +1,6 @@
 // https://adventofcode.com/2015/day/5
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 
 const isNice = (() => {
   const notAllowedStrings = ['ab', 'cd', 'pq', 'xy'];
@@ -18,7 +18,7 @@ const isNice = (() => {
   };
 })();
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\n\r]+/);
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/);
 
 // First Star:
 console.log({ numOfNiceStrings: input.filter(isNice).length });

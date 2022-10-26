@@ -1,5 +1,5 @@
 const { readFileSync } = require('fs');
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\n\r]+/);
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/);
 
 // Silver star:
 const randNumbers = input.shift().split(',').map(parseFloat);

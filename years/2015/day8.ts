@@ -3,7 +3,7 @@
 const { readFileSync } = require('fs');
 const { matches } = require('../lib/utils');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .map(str => {
     let memoryStr = str.slice(1, str.length - 1);

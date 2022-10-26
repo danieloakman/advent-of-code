@@ -36,7 +36,7 @@ class Line {
     } while (!(x === this[1].x && y === this[1].y));
   }
 }
-const lines = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+const lines = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .filter(v => v)
   .map(str => new Line(...str.match(/\d+/g).map(parseFloat)));

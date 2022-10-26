@@ -2,7 +2,7 @@
 
 const { readFileSync } = require('fs');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .map(str => str.trim().split(/\s+/).map(Number));
 

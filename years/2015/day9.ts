@@ -2,7 +2,7 @@
 
 const { readFileSync } = require('fs');
 
-const edges = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+const edges = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .reduce((map, str) => {
     const [start, end, weight] = str.split(/ to | = /).map(str => str.trim());

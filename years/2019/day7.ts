@@ -7,7 +7,7 @@ import { iter as iterate } from 'iteragain';
 const { deepCopy } = require('../lib/utils');
 const { deepStrictEqual: equal } = require('assert');
 
-const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(',').map(Number));
+const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(',').map(Number));
 
 // First Star:
 /**

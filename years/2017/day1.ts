@@ -5,7 +5,7 @@ const { readFileSync } = require('fs');
 const { subStrings } = require('../lib/utils');
 const last = require('lodash/last');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8');
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8');
 
 // First Star:
 let num = input[0] === last(input) ? Number(input[0]) : 0;

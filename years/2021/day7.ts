@@ -1,6 +1,6 @@
 const { readFileSync } = require('fs');
 
-const crabs = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+const crabs = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(',')
   .filter(v => v)
   .map(parseFloat);

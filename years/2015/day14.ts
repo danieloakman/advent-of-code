@@ -3,7 +3,7 @@
 const { readFileSync } = require('fs');
 const { deepCopy } = require('../lib/utils');
 
-const reindeers = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+const reindeers = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .map(str => {
     const [speed, fly, rest] = str.match(/\d+/g).map(Number);

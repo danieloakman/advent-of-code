@@ -8,7 +8,7 @@ import iter from 'iteragain/iter';
 import { hash } from '../lib/utils';
 import range from 'iteragain/range';
 
-const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8'));
+const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));
 
 // First Star:
 function findPassword(doorID, endRange = Infinity) {

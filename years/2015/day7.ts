@@ -9,7 +9,7 @@ function parseInput(signal, map) {
 }
 
 function createCircuit() {
-  return readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+  return readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
     .split(/[\n\r]+/)
     .reduce((map, str) => {
       const [input, output] = str.split('->').map(str => str.trim());

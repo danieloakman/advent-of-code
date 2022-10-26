@@ -15,7 +15,7 @@ function parseLine(map, line, y) {
   for (let x = 0; x < line.length; x++) map.set(x, y, line[x]);
   return map;
 }
-const map = readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+const map = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .reduce(parseLine, new Map2D());
 const testMap = `1163751742

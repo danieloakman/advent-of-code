@@ -1,5 +1,5 @@
 const { readFileSync } = require('fs');
-const commands = readFileSync(__filename.replace('.js', '-input'), { encoding: 'utf-8' })
+const commands = readFileSync(__filename.replace('.ts', '-input'), { encoding: 'utf-8' })
   .split(/[\n\r]+/)
   .map(str => str.split(' ').map((v, i) => (i === 1 ? parseInt(v) : v)));
 

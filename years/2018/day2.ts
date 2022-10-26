@@ -4,7 +4,7 @@
 const { readFileSync } = require('fs');
 const { groupBy } = require('../lib/utils');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\n\r]+/);
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/);
 
 // First Star:
 function containsTwoOrThree(str) {

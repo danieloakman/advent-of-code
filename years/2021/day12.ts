@@ -38,7 +38,7 @@ class Node {
   }
 }
 
-readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
   .forEach(str => {
     const nodes = str.split('-').map(id => Node.get(id));

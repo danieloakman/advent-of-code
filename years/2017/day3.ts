@@ -6,7 +6,7 @@ const { ok: assert } = require('assert');
 const { midNum, fibonacci, take } = require('../lib/utils');
 const Map2D = require('../lib/Map2D');
 
-const input = Number(readFileSync(__filename.replace('.js', '-input'), 'utf-8'));
+const input = Number(readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));
 
 // First Star:
 function spiralDistance(num) {

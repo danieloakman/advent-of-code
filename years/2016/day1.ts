@@ -2,7 +2,7 @@
 
 const { readFileSync } = require('fs');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/, +/);
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/, +/);
 
 // First Star:
 const pos = { x: 0, y: 0 };

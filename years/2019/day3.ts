@@ -36,7 +36,7 @@ function parseInputLine(line) {
 }
 
 const input = once(() =>
-  readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+  readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
     .split(/[\n\r]+/)
     .map(parseInputLine),
 );

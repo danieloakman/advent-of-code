@@ -7,7 +7,7 @@ const { /* ok: assert, */ deepStrictEqual: equals } = require('assert');
 const { deepCopy } = require('../lib/utils');
 
 /** @see https://adventofcode.com/2019/day/9/input */
-const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(',').map(Number));
+const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(',').map(Number));
 
 // https://adventofcode.com/2019/day/9 First Star:
 class BigArray {

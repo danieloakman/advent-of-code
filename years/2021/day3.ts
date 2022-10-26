@@ -1,6 +1,6 @@
 const { ok: assert } = require('assert');
 const { readFileSync } = require('fs');
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\n\r]+/);
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/);
 const testBinaryNums = `00100
 11110
 10110

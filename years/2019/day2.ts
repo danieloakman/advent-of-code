@@ -5,7 +5,7 @@ const { readFileSync } = require('fs');
 const { deepCopy } = require('../lib/utils');
 const { deepEqual } = require('assert');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/,/).map(Number);
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/,/).map(Number);
 
 // First Star:
 function process(input, noun = input[1], verb = input[2]) {

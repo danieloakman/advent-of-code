@@ -2,7 +2,7 @@
 
 const { readFileSync } = require('fs');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8');
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8');
 
 // First Star:
 function lookAndSay(str, steps) {

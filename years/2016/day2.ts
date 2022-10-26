@@ -3,7 +3,7 @@
 const { readFileSync } = require('fs');
 const flatten = require('lodash/flatten');
 
-const input = readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\n\r]+/);
+const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/);
 
 class KeyPad {
   constructor(keypad) {

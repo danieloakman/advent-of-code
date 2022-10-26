@@ -8,7 +8,7 @@ const once = require('lodash/once');
 const { deepStrictEqual: equals, equal } = require('assert');
 const last = require('lodash/last');
 
-const input = once(() => readFileSync(__filename.replace('.js', '-input'), 'utf-8').split(/[\n\r]+/));
+const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/));
 const testInput1 = once(() => ['COM)B', 'B)C', 'C)D', 'D)E', 'E)F', 'B)G', 'G)H', 'D)I', 'E)J', 'J)K', 'K)L']);
 const testInput2 = once(() => [
   'COM)B',

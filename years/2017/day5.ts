@@ -5,7 +5,7 @@ const { readFileSync } = require('fs');
 
 function getInput() {
   // return [0, 3, 0, 1, -3];
-  return readFileSync(__filename.replace('.js', '-input'), 'utf-8')
+  return readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
     .split(/[\n\r]+/)
     .map(Number);
 }
