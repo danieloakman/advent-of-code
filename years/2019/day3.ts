@@ -4,11 +4,11 @@
 const { readFileSync } = require('fs');
 const once = require('lodash/once');
 // import { iter as iterate } from 'iteragain';
-// const Map2D = require('../lib/Map2D');
+// const Map2D = require('../../lib/Map2D');
 const { deepStrictEqual: equal } = require('assert');
-const { range, subArrays } = require('../lib/utils');
-const Vector2 = require('../lib/Vector2');
-const Line = require('../lib/Line');
+const { range, subArrays } = require('../../lib/utils');
+const Vector2 = require('../../lib/Vector2');
+const Line = require('../../lib/Line');
 const last = require('lodash/last');
 
 const DIRECTION_MAP = {

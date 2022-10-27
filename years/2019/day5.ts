@@ -4,7 +4,7 @@
 
 const { readFileSync } = require('fs');
 const once = require('lodash/once');
-const { deepCopy } = require('../lib/utils');
+const { deepCopy } = require('../../lib/utils');
 // import { iter as iterate } from 'iteragain';
 const {
   // ok: assert,

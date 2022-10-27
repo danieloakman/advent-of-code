@@ -1,7 +1,7 @@
 // https://adventofcode.com/2021/day/11
 
 const { readFileSync } = require('fs');
-const Map2D = require('../lib/Map2D');
+const Map2D = require('../../lib/Map2D');
 const { deepStrictEqual: equal } = require('assert');
 
 class OctopusMap extends Map2D {

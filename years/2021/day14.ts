@@ -1,9 +1,9 @@
 // https://adventofcode.com/2021/day/14
 
-const { readFileSync } = require('fs');
-const { stringSplice, subStrings } = require('../lib/utils');
-const IncrementorMap = require('../lib/IncrementorMap');
-const last = require('lodash/last');
+import { readFileSync } from 'fs';
+import { stringSplice, subStrings } from '../../lib/utils';
+import IncrementorMap from '../../lib/IncrementorMap';
+import last from 'lodash/last';
 
 const input = () => {
   const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/);

@@ -1,7 +1,7 @@
 // https://adventofcode.com/2015/day/14
 
 const { readFileSync } = require('fs');
-const { deepCopy } = require('../lib/utils');
+const { deepCopy } = require('../../lib/utils');
 
 const reindeers = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)

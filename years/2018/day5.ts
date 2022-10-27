@@ -6,7 +6,7 @@ const { readFileSync } = require('fs');
 const once = require('lodash/once');
 // import { iter as iterate } from 'iteragain';
 const { deepStrictEqual: equals } = require('assert');
-const { stringSplice } = require('../lib/utils');
+const { stringSplice } = require('../../lib/utils');
 
 const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));
 

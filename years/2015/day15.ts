@@ -2,7 +2,7 @@
 // https://adventofcode.com/2015/day/15/input
 
 const { readFileSync } = require('fs');
-const { groupBy } = require('../lib/utils');
+const { groupBy } = require('../../lib/utils');
 
 const ingredients = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)

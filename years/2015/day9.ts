@@ -24,7 +24,7 @@ class Graph {
     this.nodes[start].edges[end] = weight;
   }
 
-  public getShortestPath() {
+  public getShortestPath() {}
 
 }
 
@@ -106,14 +106,14 @@ class Graph {
 // const routes = graph.getAllRoutes();
 const graph = new Graph();
 input().forEach(str => graph.addEdge(...parseEdge(str)));
-for (const line of input()) {
-  const edge = parseEdge(line);
-  const start = Node.nodes[edge.start] || new Node(edge.start);
-  const end = Node.nodes[edge.end] || new Node(edge.end);
-  start.edges[end.id] = edge.weight;
-}
-for (const node of Object.values(Node.nodes)) {
-  console.log(node.id, node.shortestPathVisitingAll());
-}
+// for (const line of input()) {
+//   const edge = parseEdge(line);
+//   const start = Node.nodes[edge.start] || new Node(edge.start);
+//   const end = Node.nodes[edge.end] || new Node(edge.end);
+//   start.edges[end.id] = edge.weight;
+// }
+// for (const node of Object.values(Node.nodes)) {
+//   console.log(node.id, node.shortestPathVisitingAll());
+// }
 
 // Second Star:

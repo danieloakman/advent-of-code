@@ -3,8 +3,8 @@
 
 const { readFileSync } = require('fs');
 const { ok: assert } = require('assert');
-const { midNum, fibonacci, take } = require('../lib/utils');
-const Map2D = require('../lib/Map2D');
+const { midNum, fibonacci, take } = require('../../lib/utils');
+const Map2D = require('../../lib/Map2D');
 
 const input = Number(readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));
 

@@ -1,7 +1,7 @@
 // https://adventofcode.com/2015/day/8
 
-const { readFileSync } = require('fs');
-const { matches } = require('../lib/utils');
+import { readFileSync } from 'fs';
+import { matches } from '../../lib/utils';
 
 const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)

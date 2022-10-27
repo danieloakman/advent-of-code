@@ -2,7 +2,7 @@
 // https://adventofcode.com/2019/day/2/input
 
 const { readFileSync } = require('fs');
-const { deepCopy } = require('../lib/utils');
+const { deepCopy } = require('../../lib/utils');
 const { deepEqual } = require('assert');
 
 const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/,/).map(Number);

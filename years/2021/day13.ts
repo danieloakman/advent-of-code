@@ -1,7 +1,7 @@
 // https://adventofcode.com/2021/day/13
 
 const { readFileSync } = require('fs');
-const Map2D = require('../lib/Map2D');
+const Map2D = require('../../lib/Map2D');
 const { deepStrictEqual: equal, ok: assert } = require('assert');
 
 const EMPTY = ' ';

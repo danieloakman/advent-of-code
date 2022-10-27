@@ -1,9 +1,9 @@
 // https://adventofcode.com/2015/day/7
 
-const { readFileSync } = require('fs');
-const once = require('lodash/once');
+import { readFileSync } from 'fs';
+import once from 'lodash/once';
 
-function parseInput(signal, map) {
+function parseInput(signal: string, map: any) {
   signal = signal.trim();
   return once(/\d+/.test(signal) ? () => Number(signal) : () => map[signal]());
 }
@@ -32,7 +32,7 @@ function createCircuit() {
         map[output] = parseInput(input, map);
       }
       return map;
-    }, {});
+    }, {} as any);
 }
 
 // First Star:

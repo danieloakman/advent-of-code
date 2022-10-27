@@ -4,7 +4,7 @@
 
 const { readFileSync } = require('fs');
 const once = require('lodash/once');
-const { range, subStrings } = require('../lib/utils');
+const { range, subStrings } = require('../../lib/utils');
 const { ok: assert } = require('assert');
 // import { iter as iterate } from 'iteragain';
 

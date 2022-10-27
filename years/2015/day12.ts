@@ -1,7 +1,7 @@
 // https://adventofcode.com/2015/day/12
 
 const { readFileSync } = require('fs');
-const { matches } = require('../lib/utils');
+const { matches } = require('../../lib/utils');
 
 const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8');
 

@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 import once from 'lodash/once';
 import iter from 'iteragain/iter';
 // import { deepStrictEqual as equal } from 'assert';
-import { hash } from '../lib/utils';
+import { hash } from '../../lib/utils';
 import range from 'iteragain/range';
 
 const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));

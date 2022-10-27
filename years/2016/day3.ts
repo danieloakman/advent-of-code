@@ -15,7 +15,7 @@ function isPossibleTriangle(points) {
 console.log({ numOfPossibleTriangles: input.filter(isPossibleTriangle).length });
 
 // Second Star:
-const { subArrays } = require('../lib/utils');
+const { subArrays } = require('../../lib/utils');
 console.log({
   numOfPossibleTriangles: [...subArrays(input, 3, false)]
     .reduce((arr, points) => {

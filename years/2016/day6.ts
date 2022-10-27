@@ -4,8 +4,8 @@ import iter from 'iteragain/iter';
 import range from 'iteragain/range';
 import enumerate from 'iteragain/enumerate';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
-import { IncrementorMap } from '../lib/IncrementorMap';
-// import * as utils from '../lib/utils';
+import { IncrementorMap } from '../../lib/IncrementorMap';
+// import * as utils from '../../lib/utils';
 
 /** @see https://adventofcode.com/2016/day/6/input */
 const input = once(() => readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\n\r]+/));

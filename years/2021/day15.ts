@@ -2,8 +2,8 @@
 // https://adventofcode.com/2021/day/15/input
 
 const { readFileSync } = require('fs');
-const Map2D = require('../lib/Map2D');
-const Vector2 = require('../lib/Vector2');
+const Map2D = require('../../lib/Map2D');
+const Vector2 = require('../../lib/Vector2');
 const { deepStrictEqual: equal } = require('assert');
 
 /**

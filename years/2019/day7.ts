@@ -4,7 +4,7 @@
 const { readFileSync } = require('fs');
 const once = require('lodash/once');
 import { iter as iterate } from 'iteragain';
-const { deepCopy } = require('../lib/utils');
+const { deepCopy } = require('../../lib/utils');
 const { deepStrictEqual: equal } = require('assert');
 
 const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(',').map(Number));
