@@ -96,6 +96,7 @@ export function openChrome(): Promise<string> {
   });
 }
 
+/** @deprecated Use the windows or chunks iterator for this. */
 export function subStrings(str: string, subStringLength: number, canOverlap = true) {
   return iter(
     (function* () {
@@ -135,6 +136,7 @@ export function partitionArray<T>(array: T[], numOfPartitions: number) {
   });
 }
 
+/** @deprecated Use some iterator for this. */
 export function subArrays<T>(array: T[], subArrayLength: number, canOverlap = true) {
   return iter(
     (function* () {
@@ -288,4 +290,9 @@ export function lazyTuple<T, Size extends number>(size: Size, getter: (index: nu
       get: once(() => getter(i)),
     });
   return array as Tuple<T, Size>;
+}
+
+/** Pipes an object through any number of functions. */
+export function pipe<T>(value: T, ...funcs: ((value: T) => T)[]): T {
+  return funcs.reduce((value, func) => func(value), value);
 }
