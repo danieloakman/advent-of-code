@@ -3,10 +3,11 @@ import once from 'lodash/once';
 import memoize from 'lodash/memoize';
 import { existsSync } from 'fs';
 import { BinaryLike, BinaryToTextEncoding, createHash } from 'crypto';
-import iterate from 'iteragain/iter';
+import iter from 'iteragain/iter';
 import readline from 'readline';
 import _range from 'iteragain/range';
 import { Tuple } from 'iteragain/internal/types';
+import ExtendedIterator from 'iteragain/internal/ExtendedIterator';
 
 export function sleep(ms = 1000): Promise<void> {
   // console.log(`Sleeping for ${ms}ms`);
@@ -45,16 +46,10 @@ export function callSafely<T extends (...args: any[]) => any>(
  * @param string The string to search through.
  * @throws Throws an Error if regex does not have the global flag set.
  */
-export function matches(regex: RegExp, string: string) {
-  return iterate(
-    (function* () {
-      if (!(regex instanceof RegExp) || !regex.flags.includes('g'))
-        throw new Error("regex parameter must be a RegExp and have the global 'g' flag assigned to it.");
-
-      let match: RegExpMatchArray | null;
-      while ((match = regex.exec(string)) !== null) yield match;
-    })(),
-  );
+export function matches(regex: RegExp, string: string): ExtendedIterator<RegExpExecArray> {
+  if (!(regex instanceof RegExp) || !regex.flags.includes('g'))
+    throw new Error("regex parameter must be a RegExp and have the global 'g' flag assigned to it.");
+  return iter(() => regex.exec(string), null);
 }
 
 /**
@@ -102,7 +97,7 @@ export function openChrome(): Promise<string> {
 }
 
 export function subStrings(str: string, subStringLength: number, canOverlap = true) {
-  return iterate(
+  return iter(
     (function* () {
       const inc = canOverlap ? 1 : subStringLength;
       for (let i = 0; i < str.length - (subStringLength - 1); i += inc) yield str.substring(i, i + subStringLength);
@@ -141,7 +136,7 @@ export function partitionArray<T>(array: T[], numOfPartitions: number) {
 }
 
 export function subArrays<T>(array: T[], subArrayLength: number, canOverlap = true) {
-  return iterate(
+  return iter(
     (function* () {
       const inc = canOverlap ? 1 : subArrayLength;
       for (let i = 0; i < array.length - (subArrayLength - 1); i += inc) yield array.slice(i, i + subArrayLength);
@@ -199,7 +194,7 @@ export function middle(a: number, b: number) {
 }
 
 export function fibonacci(n = Infinity) {
-  return iterate(
+  return iter(
     (function* () {
       let a = 1;
       let b = 1;
@@ -272,7 +267,7 @@ export const question = async function (questionStr, defaultAnswer = undefined) 
 
 /** @deprecated Just use iteragain's range and iter separately, it's redundant to use this. */
 export function range(...args: Parameters<typeof _range>) {
-  return iterate(_range(...args));
+  return iter(_range(...args));
 }
 
 /**
