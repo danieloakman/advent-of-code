@@ -2,20 +2,15 @@
 // https://adventofcode.com/2018/day/3/input
 
 import { readFileSync } from 'fs';
+import { Tuple } from 'iteragain/internal/types';
 
-const Map2D = require('../../lib/Map2D');
+import Map2D from '../../lib/Map2D';
 
 class Claim {
-  /** @type {Claim[]} */
-  static claims = [];
-  static plot = new Map2D();
+  static claims: Claim[] = [];
+  static plot = new Map2D<number[]>();
 
-  constructor(id, x, y, w, h) {
-    this.id = id;
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
+  constructor(public id: number, public x: number, public y: number, public w: number, public h: number) {
     Claim.claims.push(this);
     for (const { x, y } of this.points()) {
       const v = Claim.plot.get(x, y);
@@ -28,8 +23,8 @@ class Claim {
     return [...Claim.plot.getAll()].some(({ value }) => value.some(id => id === this.id));
   }
 
-  static parseInputStr(str) {
-    return str.match(/\d+/g).map(Number);
+  static parseInputStr(str: string): Tuple<number, 5> {
+    return str.match(/\d+/g).map(Number) as Tuple<number, 5>;
   }
 
   *points() {

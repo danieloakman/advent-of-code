@@ -3,8 +3,9 @@
 
 import { readFileSync } from 'fs';
 import { ok as assert } from 'assert';
-import { midNum, fibonacci, take } from '../../lib/utils';
-const Map2D = require('../../lib/Map2D');
+import take from 'iteragain/take';
+import { middle } from '../../lib/utils';
+import Map2D from '../../lib/Map2D';
 
 const input = Number(readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));
 
@@ -18,10 +19,10 @@ function spiralDistance(num) {
       // const start = (sideL - 2) * (sideL - 2) + 1;
       const corners = [volume, volume - (sideL - 1), volume - (sideL - 1) * 2, volume - (sideL - 1) * 3];
       const middles = [
-        midNum(corners[0], corners[1]),
-        midNum(corners[1], corners[2]),
-        midNum(corners[2], corners[3]),
-        midNum(corners[3], corners[3] - (sideL - 1)),
+        middle(corners[0], corners[1]),
+        middle(corners[1], corners[2]),
+        middle(corners[2], corners[3]),
+        middle(corners[3], corners[3] - (sideL - 1)),
       ];
       const distanceFromMiddle = Math.min(...middles.map(m => Math.abs(m - num)));
       const radius = Math.floor(sideL / 2);
@@ -36,7 +37,7 @@ assert(spiralDistance(1024) === 31);
 console.log({ distance: spiralDistance(input) });
 
 // Second Star:
-const spiral = new Map2D();
+const spiral = new Map2D<number>();
 const directions = (function* () {
   // [1, 1, 2, 2, 3, 3, 4, 4]
   const directions = [

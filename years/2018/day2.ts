@@ -10,7 +10,7 @@ const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/
 function containsTwoOrThree(str) {
   const counts = groupBy(
     str.split('').map(v => ({ v })),
-    'v',
+    ['v'],
   );
   let two = false,
     three = false;

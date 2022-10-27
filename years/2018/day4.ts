@@ -20,6 +20,7 @@ const events = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   );
 
 class Guard {
+  sleeps: any[];
   constructor() {
     this.sleeps = [];
   }

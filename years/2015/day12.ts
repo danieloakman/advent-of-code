@@ -10,7 +10,7 @@ let nums = 0;
 for (const match of matches(/-?\d+/g, input)) {
   const num = parseInt(match[0]);
   if (!isNaN(num) && input[match.index - 1] !== '"' && input[match.index + match[0].length] !== '"')
-    nums += parseInt(num);
+    nums += num;
 }
 console.log({ nums });
 

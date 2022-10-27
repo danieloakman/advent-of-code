@@ -2,14 +2,14 @@
 // https://adventofcode.com/2019/day/3/input
 
 import { readFileSync } from 'fs';
-const once = require('lodash/once');
+import once from 'lodash/once';
 // import { iter as iterate } from 'iteragain';
 // const Map2D = require('../../lib/Map2D');
 import { deepStrictEqual as equal } from 'assert';
 import { range, subArrays } from '../../lib/utils';
-const Vector2 = require('../../lib/Vector2');
-const Line = require('../../lib/Line');
-const last = require('lodash/last');
+import Vector2 from '../../lib/Vector2';
+import Line from '../../lib/Line';
+import last from 'lodash/last';
 
 const DIRECTION_MAP = {
   'U': Vector2.up,

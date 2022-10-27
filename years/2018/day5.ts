@@ -3,7 +3,7 @@
 // https://adventofcode.com/2018/day/5/input
 
 import { readFileSync } from 'fs';
-const once = require('lodash/once');
+import once from 'lodash/once';
 // import { iter as iterate } from 'iteragain';
 import { deepStrictEqual as equals } from 'assert';
 import { stringSplice } from '../../lib/utils';
@@ -11,10 +11,7 @@ import { stringSplice } from '../../lib/utils';
 const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));
 
 // First Star:
-/**
- * @param {string} polymer
- */
-function processPolymer(polymer) {
+function processPolymer(polymer: string) {
   for (let i = polymer.length; i > 1; i--) {
     const [a, b] = polymer.slice(i - 2, i);
     if (a && b && a.toLowerCase() === b.toLowerCase() && a !== b) polymer = stringSplice(polymer, i - 2, 2);
@@ -25,7 +22,7 @@ equals(processPolymer('dabAcCaCBAcCcaDA'), 'dabCBAcaDA');
 console.log('First Star:', processPolymer(input()).length);
 
 // Second Star:
-function processPolymer2(polymer) {
+function processPolymer2(polymer: string) {
   const chars = new Set(polymer.toLowerCase().split(''));
   let best = Infinity;
   for (const char of chars) {
