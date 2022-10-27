@@ -1,6 +1,7 @@
 import { walkdirSync } from 'more-node-fs';
 import { join } from 'path';
 import { groupBy } from '../lib/utils';
+import { execSync } from 'child_process';
 
 const files: { path: string; day: number; year: number; stats: import('fs').Stats }[] = [];
 for (const { path, stats } of walkdirSync(join(__dirname, '..')))
@@ -17,10 +18,9 @@ for (const year in groupedFiles)
     for (const file of groupedFiles[year].sort((a, b) => a.day - b.day))
       it(file.day.toString(), async function () {
         this.timeout(1e3 * 60);
-        const funcs = await import(file.path);
-        await funcs?.firstStar?.();
-        await funcs?.secondStar?.();
-        // if (funcs?.firstStar)
-        // require(file.path);
+        execSync(`npx ts-node --transpileOnly ${file.path}`, { stdio: 'inherit' });
+        // const funcs = await import(file.path);
+        // await funcs?.firstStar?.();
+        // await funcs?.secondStar?.();
       });
   });
