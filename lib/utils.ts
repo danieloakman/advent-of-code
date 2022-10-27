@@ -296,3 +296,25 @@ export function lazyTuple<T, Size extends number>(size: Size, getter: (index: nu
 export function pipe<T>(value: T, ...funcs: ((value: T) => T)[]): T {
   return funcs.reduce((value, func) => func(value), value);
 }
+
+export function add(a: number, b: number): number;
+export function add<T>(a: T, b: T): T;
+export function add(b: number): (a: number) => number;
+export function add<T>(b: T): (a: T) => T;
+export function add(a: any, b?: any): any {
+  if (typeof a === 'number' && typeof b === 'number') return a + b;
+  if (Array.isArray(a) && Array.isArray(b)) return a.map((v, i) => v + b[i]);
+  if (typeof a === 'number') return (_a: number) => _a + a;
+  if (Array.isArray(a)) return (_a: number[]) => _a.map((v, i) => v + a[i]);
+}
+
+export function mult(a: number, b: number): number;
+export function mult<T>(a: T, b: T): T;
+export function mult(b: number): (a: number) => number;
+export function mult<T>(b: T): (a: T) => T;
+export function mult(a: any, b?: any): any {
+  if (typeof a === 'number' && typeof b === 'number') return a * b;
+  if (Array.isArray(a) && Array.isArray(b)) return a.map((v, i) => v * b[i]);
+  if (typeof a === 'number') return (_a: number) => _a * a;
+  if (Array.isArray(a)) return (_a: number[]) => _a.map((v, i) => v * a[i]);
+}
