@@ -1,7 +1,9 @@
 // https://adventofcode.com/2015/day/9
 
 import { readFileSync } from 'fs';
+import { iter } from 'iteragain';
 import once from 'lodash/once';
+import { main } from '../../lib/utils';
 
 const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/));
 
@@ -10,33 +12,58 @@ function parseEdge(str: string) {
   return [ start, end, parseFloat(weight) ] as const;
 }
 
-type Node = {
-  id: string;
-  edges: Record<string, number>;
-}
+// type Node = {
+//   id: string;
+//   edges: Record<string, number>;
+// }
 
 class Graph {
-  public readonly nodes: Record<string, Node> = {};
+  public readonly edges: Record<string, Record<string, number>> = {};
+  public readonly nodes = new Set<string>();
 
   public addEdge(start: string, end: string, weight: number) {
-    this.nodes[start] = this.nodes[start] || { id: start, edges: {} };
-    this.nodes[end] = this.nodes[end] || { id: end, edges: {} };
-    this.nodes[start].edges[end] = weight;
+    this.edges[start] = Object.assign(this.edges[start] || {}, { [end]: weight });
+    this.nodes.add(start).add(end);
   }
 
-  public getShortestPath() {}
+  distance(nodes: string[]) {
+    let distance = 0;
+    for (const [start, end] of iter(nodes).pairwise()) {
+      if (!this.edges?.[start]?.[end]) break;
+      distance += this.edges[start][end];
+    }
+    return distance;
+  }
 
+  public shortestEulerianPath(): number {
+    return iter(Object.keys(this.edges))
+      .map(node => this.eulerianPath(node))
+      .filter(path => path.length === this.nodes.size)
+      .map(path => this.distance(path))
+      .min();
+  }
+
+  public eulerianPath(start: string): string[] {
+    const visited = new Set<string>();
+    const path = [start];
+    const queue = [start];
+    while (queue.length) {
+      const start = queue.pop();
+      if (!this.edges[start]) continue;
+      
+    }
+    // while (visited.size < Object.keys(this.edges).length) {
+    //   if (!this.edges[current]) return [];
+    //   const next = Object.keys(this.edges[current]).find(node => !visited.has(node));
+    //   if (!next) break;
+    //   visited.add(next);
+    //   path.push(next);
+    //   current = next;
+    // }
+    if (path.length !== this.nodes.size) return [];
+    return path;
+  }
 }
-
-// const edges = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
-//   .split(/[\n\r]+/)
-//   .reduce((map, str) => {
-//     const [start, end, weight] = str.split(/ to | = /).map(str => str.trim());
-//     if (!map[start]) map[start] = {};
-//     if (!map[end]) map[end] = {};
-//     map[start][end] = map[end][start] = parseInt(weight);
-//     return map;
-//   }, {});
 
 // class Node {
 //   static nodes: Record<string, Node> = {};
@@ -103,9 +130,13 @@ class Graph {
 // const graph = new Graph(edges);
 
 // First Star:
+export async function firstStar() {
+  const graph = new Graph();
+  input().forEach(str => graph.addEdge(...parseEdge(str)));
+  return graph.shortestEulerianPath();
+}
 // const routes = graph.getAllRoutes();
-const graph = new Graph();
-input().forEach(str => graph.addEdge(...parseEdge(str)));
+
 // for (const line of input()) {
 //   const edge = parseEdge(line);
 //   const start = Node.nodes[edge.start] || new Node(edge.start);
@@ -117,3 +148,11 @@ input().forEach(str => graph.addEdge(...parseEdge(str)));
 // }
 
 // Second Star:
+export async function secondStar() {
+  //
+}
+
+main(module, async () => {
+  console.log('First Star:', await firstStar());
+  console.log('Second Star:', await secondStar());
+});

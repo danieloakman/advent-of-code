@@ -7,12 +7,13 @@ import once from 'lodash/once';
 // const Map2D = require('../../lib/Map2D');
 import { deepStrictEqual as equal } from 'assert';
 import last from 'lodash/last';
-import { Point, Polygon, Line } from 'geometric';
-import { pipe, add, mult, deepCopy, main } from '../../lib/utils';
+import { Point, Line, lineIntersectsLine } from 'geometric';
+import { pipe, add, mult, deepCopy, main, sub } from '../../lib/utils';
 import iter from 'iteragain/iter';
 import { enumerate } from 'iteragain';
+import ExtendedIterator from 'iteragain/internal/ExtendedIterator';
 
-type ConnectedLine = Point[];
+// type ConnectedLine = Point[];
 
 type Direction = 'U' | 'D' | 'L' | 'R';
 
@@ -23,25 +24,48 @@ const DIRECTION_MAP: Record<Direction, Point> = {
   'R': [1, 0] as Point,
 };
 
-function parseInputLine(line: string): ConnectedLine {
-  let vector = [0, 0] as Point;
-  const lines: ConnectedLine = [
-    [0, 0],
-    ...line.split(',').map(direction => {
+function parseInputLine(line: string): ExtendedIterator<Line> {
+  let p = [0, 0] as Point;
+  return iter(line.split(','))
+    .map(direction => {
       const dir = direction[0] as Direction;
       const count = parseInt(direction.slice(1));
-      vector = pipe(vector, add(pipe(DIRECTION_MAP[dir], mult([count, count] as Point))));
-      return deepCopy(vector);
-    }),
-  ];
-  return lines;
+      p = pipe(p, add(pipe(DIRECTION_MAP[dir], mult([count, count] as Point))));
+      return deepCopy(p);
+    })
+    .prepend([0, 0] as Point)
+    .pairwise();
 }
 
-const input = once(() =>
+function numsEqual<T extends number[]>(a: T, b: T) {
+  if (a.length !== b.length) return false;
+  return a.every((n, i) => n === b[i]);
+}
+
+function pointsInLine(line: Line) {
+  let p = deepCopy(line[0]);
+  const direction = sub(line[0], line[1]);
+  return iter(() => {
+    if (numsEqual(p, line[1])) return null;
+    p = add(p, direction);
+    return deepCopy(p);
+  }, null).prepend(line[0]);
+}
+
+function lineIntersections(a: Line, b: Line): ExtendedIterator<Point> {
+  if (!lineIntersectsLine(a, b)) return iter([]);
+  const aMap = pointsInLine(a).reduce(
+    (map, point) => ((map[`${point[0]},${point[1]}`] = point), map),
+    {} as Record<string, Point>,
+  );
+  return pointsInLine(b)
+    .filter(p => `${p[0]},${p[1]}` in aMap);
+}
+
+const input = () =>
   readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
     .split(/[\n\r]+/)
-    .map(parseInputLine),
-);
+    .map(parseInputLine);
 const testInput1 = () => 'R8,U5,L5,D3\nU7,R6,D4,L4'.split(/[\n\r]+/).map(parseInputLine);
 const testInput2 = () =>
   'R75,D30,R83,U83,L12,D49,R71,U7,L72\nU62,R66,U55,R34,D71,R55,D58,R83'.split(/[\n\r]+/).map(parseInputLine);
@@ -50,79 +74,27 @@ const testInput3 = () =>
     .split(/[\n\r]+/)
     .map(parseInputLine);
 
-function closestIntersectionToOrigin(lines: ConnectedLine[]) {
-  const pairedLines = lines.map(line => iter(line).pairwise().toArray());
-  for (const [aIdx, lineA] of enumerate(lines)) {
-    for (const [bIdx, lineB] of enumerate(lines)) {
-      if (aIdx === bIdx) continue;
-      // for (const [a, b] of lineA.value) {
-      //   for (const [c, d] of lineB.value) {
-      //     const intersection = Line.fromPoints(a, b).intersect(Line.fromPoints(c, d));
-      //     if (intersection) return intersection;
-      //   }
-      // }
+function closestIntersectionToOrigin(lines: ExtendedIterator<Line>[]) {
+  // const pairedLines = lines.map(line => iter(line).pairwise().toArray());
+  // let minX = 
+  for (const [i, lineA] of enumerate(lines)) {
+    for (const [j, lineB] of enumerate(lines)) {
+      if (i === j) continue;
+      for (const segmentA of lineA) {
+        for (const segmentB of lineB) {
+          for (const intersection of lineIntersections(segmentA, segmentB)) {
+            //
+          }
+        }
+      }
     }
   }
 }
-
-// class Line extends Map2D {
-//   /** @param {string} lineStr */
-//   constructor (lineStr) {
-//     super();
-//     const directions = lineStr
-//       .split(',')
-//       .map(direction => {
-//         const dir = direction[0];
-//         const count = direction.slice(1);
-//         return range(count).map(() => Line.directionMap[dir]);
-//       });
-//     let v = Vector2.zero;
-//     this.set(0, 0, true);
-//     for (const direction of directions) {
-//       for (const d of direction) {
-//         v.add(d);
-//         this.set(v.x, v.y, true);
-//       }
-//     }
-//   }
-
-//   static directionMap = {
-//     'U': Vector2.up,
-//     'D': Vector2.down,
-//     'L': Vector2.left,
-//     'R': Vector2.right
-//   }
-
-//   /**
-//    * @param {Line} lineA
-//    * @param {Line} lineB
-//    */
-//   static closestIntersectionToOrigin (lineA, lineB) {
-//     let closest = new Vector2(9e9, 9e9);
-//     let distance = Vector2.zero.manhattanDistanceTo(closest);
-//     for (const a of lineA.getValues()) {
-//       for (const b of lineB.getValues()) {
-//         if (a.x === b.x && a.y === b.y && a.x !== 0 && a.y !== 0) {
-//           const newDistance = Vector2.zero.manhattanDistanceTo(a);
-//           if (newDistance < distance) {
-//             closest = new Vector2(a.x, a.y);
-//             distance = newDistance;
-//           }
-//         }
-//       }
-//     }
-//     return distance;
-//   }
-// }
 
 // First Star:
 export async function firstStar() {
   return closestIntersectionToOrigin(input());
 }
-// equal(Line.closestIntersectionToOrigin(...testInput1()), 6);
-// equal(Line.closestIntersectionToOrigin(...testInput2()), 159);
-// equal(Line.closestIntersectionToOrigin(...testInput3()), 135);
-// console.log({ distance: Line.closestIntersectionToOrigin(...input()) });
 
 // Second Star:
 export async function secondStar() {
@@ -130,6 +102,8 @@ export async function secondStar() {
 }
 
 main(module, async () => {
+  // Tests:
+  equal(closestIntersectionToOrigin(testInput1()), 6);
   console.log('First Star:', await firstStar());
   console.log('Second Star:', await secondStar());
 });

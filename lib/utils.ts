@@ -318,3 +318,14 @@ export function mult(a: any, b?: any): any {
   if (typeof a === 'number') return (_a: number) => _a * a;
   if (Array.isArray(a)) return (_a: number[]) => _a.map((v, i) => v * a[i]);
 }
+
+export function sub(a: number, b: number): number;
+export function sub<T>(a: T, b: T): T;
+export function sub(b: number): (a: number) => number;
+export function sub<T>(b: T): (a: T) => T;
+export function sub(a: any, b?: any): any {
+  if (typeof a === 'number' && typeof b === 'number') return a - b;
+  if (Array.isArray(a) && Array.isArray(b)) return a.map((v, i) => v - b[i]);
+  if (typeof a === 'number') return (_a: number) => _a - a;
+  if (Array.isArray(a)) return (_a: number[]) => _a.map((v, i) => v - a[i]);
+}
