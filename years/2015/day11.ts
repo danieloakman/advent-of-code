@@ -1,8 +1,8 @@
 // https://adventofcode.com/2015/day/11
 
-const { readFileSync } = require('fs');
-const { subStrings } = require('../../lib/utils');
-const { strictEqual: equal, ok: assert } = require('assert');
+import { readFileSync } from 'fs';
+import { subStrings } from '../../lib/utils';
+import { strictEqual as equal, ok as assert } from 'assert';
 
 const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8');
 

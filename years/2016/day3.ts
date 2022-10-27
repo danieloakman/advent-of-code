@@ -1,6 +1,6 @@
 // https://adventofcode.com/2016/day/3
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 
 const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)
@@ -15,7 +15,7 @@ function isPossibleTriangle(points) {
 console.log({ numOfPossibleTriangles: input.filter(isPossibleTriangle).length });
 
 // Second Star:
-const { subArrays } = require('../../lib/utils');
+import { subArrays } from '../../lib/utils';
 console.log({
   numOfPossibleTriangles: [...subArrays(input, 3, false)]
     .reduce((arr, points) => {

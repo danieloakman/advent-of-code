@@ -1,5 +1,5 @@
-const { readFileSync } = require('fs');
-const { join } = require('path');
+import { readFileSync } from 'fs';
+import { join } from 'path';
 const groups = readFileSync(join(__dirname, 'day6-input'), { encoding: 'utf-8' })
   .split(/\s{3,}/)
   .filter(v => v)

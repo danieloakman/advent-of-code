@@ -1,7 +1,7 @@
 // https://adventofcode.com/2018/day/4
 // https://adventofcode.com/2018/day/4/input
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 
 const events = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)

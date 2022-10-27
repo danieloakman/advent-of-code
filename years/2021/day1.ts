@@ -1,7 +1,7 @@
 // https://adventofcode.com/2021/day/1
 
-const { readFileSync } = require('fs');
-const { join } = require('path');
+import { readFileSync } from 'fs';
+import { join } from 'path';
 const nums = readFileSync(join(__dirname, 'day1-input'), { encoding: 'utf-8' }).split('\n').map(parseFloat);
 
 // Silver star:

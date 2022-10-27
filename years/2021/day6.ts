@@ -1,6 +1,6 @@
-const { readFileSync } = require('fs');
-const { deepStrictEqual: equal } = require('assert');
-const { sum } = require('../../lib/utils');
+import { readFileSync } from 'fs';
+import { deepStrictEqual as equal } from 'assert';
+import { sum } from '../../lib/utils';
 
 function getInput() {
   return readFileSync(__filename.replace('.ts', '-input'), 'utf-8')

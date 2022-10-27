@@ -1,12 +1,12 @@
 // https://adventofcode.com/2019/day/3
 // https://adventofcode.com/2019/day/3/input
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 const once = require('lodash/once');
 // import { iter as iterate } from 'iteragain';
 // const Map2D = require('../../lib/Map2D');
-const { deepStrictEqual: equal } = require('assert');
-const { range, subArrays } = require('../../lib/utils');
+import { deepStrictEqual as equal } from 'assert';
+import { range, subArrays } from '../../lib/utils';
 const Vector2 = require('../../lib/Vector2');
 const Line = require('../../lib/Line');
 const last = require('lodash/last');

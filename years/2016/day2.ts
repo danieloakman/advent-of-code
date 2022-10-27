@@ -1,6 +1,6 @@
 // https://adventofcode.com/2016/day/2
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 const flatten = require('lodash/flatten');
 
 const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/);

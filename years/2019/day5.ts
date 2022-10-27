@@ -2,9 +2,9 @@
 // https://adventofcode.com/2019/day/5
 // https://adventofcode.com/2019/day/5/input
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 const once = require('lodash/once');
-const { deepCopy } = require('../../lib/utils');
+import { deepCopy } from '../../lib/utils';
 // import { iter as iterate } from 'iteragain';
 const {
   // ok: assert,

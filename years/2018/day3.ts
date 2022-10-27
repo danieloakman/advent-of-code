@@ -1,7 +1,7 @@
 // https://adventofcode.com/2018/day/3
 // https://adventofcode.com/2018/day/3/input
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 
 const Map2D = require('../../lib/Map2D');
 

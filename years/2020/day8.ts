@@ -1,5 +1,5 @@
-const { readFileSync } = require('fs');
-const { join } = require('path');
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 function getInstructions() {
   return readFileSync(join(__dirname, 'day8-input'), { encoding: 'utf-8' })

@@ -1,5 +1,5 @@
-const { readFileSync } = require('fs');
-const { join } = require('path');
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 // Gold Star:
 let map = [

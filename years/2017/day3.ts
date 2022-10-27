@@ -1,9 +1,9 @@
 // https://adventofcode.com/2017/day/3
 // https://adventofcode.com/2017/day/3/input
 
-const { readFileSync } = require('fs');
-const { ok: assert } = require('assert');
-const { midNum, fibonacci, take } = require('../../lib/utils');
+import { readFileSync } from 'fs';
+import { ok as assert } from 'assert';
+import { midNum, fibonacci, take } from '../../lib/utils';
 const Map2D = require('../../lib/Map2D');
 
 const input = Number(readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));

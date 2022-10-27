@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 
 const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)

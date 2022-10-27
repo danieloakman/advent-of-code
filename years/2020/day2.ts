@@ -1,5 +1,5 @@
-const { readFileSync } = require('fs');
-const { join } = require('path');
+import { readFileSync } from 'fs';
+import { join } from 'path';
 const passwordPolicies = readFileSync(join(__dirname, 'day2-input'), { encoding: 'utf-8' })
   .split('\n')
   .filter(v => v)

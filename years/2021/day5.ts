@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 class Line {
   constructor(...points) {
     this[0] = { x: points[0], y: points[1] };

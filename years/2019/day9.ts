@@ -1,10 +1,10 @@
 // @ts-check
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 const once = require('lodash/once');
 // import { iter as iterate } from 'iteragain';
-const { /* ok: assert, */ deepStrictEqual: equals } = require('assert');
-const { deepCopy } = require('../../lib/utils');
+import { /* ok as assert, */ deepStrictEqual as equals } from 'assert';
+import { deepCopy } from '../../lib/utils';
 
 /** @see https://adventofcode.com/2019/day/9/input */
 const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(',').map(Number));

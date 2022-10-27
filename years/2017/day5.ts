@@ -1,7 +1,7 @@
 // https://adventofcode.com/2017/day/5
 // https://adventofcode.com/2017/day/5/input
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 
 function getInput() {
   // return [0, 3, 0, 1, -3];

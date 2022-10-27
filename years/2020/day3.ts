@@ -1,5 +1,5 @@
-const { readFileSync } = require('fs');
-const { join } = require('path');
+import { readFileSync } from 'fs';
+import { join } from 'path';
 const map = readFileSync(join(__dirname, 'day3-input'), { encoding: 'utf-8' })
   .split('\n')
   .filter(v => v)

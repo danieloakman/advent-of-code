@@ -1,5 +1,5 @@
-const { readFileSync } = require('fs');
-const { join } = require('path');
+import { readFileSync } from 'fs';
+import { join } from 'path';
 const passports = readFileSync(join(__dirname, 'day4-input'), { encoding: 'utf-8' })
   .split(/\s\s\s/)
   .filter(v => v)

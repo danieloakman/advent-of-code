@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 const isAllCapitals = /^[A-Z]+$/;
 
 class Node {

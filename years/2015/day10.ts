@@ -1,6 +1,6 @@
 // https://adventofcode.com/2015/day/10
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 
 const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8');
 

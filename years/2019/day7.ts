@@ -1,11 +1,11 @@
 // https://adventofcode.com/2019/day/7
 // https://adventofcode.com/2019/day/7/input
 
-const { readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 const once = require('lodash/once');
 import { iter as iterate } from 'iteragain';
-const { deepCopy } = require('../../lib/utils');
-const { deepStrictEqual: equal } = require('assert');
+import { deepCopy } from '../../lib/utils';
+import { deepStrictEqual as equal } from 'assert';
 
 const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(',').map(Number));
 

@@ -1,8 +1,8 @@
 // https://adventofcode.com/2017/day/1
 // https://adventofcode.com/2017/day/1/input
 
-const { readFileSync } = require('fs');
-const { subStrings } = require('../../lib/utils');
+import { readFileSync } from 'fs';
+import { subStrings } from '../../lib/utils';
 const last = require('lodash/last');
 
 const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8');
