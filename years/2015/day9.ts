@@ -3,23 +3,29 @@
 import { readFileSync } from 'fs';
 import { iter } from 'iteragain';
 import once from 'lodash/once';
-import { main } from '../../lib/utils';
+import { main, multiComparator } from '../../lib/utils';
+import { deepStrictEqual as equal } from 'assert';
 
 const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/));
+const testInput1 = once(() => `London to Dublin = 464
+London to Belfast = 518
+Dublin to Belfast = 141`.split(/[\n\r]+/));
 
 function parseEdge(str: string) {
   const [start, end, weight] = str.split(/ to | = /).map(str => str.trim());
   return [ start, end, parseFloat(weight) ] as const;
 }
 
-// type Node = {
-//   id: string;
-//   edges: Record<string, number>;
-// }
-
 class Graph {
   public readonly edges: Record<string, Record<string, number>> = {};
   public readonly nodes = new Set<string>();
+
+  constructor(edges?: string[]) {
+    for (const edge of edges) {
+      const [start, end, weight] = parseEdge(edge);
+      this.addEdge(start, end, weight);
+    }
+  }
 
   public addEdge(start: string, end: string, weight: number) {
     this.edges[start] = Object.assign(this.edges[start] || {}, { [end]: weight });
@@ -38,30 +44,54 @@ class Graph {
   public shortestEulerianPath(): number {
     return iter(Object.keys(this.edges))
       .map(node => this.eulerianPath(node))
+      // .tap(console.log)
       .filter(path => path.length === this.nodes.size)
+      .tap(console.log)
       .map(path => this.distance(path))
       .min();
   }
 
-  public eulerianPath(start: string): string[] {
-    const visited = new Set<string>();
+  // public eulerianPath(start: string, visited = new Set<string>()): string[] {
+  //   const path = [start];
+  //   visited.add(start);
+  //   const queue: Queue<string> = [start];
+  //   while (queue.length && visited.size < this.nodes.size) {
+  //     const current = queue.shift();
+  //     if (!this.edges[current]) continue;
+  //     for (const [node, weight] of Object.entries(this.edges[current]).sort((a, b) => a[1] - b[1])) {
+  //       if (visited.has(node)) continue;
+  //       const newPaths = this.eulerianPath(node, visited);
+  //       visited.add(node);
+  //       queue.push(node);
+  //       path.push(node);
+  //     }
+  //     // const next = Object.keys(this.edges[current])
+  //     //   .filter(node => !visited.has(node))
+  //     //   .sort((a, b) => this.edges[current][a] - this.edges[current][b])?.[0];
+  //     // if (!next) break;
+  //     // visited.add(next);
+  //     // path.push(next);
+  //     // current = next;
+  //   }
+  //   if (path.length !== this.nodes.size) return [];
+  //   return path;
+  // }
+
+  public eulerianPath(start: string, visited = new Set<string>()): string[] {
+    visited = new Set(visited.values());
+    visited.add(start);
     const path = [start];
-    const queue = [start];
-    while (queue.length) {
-      const start = queue.pop();
-      if (!this.edges[start]) continue;
-      
-    }
-    // while (visited.size < Object.keys(this.edges).length) {
-    //   if (!this.edges[current]) return [];
-    //   const next = Object.keys(this.edges[current]).find(node => !visited.has(node));
-    //   if (!next) break;
-    //   visited.add(next);
-    //   path.push(next);
-    //   current = next;
-    // }
-    if (path.length !== this.nodes.size) return [];
-    return path;
+    if (visited.size === this.nodes.size || !this.edges[start]) return path;
+    const nextPaths = Object.keys(this.edges[start])
+      .filter(node => !visited.has(node))
+      .sort((a, b) => this.edges[start][a] - this.edges[start][b])
+      .map(node => this.eulerianPath(node, visited));
+    if (!nextPaths.length) return path;
+    const shortestPath = nextPaths.sort(multiComparator(
+      (a, b) => b.length - a.length,
+      (a, b) => this.distance(a) - this.distance(b),
+    ))[0];
+    return path.concat(shortestPath);
   }
 }
 
@@ -131,8 +161,7 @@ class Graph {
 
 // First Star:
 export async function firstStar() {
-  const graph = new Graph();
-  input().forEach(str => graph.addEdge(...parseEdge(str)));
+  const graph = new Graph(input());
   return graph.shortestEulerianPath();
 }
 // const routes = graph.getAllRoutes();
@@ -153,6 +182,9 @@ export async function secondStar() {
 }
 
 main(module, async () => {
+  // Tests:
+  equal(new Graph(testInput1()).shortestEulerianPath(), 605);
+
   console.log('First Star:', await firstStar());
   console.log('Second Star:', await secondStar());
 });
