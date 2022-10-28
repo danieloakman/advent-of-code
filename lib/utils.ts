@@ -329,3 +329,25 @@ export function sub(a: any, b?: any): any {
   if (typeof a === 'number') return (_a: number) => _a - a;
   if (Array.isArray(a)) return (_a: number[]) => _a.map((v, i) => v - a[i]);
 }
+
+export interface Queue<T> {
+  length: number;
+  push: Array<T>['push'];
+  shift: Array<T>['shift'];
+}
+
+export interface Stack<T> {
+  length: number;
+  push: Array<T>['push'];
+  pop: Array<T>['pop'];
+}
+
+export function multiComparator<T>(...comparators: ((a: T, b: T) => number)[]): (a: T, b: T) => number {
+  return (a: T, b: T) => {
+    for (const comparator of comparators) {
+      const result = comparator(a, b);
+      if (result !== 0) return result;
+    }
+    return 0;
+  };
+}
