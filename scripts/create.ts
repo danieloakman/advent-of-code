@@ -10,7 +10,7 @@ export function fileStr(year: string, day: string) {
 import once from 'lodash/once';
 import { main } from '../../lib/utils';
 import iter from 'iteragain/iter';
-// import { ok as assert, deepStrictEqual as equals } from 'assert';
+// import { ok as assert, deepStrictEqual as equal } from 'assert';
 
 /** @see https://adventofcode.com/${year}/day/${day}/input */
 export const input = once(() => readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\\n\\r]+/));
