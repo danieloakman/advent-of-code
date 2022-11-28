@@ -4,38 +4,51 @@ import { main } from '../../lib/utils';
 import iter from 'iteragain/iter';
 import range from 'iteragain/range';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
-import { combinations } from 'iteragain';
 
 /** @see https://adventofcode.com/2015/day/17/input */
-export const input = once(() => readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\n\r]+/).map(Number));
+export const input = once(() =>
+  readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8')
+    .split(/[\n\r]+/)
+    .map(Number),
+);
 
 // function eggnogCombinations(litres: number, containers: number[]) {
-//   return iter(range(2, containers.length))
-//     .map(size =>
-//       iter(containers)
-//         .enumerate()
-//         .combinations(size)
-//         .tap(console.log)
-//         .filterMap(combo =>
-//           combo.reduce((sum, p) => sum + p[1], 0) === litres
-//             ? combo.sort((a, b) => a[0] - b[0]).map(v => v[0]).join(',')
-//             : null
-//         )
-//     )
-//     .flatten()
-//     .tap(console.log);
-//     // .unique();
+//   return (
+//     iter(range(2, containers.length))
+//       .map(size =>
+//         iter(containers)
+//           .enumerate()
+//           .combinations(size)
+//           .filterMap(combo =>
+//             combo.reduce((sum, p) => sum + p[1], 0) === litres
+//               ? combo
+//                 .sort((a, b) => a[0] - b[0])
+//                 .map(v => v[0])
+//                 .join(',')
+//               : null,
+//           )
+//           .unique(),
+//       )
+//       .flatten(1)
+//       // .tap(console.log)
+//       .unique()
+//   );
 // }
 
 function combinations(litres: number, containers: number[]) {
-  const combos: string[] = [];
+  const combos = new Set();
   for (const size of range(2, containers.length)) {
     for (const combo of iter(containers).enumerate().combinations(size, false)) {
       if (combo.reduce((sum, p) => sum + p[1], 0) !== litres) continue;
-      combos.push(combo.sort((a, b) => a[0] - b[0]).map(v => v[0]).join(','));
+      combos.add(
+        combo
+          .sort((a, b) => a[0] - b[0])
+          .map(v => v[0])
+          .join(','),
+      );
     }
   }
-  return iter(combos).unique().toArray().length;
+  return combos.size;
 }
 
 /** @see https://adventofcode.com/2015/day/17 First Star */
