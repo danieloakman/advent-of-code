@@ -7,6 +7,9 @@
     "visualstudioexptteam.intellicode-api-usage-examples",
     "rvest.vs-code-prettier-eslint",
     "redhat.vscode-yaml",
-    "Gruntfuggly.todo-tree"
+    "gruntfuggly.todo-tree",
+    "compulim.vscode-mocha",
+    "hbenl.vscode-test-explorer",
+    "VisualStudioExptTeam.vscodeintellicode"
   ]
 }
