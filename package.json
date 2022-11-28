@@ -42,7 +42,7 @@
     "event-stream": "^4.0.1",
     "geometric": "^2.5.0",
     "husky": "^8.0.1",
-    "iteragain": "^3.10.2",
+    "iteragain": "^3.11.1",
     "lodash": "^4.17.21",
     "mocha": "9.2.2",
     "more-node-fs": "^2.0.2",
