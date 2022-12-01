@@ -24,9 +24,13 @@ const textInput = once(
     ] as Point[],
 );
 
-function pointsEqual(a: Point, b: Point) {
-  return a[0] === b[0] && a[1] === b[1];
-}
+// function pointsEqual(a: Point, b: Point) {
+//   return a[0] === b[0] && a[1] === b[1];
+// }
+
+// function nthLetter(n: number) {
+//   return String.fromCharCode(65 + n);
+// }
 
 function pointId(point: Point) {
   return `${point[0]},${point[1]}`;
@@ -44,16 +48,20 @@ function closestPoint(start: Point, others: Point[]): Point | null {
 
 function largestArea(locations: Point[]) {
   const map = new Map2D<string>();
-  locations.forEach(point => map.set(...point, pointId(point)));
   const incMap = new IncrementorMap();
+  locations.forEach(point => {
+    const id = pointId(point);
+    map.set(...point, id);
+    incMap.inc(id);
+  });
   for (const [x, y, value] of map.points()) {
     if (value !== undefined) continue;
     const closest = closestPoint([x, y], locations);
     if (!closest) continue;
     incMap.inc(pointId(closest));
-    map.set(...closest, pointId(closest));
+    // map.set(x, y, map.get(...closest).toLowerCase());
   }
-  map.print(v => v);
+  // map.print(v => !v ? '.' : v);
   const maxId = incMap.minmax()[1];
   return incMap.get(maxId);
 }
