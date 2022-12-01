@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { promises, existsSync } from 'fs';
 const { writeFile, readFile } = promises;
-import * as puppeteer from 'puppeteer';
+import { connect } from 'puppeteer';
 import { join } from 'path';
 import { openChrome } from './utils';
 import * as https from 'https';
@@ -52,7 +52,7 @@ function getInput(year: string, day: string, sessionCookie: string): Promise<str
 async function newSessionCookie() {
   if (!existsSync(SESSION_COOKIE_PATH)) await writeFile(SESSION_COOKIE_PATH, '');
 
-  const browser = await puppeteer.connect({
+  const browser = await connect({
     browserWSEndpoint: await openChrome(),
   });
   const page = (await browser.pages())[0];
@@ -61,7 +61,7 @@ async function newSessionCookie() {
   });
   await page.waitForNetworkIdle({ timeout: 10000 });
 
-  await page.goto('https://adventofcode.com', { waitUntil: 'networkidle0' });
+  await page.goto('https://adventofcode.com'/* , { waitUntil: 'networkidle0' } */);
   const cookies = await page.cookies();
   await browser.close();
   const sessionCookie = (cookies.find(c => c.name === 'session') || { value: '' }).value;
