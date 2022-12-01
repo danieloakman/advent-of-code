@@ -1,3 +1,19 @@
+import { iter, range } from 'iteragain';
+
+type Get<T> = {
+  (x: number, y: number): T;
+  up: (x: number, y: number) => T;
+  down: (x: number, y: number) => T;
+  left: (x: number, y: number) => T;
+  right: (x: number, y: number) => T;
+  upLeft: (x: number, y: number) => T;
+  upRight: (x: number, y: number) => T;
+  downLeft: (x: number, y: number) => T;
+  downRight: (x: number, y: number) => T;
+};
+
+export type ValuePoint<T> = [number, number, T];
+
 export class Map2D<T> {
   public get = Object.defineProperties((x: number, y: number) => this.map[`${x},${y}`], {
     'up': { value: (x: number, y: number) => this.map[`${x},${y - 1}`] },
@@ -8,7 +24,19 @@ export class Map2D<T> {
     'upRight': { value: (x: number, y: number) => this.map[`${x + 1},${y - 1}`] },
     'downLeft': { value: (x: number, y: number) => this.map[`${x - 1},${y + 1}`] },
     'downRight': { value: (x: number, y: number) => this.map[`${x + 1},${y + 1}`] },
-  });
+  }) as Get<T>;
+
+  public point = {
+    up: (x: number, y: number) => [x, y - 1] as const,
+    down: (x: number, y: number) => [x, y + 1] as const,
+    left: (x: number, y: number) => [x - 1, y] as const,
+    right: (x: number, y: number) => [x + 1, y] as const,
+    upLeft: (x: number, y: number) => [x - 1, y - 1] as const,
+    upRight: (x: number, y: number) => [x + 1, y - 1] as const,
+    downLeft: (x: number, y: number) => [x - 1, y + 1] as const,
+    downRight: (x: number, y: number) => [x + 1, y + 1] as const,
+  };
+
   public xMin: number;
   public xMax: number;
   public yMin: number;
@@ -64,10 +92,40 @@ export class Map2D<T> {
       .join('\n');
   }
 
+  /** An iterator for all points in the map. */
+  points() {
+    return iter(range(this.yMin)).map(y =>
+      iter(range(this.xMin)).map(x => [x, y, this.map[`${x},${y}`]] as ValuePoint<T>),
+    );
+  }
+
+  /** An iterator for all points inside a specified bounds. */
+  pointsInside(bounds = { xMin: this.xMin, xMax: this.xMax, yMin: this.yMin, yMax: this.yMax }) {
+    return iter(range(bounds.yMin, bounds.yMax + 1)).map(y =>
+      iter(range(bounds.xMin, bounds.xMax + 1)).map(x => [x, y, this.map[`${x},${y}`]] as ValuePoint<T>),
+    );
+  }
+
+  /** An optimised iterator for only the set values of the map. */
+  values() {
+    return iter(Object.entries(this.map)).map(
+      ([key, value]) => [...key.split(',').map(Number), value] as ValuePoint<T>,
+    );
+  }
+
+  neighbours(x: number, y: number) {
+    return iter(Object.values(this.point)).map(fn => {
+      const [nx, ny] = fn(x, y);
+      return [nx, ny, this.map[`${nx},${ny}`]] as ValuePoint<T>;
+    });
+  }
+
+  /** @deprecated Use `points` instead. */
   getAll(predicate: (value: T, x: number, y: number) => any = v => typeof v !== 'undefined') {
     return this.getInside({ xMin: this.xMin, xMax: this.xMax, yMin: this.yMin, yMax: this.yMax }, predicate);
   }
 
+  /** @deprecated Use `values` instead. */
   *getValues(predicate: (value: T, x: number, y: number) => any = v => typeof v !== 'undefined') {
     for (const key in this.map) {
       const [x, y] = key.split(',').map(Number);
@@ -76,6 +134,7 @@ export class Map2D<T> {
     }
   }
 
+  /** @depreacted Use `pointsInside` instead. */
   *getInside(
     bounds = { xMin: this.xMin, xMax: this.xMax, yMin: this.yMin, yMax: this.yMax },
     predicate: (value: T, x: number, y: number) => any = v => typeof v !== undefined,
@@ -87,6 +146,7 @@ export class Map2D<T> {
       }
   }
 
+  /** @deprecated Use `neighbours` instead. */
   getNeighbours(x: number, y: number, yieldUndefinedNeighbours = true) {
     return this.getInside(
       { xMin: x - 1, xMax: x + 1, yMin: y - 1, yMax: y + 1 },
