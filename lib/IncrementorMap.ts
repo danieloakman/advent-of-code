@@ -15,6 +15,10 @@ export class IncrementorMap {
     this.map[key] = value;
   }
 
+  has(key: string) {
+    return key in this.map;
+  }
+
   minmax(): [string, string] {
     let min: [string, number] = ['', Infinity];
     let max: [string, number] = ['', -Infinity];
