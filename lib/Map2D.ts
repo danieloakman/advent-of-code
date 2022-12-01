@@ -86,6 +86,18 @@ export class Map2D<T> {
     return arr;
   }
 
+  print(valueToString: (value: T) => string = (v) => v ? '#' : '.') {
+    let str = '';
+    for (let y = this.yMin; y <= this.yMax; y++) {
+      for (let x = this.xMin; x <= this.xMax; x++) {
+        const value = this.map[`${x},${y}`];
+        str += valueToString ? valueToString(value) : value;
+      }
+      str += '\n';
+    }
+    console.log(str);
+  }
+
   toString() {
     return this.toArray()
       .map(row => row.join(''))
