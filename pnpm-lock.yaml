@@ -19,7 +19,7 @@ specifiers:
   event-stream: ^4.0.1
   geometric: ^2.5.0
   husky: ^8.0.1
-  iteragain: ^3.11.2
+  iteragain: ^3.12.0
   lodash: ^4.17.21
   mocha: 9.2.2
   more-node-fs: ^2.0.2
@@ -53,7 +53,7 @@ devDependencies:
   event-stream: 4.0.1
   geometric: 2.5.0
   husky: 8.0.1
-  iteragain: 3.11.2
+  iteragain: 3.12.0
   lodash: 4.17.21
   mocha: 9.2.2
   more-node-fs: 2.0.2
@@ -1313,8 +1313,8 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
-  /iteragain/3.11.2:
-    resolution: {integrity: sha512-uZG2GkTsvXwV+0tHwEjfa5hoomjuOdOeHDWLJB4a/cWGSkxXVLbCneLYy4qv9byHkD6CB0s5eCocNhVUFsl+hg==}
+  /iteragain/3.12.0:
+    resolution: {integrity: sha512-GloNf3BOaXRMAV+4vVh1NNLHRIi1vHW6MIflB9uhWWM/d5jR/H8fvjjqH1FhPB+1K9JxX8gWWkgr7EiQRMu+rg==}
     engines: {node: '>14.x'}
     dev: true
 
