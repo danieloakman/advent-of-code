@@ -2,7 +2,7 @@
 // https://adventofcode.com/2015/day/15/input
 
 import { readFileSync } from 'fs';
-import { groupBy } from '../../lib/utils';
+import { groupByProps } from '../../lib/utils';
 
 const ingredients = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
   .split(/[\n\r]+/)

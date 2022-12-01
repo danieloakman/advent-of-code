@@ -8,6 +8,8 @@ import readline from 'readline';
 import _range from 'iteragain/range';
 import { Tuple } from 'iteragain/internal/types';
 import ExtendedIterator from 'iteragain/internal/ExtendedIterator';
+import toArray from 'iteragain/toArray';
+import map from 'iteragain/map';
 
 export function sleep(ms = 1000): Promise<void> {
   // console.log(`Sleeping for ${ms}ms`);
@@ -149,6 +151,25 @@ export function subArrays<T>(array: T[], subArrayLength: number, canOverlap = tr
 // @ts-ignore
 export const sum = <T extends string | number>(a: T, b: T): T => a + b;
 
+export type KeyItentifier<T> = string | ((item: T) => string);
+
+/**
+ * Groups elements together from a `T[]`, use the `key` function to determine how to group. Similar to lodash's groupBy
+ * except allows multiple groups to be created from one iteration of `arr`.
+ */
+export function groupBy<T>(arr: T[], key: KeyItentifier<T>): Record<string, T[]>;
+export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]): Record<string, T[]>[];
+export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
+  const results = toArray(map(keys, key => [key, {} as Record<string, T[]>] as const));
+  for (const value of arr) {
+    for (const [key, map] of results) {
+      const k = typeof key === 'string' ? (value as any)?.[key] : key(value);
+      map[k] = (map[k] ?? [] as any[]).concat(value);
+    }
+  }
+  return results.length < 2 ? results[0][1] : results.map(([_, map]) => map);
+}
+
 /**
  * Does a group by for any number of properties in an array of objects. If multiple props are specified,
  * then these are grouped together in a single returned property like: {'prop1,prop2': [all objects that have those props]}.
@@ -159,7 +180,7 @@ export const sum = <T extends string | number>(a: T, b: T): T => a + b;
  * @param  props The property/key/attribute(s) to group by.
  * @returns The groups of those specified properties.
  */
-export function groupBy<T>(objects: T[], props: string[]): { [key: string]: T[] } {
+export function groupByProps<T>(objects: T[], props: string[]): { [key: string]: T[] } {
   const groups = {};
   for (const object of objects) {
     const propsStr = props.length > 1 ? props.reduce((p, c) => object[p] + ',' + object[c]) : object[props[0]];
@@ -176,7 +197,7 @@ export function groupBy<T>(objects: T[], props: string[]): { [key: string]: T[] 
  * is every property value for that particular property. 3rd dimension is every object that
  * has that property value.
  */
-export function groupByAll<T extends Record<PropertyKey, any>>(
+export function groupByAllProps<T extends Record<PropertyKey, any>>(
   objects: T[],
 ): { [key: string]: { [key: string]: T[] } } {
   const groups = {};

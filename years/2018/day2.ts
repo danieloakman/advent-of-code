@@ -2,13 +2,13 @@
 // https://adventofcode.com/2018/day/2/input
 
 import { readFileSync } from 'fs';
-import { groupBy } from '../../lib/utils';
+import { groupByProps } from '../../lib/utils';
 
 const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/);
 
 // First Star:
 function containsTwoOrThree(str) {
-  const counts = groupBy(
+  const counts = groupByProps(
     str.split('').map(v => ({ v })),
     ['v'],
   );
