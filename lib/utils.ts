@@ -372,3 +372,7 @@ export function multiComparator<T>(...comparators: ((a: T, b: T) => number)[]): 
     return 0;
   };
 }
+
+export function manhattanDistance(a: number[], b: number[]): number {
+  return a.reduce((sum, v, i) => sum + Math.abs(v - b[i]), 0);
+}
