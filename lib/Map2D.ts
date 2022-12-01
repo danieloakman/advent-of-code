@@ -1,4 +1,4 @@
-import { iter, range } from 'iteragain';
+import iter from 'iteragain/iter';
 
 type Get<T> = {
   (x: number, y: number): T;
@@ -94,16 +94,30 @@ export class Map2D<T> {
 
   /** An iterator for all points in the map. */
   points() {
-    return iter(range(this.yMin)).map(y =>
-      iter(range(this.xMin)).map(x => [x, y, this.map[`${x},${y}`]] as ValuePoint<T>),
-    );
+    let x = this.xMin;
+    let y = this.yMin;
+    return iter(() => {
+      if (x > this.xMax) {
+        x = this.xMin;
+        y++;
+      }
+      if (y > this.yMax) return null;
+      return [x++, y, this.map[`${x - 1},${y}`]] as ValuePoint<T>;
+    }, null);
   }
 
   /** An iterator for all points inside a specified bounds. */
   pointsInside(bounds = { xMin: this.xMin, xMax: this.xMax, yMin: this.yMin, yMax: this.yMax }) {
-    return iter(range(bounds.yMin, bounds.yMax + 1)).map(y =>
-      iter(range(bounds.xMin, bounds.xMax + 1)).map(x => [x, y, this.map[`${x},${y}`]] as ValuePoint<T>),
-    );
+    let x = bounds.xMin;
+    let y = bounds.yMin;
+    return iter(() => {
+      if (x > bounds.xMax) {
+        x = bounds.xMin;
+        y++;
+      }
+      if (y > bounds.yMax) return null;
+      return [x++, y, this.map[`${x - 1},${y}`]] as ValuePoint<T>;
+    }, null);
   }
 
   /** An optimised iterator for only the set values of the map. */
