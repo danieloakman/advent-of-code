@@ -86,16 +86,27 @@ export class Map2D<T> {
     return arr;
   }
 
-  print(valueToString: (value: T) => string = (v) => v ? '#' : '.') {
-    let str = '';
+  print(toString: (value: T) => string = v => (v ? '#' : '.')) {
+    const lines: string[][] = [];
+    let padding = 0;
+
     for (let y = this.yMin; y <= this.yMax; y++) {
+      const line: string[] = [];
       for (let x = this.xMin; x <= this.xMax; x++) {
-        const value = this.map[`${x},${y}`];
-        str += valueToString ? valueToString(value) : value;
+        const value = toString(this.map[`${x},${y}`]);
+        padding = Math.max(padding, value.length);
+        line.push(value);
       }
-      str += '\n';
+      lines.push(line);
     }
-    console.log(str);
+
+    const spacing = padding > 1 ? 1 : 0;
+
+    console.log(
+      lines
+        .map(line => line.map(value => value.padEnd(padding)).join(' '.repeat(spacing)))
+        .join('\n'.repeat(spacing + 1)),
+    );
   }
 
   toString() {
