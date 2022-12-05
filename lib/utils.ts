@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import once from 'lodash/once';
 import memoize from 'lodash/memoize';
-import { existsSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 import { BinaryLike, BinaryToTextEncoding, createHash } from 'crypto';
 import iter from 'iteragain/iter';
 import readline from 'readline';
@@ -10,6 +10,13 @@ import { Tuple } from 'iteragain/internal/types';
 import ExtendedIterator from 'iteragain/internal/ExtendedIterator';
 import toArray from 'iteragain/toArray';
 import map from 'iteragain/map';
+import { join } from 'path';
+
+export const tmpdir = once(() => {
+  const tmpdir = join(__dirname, '..', 'tmp');
+  if (!existsSync(tmpdir)) mkdirSync(tmpdir);
+  return tmpdir;
+});
 
 export function sleep(ms = 1000): Promise<void> {
   // console.log(`Sleeping for ${ms}ms`);
@@ -375,4 +382,18 @@ export function multiComparator<T>(...comparators: ((a: T, b: T) => number)[]): 
 
 export function manhattanDistance(a: number[], b: number[]): number {
   return a.reduce((sum, v, i) => sum + Math.abs(v - b[i]), 0);
+}
+
+export function limitConcurrentCalls<T extends (...args: any[]) => Promise<any>>(func: T, limit: number): T {
+  const resolves: ((...any: any[]) => void)[] = [];
+
+  return (async (...args: Parameters<T>) => {
+    if (resolves.length >= limit)
+      await new Promise(resolve => resolves.push(resolve));
+    try {
+      return await func(...args);
+    } finally {
+      resolves.shift()?.();
+    }
+  }) as T;
 }

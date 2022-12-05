@@ -4,10 +4,10 @@ import { promises, existsSync } from 'fs';
 const { writeFile, readFile } = promises;
 import { connect } from 'puppeteer';
 import { join } from 'path';
-import { openChrome } from './utils';
+import { openChrome, tmpdir, limitConcurrentCalls } from './utils';
 import * as https from 'https';
 
-const SESSION_COOKIE_PATH = join(__dirname, '../sessionCookie.txt');
+const SESSION_COOKIE_PATH = join(tmpdir(), 'sessionCookie.txt');
 // let document: any;
 
 // export async function downloadInput(year: number, day: number) {
@@ -61,7 +61,7 @@ async function newSessionCookie() {
   });
   await page.waitForNetworkIdle({ timeout: 10000 });
 
-  await page.goto('https://adventofcode.com'/* , { waitUntil: 'networkidle0' } */);
+  await page.goto('https://adventofcode.com' /* , { waitUntil: 'networkidle0' } */);
   const cookies = await page.cookies();
   await browser.close();
   const sessionCookie = (cookies.find(c => c.name === 'session') || { value: '' }).value;
@@ -72,7 +72,8 @@ async function newSessionCookie() {
   return sessionCookie;
 }
 
-export async function downloadInput(year: string, day: string) {
+/** Downloads the puzzle input for the given `year` and `day`. Limits to collecting only one download at a time. */
+export const downloadInput = limitConcurrentCalls(async (year: string, day: string) => {
   let sessionCookie = await readFile(SESSION_COOKIE_PATH, 'utf-8').catch(() => newSessionCookie());
 
   let input = '';
@@ -80,5 +81,5 @@ export async function downloadInput(year: string, day: string) {
     input = await getInput(year, day, sessionCookie);
     if (!input) sessionCookie = await newSessionCookie();
   } while (!input);
-  await writeFile(join(__dirname, '../', `years/${year}/day${day}-input`), input);
-}
+  await writeFile(join(tmpdir(), `${year}-${day}-input`), input);
+}, 1);
