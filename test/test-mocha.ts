@@ -1,6 +1,6 @@
 import { walkdirSync } from 'more-node-fs';
 import { join } from 'path';
-import { groupBy } from '../lib/utils';
+import { groupByProps } from '../lib/utils';
 import { execSync } from 'child_process';
 
 const files: { path: string; day: number; year: number; stats: import('fs').Stats }[] = [];
@@ -11,7 +11,7 @@ for (const { path, stats } of walkdirSync(join(__dirname, '..')))
     if (!(day && year)) continue;
     files.push({ path, day, year, stats });
   }
-const groupedFiles = groupBy(files, ['year']);
+const groupedFiles = groupByProps(files, ['year']);
 
 for (const year in groupedFiles)
   describe(`${year.toString()} - ${groupedFiles[year].length}`, function () {
