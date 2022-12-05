@@ -4,7 +4,7 @@ import { promises, existsSync, readFileSync } from 'fs';
 const { writeFile, readFile } = promises;
 import { connect } from 'puppeteer';
 import { join } from 'path';
-import { openChrome, tmpdir, limitConcurrentCalls } from './utils';
+import { openChrome, tmpdir, limitConcurrentCalls, main } from './utils';
 import * as https from 'https';
 import { execSync } from 'child_process';
 
@@ -74,7 +74,7 @@ async function newSessionCookie() {
   return sessionCookie;
 }
 
-function inputPath(year: string, day: string) {
+export function inputPath(year: string, day: string) {
   return join(tmpdir(), `${year}-${day}-input`);
 }
 
@@ -99,10 +99,12 @@ export function downloadInputSync(year: string, day: string): string {
   const path = inputPath(year, day);
   if (existsSync(path)) return readFileSync(path, 'utf-8');
 
-  return execSync(`node ${__filename} --download "${year},${day}"`, { encoding: 'utf-8' });
+  return execSync(`npx ts-node ${__filename} --download "${year},${day}"`, { encoding: 'utf-8' });
 }
 
-if (process.argv.includes('--download')) {
-  const [year, day] = process.argv[process.argv.indexOf('--download') + 1].split(',');
-  downloadInput(year, day).then(console.log);
-}
+main(module, async () => {
+  if (process.argv.includes('--download')) {
+    const [year, day] = process.argv[process.argv.indexOf('--download') + 1].split(',');
+    downloadInput(year, day).then(console.log);
+  }
+});
