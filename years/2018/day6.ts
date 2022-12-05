@@ -1,14 +1,14 @@
-import { readFileSync } from 'fs';
 import once from 'lodash/once';
 import { main, manhattanDistance } from '../../lib/utils';
 import { Point } from 'geometric';
 import Map2D from '../../lib/Map2D';
 import IncrementorMap from '../../lib/IncrementorMap';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
+import { downloadInputSync } from '../../lib/downloadInput';
 
 /** @see https://adventofcode.com/2018/day/6/input */
 export const input = once(() =>
-  readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8')
+  downloadInputSync('2018', '6')
     .split(/[\n\r]+/)
     .map(line => line.split(', ').map(Number) as Point),
 );
@@ -28,11 +28,12 @@ const textInput = once(
 //   return a[0] === b[0] && a[1] === b[1];
 // }
 
-// function nthLetter(n: number) {
-//   return String.fromCharCode(65 + n);
-// }
+function nthLetter(n: number) {
+  return String.fromCharCode(65 + n);
+}
 
 function pointId(point: Point) {
+  if (!point) return '';
   return `${point[0]},${point[1]}`;
 }
 
@@ -52,21 +53,32 @@ function largestArea(locations: Point[]) {
   locations.forEach(point => {
     const id = pointId(point);
     map.set(...point, id);
+    map.setBounds(point[0] + 10, point[1] + 10);
+    map.setBounds(point[0] - 10, point[1] - 10);
     incMap.inc(id);
   });
+  const isOnEdge = new Set<string>();
   for (const [x, y, value] of map.points()) {
+    // Skip any locations already set on the map:
     if (value !== undefined) continue;
     const closest = closestPoint([x, y], locations);
+    // No closest point found:
     if (!closest) continue;
-    incMap.inc(pointId(closest));
-    // map.set(x, y, map.get(...closest).toLowerCase());
+    const id = pointId(closest);
+    // This point is on the edge, don't need to count it:
+    if (isOnEdge.has(id)) continue;
+    if (map.isOnEdge(x, y)) {
+      isOnEdge.add(id);
+      incMap.delete(id);
+    }
+    // Increment the count for this location:
+    else incMap.inc(pointId(closest));
   }
-  // map.print(v => !v ? '.' : v);
+  // map.print(([x, y, v]) => (v ? v : '.'/* pointId(closestPoint([x, y], locations)) */));
   const maxId = incMap.minmax()[1];
   return incMap.get(maxId);
 }
 
-// TODO finish
 /** @see https://adventofcode.com/2018/day/6 First Star */
 export async function firstStar() {
   return largestArea(input());
