@@ -49,6 +49,7 @@ function getInput(year: string, day: string, sessionCookie: string): Promise<str
     );
   });
 }
+
 async function newSessionCookie() {
   if (!existsSync(SESSION_COOKIE_PATH)) await writeFile(SESSION_COOKIE_PATH, '');
 
@@ -72,8 +73,15 @@ async function newSessionCookie() {
   return sessionCookie;
 }
 
+function inputPath(year: string, day: string) {
+  return join(tmpdir(), `${year}-${day}-input`);
+}
+
 /** Downloads the puzzle input for the given `year` and `day`. Limits to collecting only one download at a time. */
-export const downloadInput = limitConcurrentCalls(async (year: string, day: string) => {
+export const downloadInput = limitConcurrentCalls(async (year: string, day: string): Promise<string> => {
+  const path = inputPath(year, day);
+  if (existsSync(path)) return readFile(path, 'utf8'); // Return cached input
+
   let sessionCookie = await readFile(SESSION_COOKIE_PATH, 'utf-8').catch(() => newSessionCookie());
 
   let input = '';
@@ -81,5 +89,7 @@ export const downloadInput = limitConcurrentCalls(async (year: string, day: stri
     input = await getInput(year, day, sessionCookie);
     if (!input) sessionCookie = await newSessionCookie();
   } while (!input);
-  await writeFile(join(tmpdir(), `${year}-${day}-input`), input);
+  await writeFile(path, input);
+
+  return input;
 }, 1);
