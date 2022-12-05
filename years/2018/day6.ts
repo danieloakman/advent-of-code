@@ -28,9 +28,9 @@ const textInput = once(
 //   return a[0] === b[0] && a[1] === b[1];
 // }
 
-function nthLetter(n: number) {
-  return String.fromCharCode(65 + n);
-}
+// function nthLetter(n: number) {
+//   return String.fromCharCode(65 + n);
+// }
 
 function pointId(point: Point) {
   if (!point) return '';
@@ -53,8 +53,8 @@ function largestArea(locations: Point[]) {
   locations.forEach(point => {
     const id = pointId(point);
     map.set(...point, id);
-    map.setBounds(point[0] + 10, point[1] + 10);
-    map.setBounds(point[0] - 10, point[1] - 10);
+    map.setBounds(point[0] + 5, point[1] + 5);
+    map.setBounds(point[0] - 5, point[1] - 5);
     incMap.inc(id);
   });
   const isOnEdge = new Set<string>();
