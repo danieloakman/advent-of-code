@@ -2,18 +2,18 @@
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { execSync } from 'child_process';
-import { downloadInput } from '../lib/downloadInput';
+import { downloadInput, inputPath } from '../lib/downloadInput';
 import { main } from '../lib/utils';
 
 export function fileStr(year: string, day: string) {
-  return `import { readFileSync } from 'fs';
-import once from 'lodash/once';
+  return `import once from 'lodash/once';
 import { main } from '../../lib/utils';
 import iter from 'iteragain/iter';
+import { downloadInputSync } from '../../lib/downloadInput';
 // import { ok as assert, deepStrictEqual as equal } from 'assert';
 
 /** @see https://adventofcode.com/${year}/day/${day}/input */
-export const input = once(() => readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\\n\\r]+/));
+export const input = once(() => downloadInputSync('${year}', '${day}').split(/[\\n\\r]+/));
 
 /** @see https://adventofcode.com/${year}/day/${day} First Star */
 export async function firstStar() {
@@ -34,16 +34,16 @@ main(module, async () => {
 
 export function createFiles(year: string, day: string) {
   const tsFilePath = join(__dirname, '../', `years/${year}/day${day}.ts`);
-  const fileInputPath = join(__dirname, '../', `years/${year}/day${day}-input`);
+  const fileInputPath = inputPath(year, day);
   const dir = join(__dirname, '../', `years/${year}`);
   if (!existsSync(dir)) mkdirSync(dir);
   if (!existsSync(tsFilePath)) writeFileSync(tsFilePath, fileStr(year, day));
   else console.log(`"${tsFilePath}" already exists.`);
-  if (!existsSync(fileInputPath)) writeFileSync(fileInputPath, '');
-  else console.log(`"${fileInputPath}" already exists.`);
+  // if (!existsSync(fileInputPath)) writeFileSync(fileInputPath, '');
+  // else console.log(`"${fileInputPath}" already exists.`);
 
-  downloadInput(year, day);
-  execSync(`code ${fileInputPath} && code ${tsFilePath}`);
+  downloadInput(year, day).then(() => execSync(`code ${fileInputPath}`));
+  execSync(`code ${tsFilePath}`);
   return { tsFilePath, fileInputPath };
 }
 
