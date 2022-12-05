@@ -5,18 +5,25 @@ export class IncrementorMap {
 
   inc(key: string, value = 1) {
     this.map[key] = (this.map[key] || 0) + value;
+    return this;
   }
 
   get(key: string) {
     return this.map[key] || 0;
   }
 
-  set(key: string, value: any) {
+  set(key: string, value: number) {
     this.map[key] = value;
+    return this;
   }
 
   has(key: string) {
     return key in this.map;
+  }
+
+  delete(key: string) {
+    delete this.map[key];
+    return !!this.map[key];
   }
 
   minmax(): [string, string] {
