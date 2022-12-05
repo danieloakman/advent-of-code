@@ -4,7 +4,7 @@ import { promises, existsSync, readFileSync } from 'fs';
 const { writeFile, readFile } = promises;
 import { connect } from 'puppeteer';
 import { join } from 'path';
-import { openChrome, tmpdir, limitConcurrentCalls, main } from './utils';
+import { openChrome, tmpdir, limitConcurrentCalls, main, sleep } from './utils';
 import * as https from 'https';
 import { execSync } from 'child_process';
 
@@ -81,7 +81,7 @@ export function inputPath(year: string, day: string) {
 /** Downloads the puzzle input for the given `year` and `day`. Limits to collecting only one download at a time. */
 export const downloadInput = limitConcurrentCalls(async (year: string, day: string): Promise<string> => {
   const path = inputPath(year, day);
-  if (existsSync(path)) return readFile(path, 'utf8'); // Return cached input
+  if (existsSync(path)) return readFile(path, 'utf8').then(fileStr => fileStr.trimEnd()); // Return cached input
 
   let sessionCookie = await readFile(SESSION_COOKIE_PATH, 'utf-8').catch(() => newSessionCookie());
 
@@ -90,6 +90,7 @@ export const downloadInput = limitConcurrentCalls(async (year: string, day: stri
     input = await getInput(year, day, sessionCookie);
     if (!input) sessionCookie = await newSessionCookie();
   } while (!input);
+  input = input.trimEnd();
   await writeFile(path, input);
 
   return input;
@@ -97,14 +98,17 @@ export const downloadInput = limitConcurrentCalls(async (year: string, day: stri
 
 export function downloadInputSync(year: string, day: string): string {
   const path = inputPath(year, day);
-  if (existsSync(path)) return readFileSync(path, 'utf-8');
+  if (existsSync(path)) return readFileSync(path, 'utf-8').trimEnd(); // Return cached input
 
-  return execSync(`npx ts-node ${__filename} --download "${year},${day}"`, { encoding: 'utf-8' });
+  const input = execSync(`npx ts-node ${__filename} --download "${year},${day}"`, { encoding: 'utf-8' });
+  return input.trimEnd();
 }
 
 main(module, async () => {
   if (process.argv.includes('--download')) {
     const [year, day] = process.argv[process.argv.indexOf('--download') + 1].split(',');
-    downloadInput(year, day).then(console.log);
+    const input = await downloadInput(year, day);
+    console.log(input);
+    sleep(1000);
   }
 });
