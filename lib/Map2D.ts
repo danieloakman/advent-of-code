@@ -86,14 +86,14 @@ export class Map2D<T> {
     return arr;
   }
 
-  print(toString: (value: T) => string = v => (v ? '#' : '.')) {
+  print(toString: (arg0: ValuePoint<T>) => string = ([_, __, v]) => (v ? '#' : '.')) {
     const lines: string[][] = [];
     let padding = 0;
 
     for (let y = this.yMin; y <= this.yMax; y++) {
       const line: string[] = [];
       for (let x = this.xMin; x <= this.xMax; x++) {
-        const value = toString(this.map[`${x},${y}`]);
+        const value = toString([x, y, this.map[`${x},${y}`]]);
         padding = Math.max(padding, value.length);
         line.push(value);
       }
@@ -155,6 +155,11 @@ export class Map2D<T> {
       const [nx, ny] = fn(x, y);
       return [nx, ny, this.map[`${nx},${ny}`]] as ValuePoint<T>;
     });
+  }
+
+  /** Returns true if `x,y` is on the edge of the bounds of this map. */
+  isOnEdge(x: number, y: number): boolean {
+    return x === this.xMin || x === this.xMax || y === this.yMin || y === this.yMax;
   }
 
   /** @deprecated Use `points` instead. */
