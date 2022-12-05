@@ -1,13 +1,13 @@
-import { readFileSync } from 'fs';
 import once from 'lodash/once';
 import { main, sum } from '../../lib/utils';
 import iter from 'iteragain/iter';
 import range from 'iteragain/range';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
 import RangeIterator from 'iteragain/internal/RangeIterator';
+import { downloadInputSync } from '../../lib/downloadInput';
 
 /** @see https://adventofcode.com/2022/day/4/input */
-export const input = once(() => readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\n\r]+/));
+export const input = once(() => downloadInputSync('2022', '4').split(/[\n\r]+/));
 const testInput = `
 2-4,6-8
 2-3,4-5

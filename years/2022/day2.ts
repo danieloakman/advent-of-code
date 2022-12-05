@@ -1,12 +1,12 @@
-import { readFileSync } from 'fs';
 import once from 'lodash/once';
 import { main, sum } from '../../lib/utils';
 import iter from 'iteragain/iter';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
+import { downloadInputSync } from '../../lib/downloadInput';
 
 /** @see https://adventofcode.com/2022/day/2/input */
 export const input = once(() =>
-  readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\n\r]+/)
+  downloadInputSync('2022', '2').split(/[\n\r]+/)
 );
 
 enum RockPaperScissors {

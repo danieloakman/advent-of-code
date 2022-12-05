@@ -1,12 +1,12 @@
-import { readFileSync } from 'fs';
 import once from 'lodash/once';
 import { main, sum } from '../../lib/utils';
 import iter from 'iteragain/iter';
 import { ok as assert, deepStrictEqual as equal } from 'assert';
 import IncrementorMap from '../../lib/IncrementorMap';
+import { downloadInputSync } from '../../lib/downloadInput';
 
 /** @see https://adventofcode.com/2022/day/3/input */
-export const input = once(() => readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\n\r]+/));
+export const input = once(() => downloadInputSync('2022', '3').split(/[\n\r]+/));
 const testInput = `
 vJrwpWtwJgWrhcsFMMfFFhFp
 jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
