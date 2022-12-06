@@ -110,3 +110,4 @@ sessionCookie.txt
 package-lock.json
 
 .vscode
+tmp/
