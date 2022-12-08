@@ -50,6 +50,14 @@ export class Map2D<T> {
     this.yMax = yMax || 0;
   }
 
+  get width(): number {
+    return this.xMax - this.xMin + 1;
+  }
+
+  get height(): number {
+    return this.yMax - this.yMin + 1;
+  }
+
   setBounds(...numbers: number[]): void;
   setBounds(x: number, y: number): void {
     this.xMin = Math.min(this.xMin, x);
@@ -150,11 +158,30 @@ export class Map2D<T> {
     );
   }
 
+  /** Iterator for all 8 neighbours around a point. */
   neighbours(x: number, y: number) {
     return iter(Object.values(this.point)).map(fn => {
       const [nx, ny] = fn(x, y);
       return [nx, ny, this.map[`${nx},${ny}`]] as ValuePoint<T>;
     });
+  }
+
+  /** Iterator for only the 4 adjacent (up, down, left, right) neighbours around a point. */
+  adjacentNeighbours(x: number, y: number) {
+    return iter([this.point.up, this.point.down, this.point.left, this.point.right]).map(fn => {
+      const [nx, ny] = fn(x, y);
+      return [nx, ny, this.map[`${nx},${ny}`]] as ValuePoint<T>;
+    });
+  }
+
+  /** Iterator for only the 4 diagonal neighbours around a point. */
+  diagonalNeighbours(x: number, y: number) {
+    return iter([this.point.upLeft, this.point.upRight, this.point.downLeft, this.point.downRight]).map(
+      fn => {
+        const [nx, ny] = fn(x, y);
+        return [nx, ny, this.map[`${nx},${ny}`]] as ValuePoint<T>;
+      },
+    );
   }
 
   /** Returns true if `x,y` is on the edge of the bounds of this map. */
