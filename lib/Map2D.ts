@@ -1,4 +1,5 @@
 import iter from 'iteragain/iter';
+import range from 'iteragain/range';
 
 type Get<T> = {
   (x: number, y: number): T;
@@ -158,6 +159,22 @@ export class Map2D<T> {
     );
   }
 
+  rows(reverse = false) {
+    return iter(reverse ? range(this.yMax, this.yMin - 1) : range(this.yMin, this.yMax)).map(y =>
+      iter(reverse ? range(this.xMax, this.xMin - 1) : range(this.xMin, this.xMax)).map(
+        x => [x, y, this.map[`${x},${y}`]] as ValuePoint<T>,
+      ),
+    );
+  }
+
+  columns(reverse = false) {
+    return iter(reverse ? range(this.xMax, this.xMin - 1) : range(this.xMin, this.xMax)).map(x =>
+      iter(reverse ? range(this.yMax, this.yMin - 1) : range(this.yMin, this.yMax)).map(
+        y => [x, y, this.map[`${x},${y}`]] as ValuePoint<T>,
+      ),
+    );
+  }
+
   /** Iterator for all 8 neighbours around a point. */
   neighbours(x: number, y: number) {
     return iter(Object.values(this.point)).map(fn => {
@@ -176,12 +193,10 @@ export class Map2D<T> {
 
   /** Iterator for only the 4 diagonal neighbours around a point. */
   diagonalNeighbours(x: number, y: number) {
-    return iter([this.point.upLeft, this.point.upRight, this.point.downLeft, this.point.downRight]).map(
-      fn => {
-        const [nx, ny] = fn(x, y);
-        return [nx, ny, this.map[`${nx},${ny}`]] as ValuePoint<T>;
-      },
-    );
+    return iter([this.point.upLeft, this.point.upRight, this.point.downLeft, this.point.downRight]).map(fn => {
+      const [nx, ny] = fn(x, y);
+      return [nx, ny, this.map[`${nx},${ny}`]] as ValuePoint<T>;
+    });
   }
 
   /** Returns true if `x,y` is on the edge of the bounds of this map. */
