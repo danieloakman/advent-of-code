@@ -36,60 +36,61 @@ class TreeMap extends Map2D<Tree> {
       .filter(([x, y]) => this.isOnEdge(x, y))
       .forEach(([x, y]) => this.set(x, y, { ...this.get(x, y), visible: true }));
 
-    // TODO: Need to recursively check all visible trees instead of this spiral approach.
-
-    spiralRange(this.xMax - 1, this.yMax - 1, 1, 1)
-      .forEach(([x, y]) => {
-        const tree = this.get(x, y);
-        for (const [,, neighbourTree] of this.adjacentNeighbours(x, y)) {
-          // Skip any trees that haven't been processed yet, i.e. ones that are further inside the spiral:
-          if (typeof neighbourTree.visible !== 'boolean') continue;
-
-          // If the neighbour is visible and lower than the current tree, the current tree is visible:
-          if (neighbourTree.visible && neighbourTree.height < tree.height)
-            this.set(x, y, { ...tree, visible: true });
+    for (const reverse of [false, true]) {
+      for (const method of ['rows', 'columns']) {
+        for (const rowOrColumn of this[method](reverse)) {
+          let highest = 0;
+          for (const [x, y, tree] of rowOrColumn) {
+            if (tree.height > highest) {
+              this.set(x, y, { ...tree, visible: true });
+              highest = tree.height;
+            }
+          }
         }
-      });
+      }
+    }
 
-    this.print(([,, v]) => v.visible ? '#' : '.');
+    // this.print(([,, v]) => v.visible ? '#' : '.');
   }
 
   visibleTrees() {
-    return this.points().reduce((sum, [,, tree]) => sum + (tree.visible ? 1 : 0), 0);
+    return this.points()
+      // .map(([x, y]) => this.isVisible(x, y))
+      .reduce((sum, v) => sum + (v[2].visible ? 1 : 0), 0);
   }
 }
 
-/** Iterator of points starting at top left, spiraling inwards clockwise in a 2D grid. */
-function spiralRange(xMax: number, yMax: number, xMin = 0, yMin = 0) {
-  const iterations = (xMax - xMin) * (yMax - yMin);
-  return iter(
-    (function* () {
-      while (true) {
-        // Right:
-        yield iter(range(xMin, xMax)).map(n => [n, yMin] as const);
-        yMin++;
-        // Down:
-        yield iter(range(yMin, yMax)).map(n => [xMax - 1, n] as const);
-        xMax--;
-        // Left:
-        yield iter(range(xMax - 1, xMin - 1)).map(n => [n, yMax - 1] as const);
-        yMax--;
-        // Up:
-        yield iter(range(yMax - 1, yMin - 1)).map(n => [xMin, n] as const);
-        xMin++;
-      }
-    })())
-    .flatten(1)
-    .enumerate()
-    .takeWhile(([i]) => i < iterations)
-    .map(([_, v]) => v);
-}
-equal(spiralRange(3, 3).toArray(), [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2], [1, 2], [0, 2], [0, 1], [1, 1]]);
-equal(spiralRange(2, 2).toArray(), [[0, 0], [1, 0], [1, 1], [0, 1]]);
+// /** Iterator of points starting at top left, spiraling inwards clockwise in a 2D grid. */
+// function spiralRange(xMax: number, yMax: number, xMin = 0, yMin = 0) {
+//   const iterations = (xMax - xMin) * (yMax - yMin);
+//   return iter(
+//     (function* () {
+//       while (true) {
+//         // Right:
+//         yield iter(range(xMin, xMax)).map(n => [n, yMin] as const);
+//         yMin++;
+//         // Down:
+//         yield iter(range(yMin, yMax)).map(n => [xMax - 1, n] as const);
+//         xMax--;
+//         // Left:
+//         yield iter(range(xMax - 1, xMin - 1)).map(n => [n, yMax - 1] as const);
+//         yMax--;
+//         // Up:
+//         yield iter(range(yMax - 1, yMin - 1)).map(n => [xMin, n] as const);
+//         xMin++;
+//       }
+//     })())
+//     .flatten(1)
+//     .enumerate()
+//     .takeWhile(([i]) => i < iterations)
+//     .map(([_, v]) => v);
+// }
+// equal(spiralRange(3, 3).toArray(), [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2], [1, 2], [0, 2], [0, 1], [1, 1]]);
+// equal(spiralRange(2, 2).toArray(), [[0, 0], [1, 0], [1, 1], [0, 1]]);
 
 /** @see https://adventofcode.com/2022/day/8 First Star */
 export async function firstStar() {
-  //
+  return new TreeMap(input()).visibleTrees();
 }
 
 /** @see https://adventofcode.com/2022/day/8#part2 Second Star */
