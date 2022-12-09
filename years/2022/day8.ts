@@ -58,6 +58,19 @@ class TreeMap extends Map2D<Tree> {
       // .map(([x, y]) => this.isVisible(x, y))
       .reduce((sum, v) => sum + (v[2].visible ? 1 : 0), 0);
   }
+
+  // TODO:
+  // scenicScore(x: number, y: number) {
+  //   return this.points()
+  //     .map(v => {
+
+  //       // for (const )
+  //     });
+  // }
+
+  // scenicScoreDirection(x: number, y: number, dx: number, dy: number) {
+  //   return iter();
+  // }
 }
 
 // /** Iterator of points starting at top left, spiraling inwards clockwise in a 2D grid. */
