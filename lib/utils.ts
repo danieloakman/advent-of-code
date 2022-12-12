@@ -400,7 +400,7 @@ export function limitConcurrentCalls<T extends (...args: any[]) => Promise<any>>
 export function range2D(start: [number, number], stop: [number, number], step?: [number, number]) {
   const lastX = start[0];
   const lastY = start[1];
-  return iter(_range(start[0], stop[0], step[0]))
-    .zipLongest(_range(start[1], stop[1], step[1]))
+  return iter(_range(start[0], stop[0], step?.[0]))
+    .zipLongest(_range(start[1], stop[1], step?.[1]))
     .map(nums => [nums[0] ?? lastX, nums[1] ?? lastY] as [number, number]);
 }
