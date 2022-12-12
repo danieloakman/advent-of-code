@@ -171,7 +171,7 @@ export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
   for (const value of arr) {
     for (const [key, map] of results) {
       const k = typeof key === 'string' ? (value as any)?.[key] : key(value);
-      map[k] = (map[k] ?? [] as any[]).concat(value);
+      map[k] = (map[k] ?? ([] as any[])).concat(value);
     }
   }
   return results.length < 2 ? results[0][1] : results.map(([_, map]) => map);
@@ -388,12 +388,19 @@ export function limitConcurrentCalls<T extends (...args: any[]) => Promise<any>>
   const resolves: ((...any: any[]) => void)[] = [];
 
   return (async (...args: Parameters<T>) => {
-    if (resolves.length >= limit)
-      await new Promise(resolve => resolves.push(resolve));
+    if (resolves.length >= limit) await new Promise(resolve => resolves.push(resolve));
     try {
       return await func(...args);
     } finally {
       resolves.shift()?.();
     }
   }) as T;
+}
+
+export function range2D(start: [number, number], stop: [number, number], step?: [number, number]) {
+  const lastX = start[0];
+  const lastY = start[1];
+  return iter(_range(start[0], stop[0], step[0]))
+    .zipLongest(_range(start[1], stop[1], step[1]))
+    .map(nums => [nums[0] ?? lastX, nums[1] ?? lastY] as const);
 }
