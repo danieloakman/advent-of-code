@@ -57,12 +57,10 @@ class TreeMap extends Map2D<Tree> {
   visibleTrees() {
     return (
       this.points()
-        // .map(([x, y]) => this.isVisible(x, y))
         .reduce((sum, v) => sum + (v[2].visible ? 1 : 0), 0)
     );
   }
 
-  // TODO:
   scenicScore(x: number, y: number) {
     const tree = this.get(x, y);
     return iter([
@@ -95,34 +93,6 @@ class TreeMap extends Map2D<Tree> {
   }
 
 }
-
-// /** Iterator of points starting at top left, spiraling inwards clockwise in a 2D grid. */
-// function spiralRange(xMax: number, yMax: number, xMin = 0, yMin = 0) {
-//   const iterations = (xMax - xMin) * (yMax - yMin);
-//   return iter(
-//     (function* () {
-//       while (true) {
-//         // Right:
-//         yield iter(range(xMin, xMax)).map(n => [n, yMin] as const);
-//         yMin++;
-//         // Down:
-//         yield iter(range(yMin, yMax)).map(n => [xMax - 1, n] as const);
-//         xMax--;
-//         // Left:
-//         yield iter(range(xMax - 1, xMin - 1)).map(n => [n, yMax - 1] as const);
-//         yMax--;
-//         // Up:
-//         yield iter(range(yMax - 1, yMin - 1)).map(n => [xMin, n] as const);
-//         xMin++;
-//       }
-//     })())
-//     .flatten(1)
-//     .enumerate()
-//     .takeWhile(([i]) => i < iterations)
-//     .map(([_, v]) => v);
-// }
-// equal(spiralRange(3, 3).toArray(), [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2], [1, 2], [0, 2], [0, 1], [1, 1]]);
-// equal(spiralRange(2, 2).toArray(), [[0, 0], [1, 0], [1, 1], [0, 1]]);
 
 /** @see https://adventofcode.com/2022/day/8 First Star */
 export async function firstStar() {

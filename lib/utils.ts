@@ -11,6 +11,7 @@ import ExtendedIterator from 'iteragain/internal/ExtendedIterator';
 import toArray from 'iteragain/toArray';
 import map from 'iteragain/map';
 import { join } from 'path';
+import { deepStrictEqual as equal } from 'assert';
 
 export const tmpdir = once(() => {
   const tmpdir = join(__dirname, '..', 'tmp');
@@ -404,3 +405,31 @@ export function range2D(start: [number, number], stop: [number, number], step?: 
     .zipLongest(_range(start[1], stop[1], step?.[1]))
     .map(nums => [nums[0] ?? lastX, nums[1] ?? lastY] as [number, number]);
 }
+
+/** Iterator of points starting at top left, spiraling inwards clockwise in a 2D grid. */
+function spiralRange(xMax: number, yMax: number, xMin = 0, yMin = 0) {
+  const iterations = (xMax - xMin) * (yMax - yMin);
+  return iter(
+    (function* () {
+      while (true) {
+        // Right:
+        yield iter(_range(xMin, xMax)).map(n => [n, yMin] as const);
+        yMin++;
+        // Down:
+        yield iter(_range(yMin, yMax)).map(n => [xMax - 1, n] as const);
+        xMax--;
+        // Left:
+        yield iter(_range(xMax - 1, xMin - 1)).map(n => [n, yMax - 1] as const);
+        yMax--;
+        // Up:
+        yield iter(_range(yMax - 1, yMin - 1)).map(n => [xMin, n] as const);
+        xMin++;
+      }
+    })())
+    .flatten(1)
+    .enumerate()
+    .takeWhile(([i]) => i < iterations)
+    .map(([_, v]) => v);
+}
+equal(spiralRange(3, 3).toArray(), [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2], [1, 2], [0, 2], [0, 1], [1, 1]]);
+equal(spiralRange(2, 2).toArray(), [[0, 0], [1, 0], [1, 1], [0, 1]]);
