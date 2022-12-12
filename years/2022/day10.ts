@@ -6,6 +6,7 @@ import count from 'iteragain/count';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
 import ExtendedIterator from 'iteragain/internal/ExtendedIterator';
 import last from 'lodash/last';
+import Map2D from '../../lib/Map2D';
 
 /** @see https://adventofcode.com/2022/day/10/input */
 export const input = once(() => downloadInputSync('2022', '10').split(/[\n\r]+/));
@@ -196,22 +197,31 @@ function signals(input: string[]) {
 /** @see https://adventofcode.com/2022/day/10 First Star */
 export async function firstStar(lines = input()) {
   const cyclesToGet = [20, 60, 100, 140, 180, 220].map(n => n - 1);
-  return iter(count(1))
-    .zip(signals(lines))
-    .filter(([cycle]) => cyclesToGet.includes(cycle))
-    // .tap(console.log)
-    .map(([cycle, signal]) => signal * (cycle + 1))
-    .reduce(sum);
+  return (
+    iter(count(1))
+      .zip(signals(lines))
+      .filter(([cycle]) => cyclesToGet.includes(cycle))
+      // .tap(console.log)
+      .map(([cycle, signal]) => signal * (cycle + 1))
+      .reduce(sum)
+  );
 }
 
 // TODO: 2nd star
 /** @see https://adventofcode.com/2022/day/10#part2 Second Star */
-export async function secondStar() {
-  //
+export async function secondStar(lines = input()) {
+  const map2d = new Map2D<boolean>();
+  for (const [cycle, signal] of signals(lines).enumerate()) {
+    const x = cycle % 40;
+    const y = Math.floor(cycle / 40);
+    map2d.set(x, y, true);
+  }
+  map2d.print(([,,v]) => v ? '#' : ' ');
+  return 'Look at print^';
 }
 
 main(module, async () => {
-  // equal(signals(testInput1).toArray(), [1, 1, 4, -1]);
+  equal(signals(testInput1).toArray(), [1, 1, 4, 4, -1]);
   equal(await firstStar(testInput2), 13140);
   console.log('First star:', await firstStar());
   console.log('Second star:', await secondStar());
