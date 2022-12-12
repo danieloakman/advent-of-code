@@ -195,13 +195,12 @@ function signals(input: string[]) {
 
 /** @see https://adventofcode.com/2022/day/10 First Star */
 export async function firstStar(lines = input()) {
-  const cyclesToGet = [20, 60, 100, 140, 180, 220];
-  return signals(lines)
-    .zip(count(1))
-    // .takeWhile(([cycle]) => cycle < last(cyclesToGet) + 10)
-    .filter(([, cycle]) => cyclesToGet.includes(cycle))
-    .tap(console.log)
-    .map(([signal, cycle]) => signal * cycle)
+  const cyclesToGet = [20, 60, 100, 140, 180, 220].map(n => n - 1);
+  return iter(count(1))
+    .zip(signals(lines))
+    .filter(([cycle]) => cyclesToGet.includes(cycle))
+    // .tap(console.log)
+    .map(([cycle, signal]) => signal * (cycle + 1))
     .reduce(sum);
 }
 
