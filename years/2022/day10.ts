@@ -204,6 +204,7 @@ export async function firstStar(lines = input()) {
     .reduce(sum);
 }
 
+// TODO: 2nd star
 /** @see https://adventofcode.com/2022/day/10#part2 Second Star */
 export async function secondStar() {
   //
