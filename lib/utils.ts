@@ -407,7 +407,7 @@ export function range2D(start: [number, number], stop: [number, number], step?: 
 }
 
 /** Iterator of points starting at top left, spiraling inwards clockwise in a 2D grid. */
-function spiralRange(xMax: number, yMax: number, xMin = 0, yMin = 0) {
+export function spiralRange(xMax: number, yMax: number, xMin = 0, yMin = 0) {
   const iterations = (xMax - xMin) * (yMax - yMin);
   return iter(
     (function* () {
@@ -433,3 +433,7 @@ function spiralRange(xMax: number, yMax: number, xMin = 0, yMin = 0) {
 }
 equal(spiralRange(3, 3).toArray(), [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2], [1, 2], [0, 2], [0, 1], [1, 1]]);
 equal(spiralRange(2, 2).toArray(), [[0, 0], [1, 0], [1, 1], [0, 1]]);
+
+export function isBetween(value: number, minInclusive: number, maxInclusive: number): boolean {
+  return value >= minInclusive && value <= maxInclusive;
+}
