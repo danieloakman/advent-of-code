@@ -1,5 +1,5 @@
 import once from 'lodash/once';
-import { main, sum, deepCopy } from '../../lib/utils';
+import { main, sum, deepCopy, isBetween } from '../../lib/utils';
 import iter from 'iteragain/iter';
 import { downloadInputSync } from '../../lib/downloadInput';
 import count from 'iteragain/count';
@@ -211,12 +211,13 @@ export async function firstStar(lines = input()) {
 /** @see https://adventofcode.com/2022/day/10#part2 Second Star */
 export async function secondStar(lines = input()) {
   const map2d = new Map2D<boolean>();
-  for (const [cycle, signal] of signals(lines).enumerate()) {
+  for (const [cycle, signal] of signals(lines).prepend([1]).enumerate()) {
     const x = cycle % 40;
     const y = Math.floor(cycle / 40);
-    map2d.set(x, y, true);
+    const render = isBetween(x, signal - 1, signal + 1);
+    map2d.set(x, y, render);
   }
-  map2d.print(([,,v]) => v ? '#' : ' ');
+  map2d.print(([, , v]) => (v ? '#' : ' '));
   return 'Look at print^';
 }
 
@@ -224,5 +225,6 @@ main(module, async () => {
   equal(signals(testInput1).toArray(), [1, 1, 4, 4, -1]);
   equal(await firstStar(testInput2), 13140);
   console.log('First star:', await firstStar());
+  // await secondStar(testInput2);
   console.log('Second star:', await secondStar());
 });
