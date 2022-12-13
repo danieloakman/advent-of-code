@@ -4,8 +4,6 @@ import iter from 'iteragain/iter';
 import { downloadInputSync } from '../../lib/downloadInput';
 import count from 'iteragain/count';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
-import ExtendedIterator from 'iteragain/internal/ExtendedIterator';
-import last from 'lodash/last';
 import Map2D from '../../lib/Map2D';
 
 /** @see https://adventofcode.com/2022/day/10/input */
