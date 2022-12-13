@@ -1,10 +1,10 @@
 import once from 'lodash/once';
-import { main, deepCopy } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import { main } from '../../lib/utils';
 import { downloadInputSync } from '../../lib/downloadInput';
 import Map2D from '../../lib/Map2D';
 import { Point, lineLength } from 'geometric';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
+import last from 'lodash/last';
 
 /** @see https://adventofcode.com/2022/day/9/input */
 export const input = once(() => downloadInputSync('2022', '9').split(/[\n\r]+/));
@@ -22,34 +22,70 @@ R 2
   .trim()
   .split(/[\n\r]+/);
 
+type Direction = 'U' | 'R' | 'L' | 'D';
+
 class Rope {
-  private head: Point = [0, 0];
-  private tail: Point = [0, 0];
-  private lastHead: Point = [0, 0];
+  // private head: Point = [0, 0];
+  // private tail: Point = [0, 0];
+  // private lastHead: Point = [0, 0];
+  private knots: Point[];
+  private map2d = new Map2D<boolean>();
 
-  constructor(private map2d: Map2D<boolean>) {}
+  constructor(numOfKnots: number) {
+    this.knots = Array.from({ length: numOfKnots }, () => [0, 0]);
+  }
 
-  move(direction: 'U' | 'R' | 'L' | 'D', steps: number) {
+  move(direction: Direction, steps: number) {
     for (let i = 0; i < steps; i++) {
-      this.lastHead = deepCopy(this.head);
+      // Move head:
       switch (direction) {
         case 'U':
-          this.head[1]--;
+          this.knots[0][1]--;
           break;
         case 'R':
-          this.head[0]++;
+          this.knots[0][0]++;
           break;
         case 'L':
-          this.head[0]--;
+          this.knots[0][0]--;
           break;
         case 'D':
-          this.head[1]++;
+          this.knots[0][1]++;
           break;
       }
-      if (lineLength([this.head, this.tail]) >= 2)
-        this.tail = deepCopy(this.lastHead);
-      this.map2d.set(...this.tail, true);
+      // Move all other knots:
+      for (let j = 1; j < this.knots.length; j++) {
+        if (lineLength([this.knots[j - 1], this.knots[j]]) >= 2) {
+          // TODO: this needs to be redone as the direction here won't be the last direction the last knot moved.
+          switch (direction) {
+            case 'U':
+              this.knots[j] = [this.knots[j - 1][0], this.knots[j - 1][1] + 1];
+              break;
+            case 'R':
+              this.knots[j] = [this.knots[j - 1][0] - 1, this.knots[j - 1][1]];
+              break;
+            case 'L':
+              this.knots[j] = [this.knots[j - 1][0] + 1, this.knots[j - 1][1]];
+              break;
+            case 'D':
+              this.knots[j] = [this.knots[j - 1][0], this.knots[j - 1][1] - 1];
+              break;
+          }
+        }
+      }
+      this.map2d.set(...last(this.knots), true);
     }
+  }
+
+  tailVisited() {
+    return this.map2d.values().length();
+  }
+
+  journey(lines: string[]) {
+    for (const line of lines) {
+      const [direction, steps] = parseLine(line);
+      this.move(direction, steps);
+    }
+    return this;
   }
 }
 
@@ -58,28 +94,19 @@ function parseLine(line: string) {
   return [direction as 'U' | 'R' | 'L' | 'D', Number(steps)] as const;
 }
 
-function tailVisited(lines = input()): number {
-  const map2d = new Map2D<boolean>();
-  const rope = new Rope(map2d);
-  for (const line of lines) {
-    const [direction, steps] = parseLine(line);
-    rope.move(direction, steps);
-  }
-  return map2d.values().length();
-}
-
 /** @see https://adventofcode.com/2022/day/9 First Star */
 export async function firstStar() {
-  return tailVisited();
+  return new Rope(2).journey(input()).tailVisited();
 }
 
 /** @see https://adventofcode.com/2022/day/9#part2 Second Star */
 export async function secondStar() {
-  //
+  return new Rope(9).journey(input()).tailVisited();
 }
 
 main(module, async () => {
-  equal(tailVisited(testInput), 13);
+  equal(new Rope(2).journey(testInput).tailVisited(), 13);
   console.log('First star:', await firstStar());
+  equal(new Rope(9).journey(testInput).tailVisited(), 36);
   console.log('Second star:', await secondStar());
 });
