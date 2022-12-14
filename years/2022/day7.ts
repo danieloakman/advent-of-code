@@ -31,6 +31,26 @@ $ ls
 5626152 d.ext
 7214296 k`.trim().split(/[\n\r]+/);
 
+interface Command {
+  type: 'cd' | 'ls' | 'dir';
+  arg: string;
+}
+
+interface File {
+  size: number;
+  name: string;
+}
+
+class FileSystem {
+  constructor(lines: string[]) {
+
+  }
+
+  private parseLine(line: string):  {
+    if ()
+  }
+}
+
 /** @see https://adventofcode.com/2022/day/7 First Star */
 export async function firstStar() {
   //
