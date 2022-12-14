@@ -44,14 +44,15 @@ U 20`.trim().split(/[\n\r]+/);
 type Direction = 'U' | 'R' | 'L' | 'D';
 
 class Rope {
-  // private head: Point = [0, 0];
-  // private tail: Point = [0, 0];
-  // private lastHead: Point = [0, 0];
+  private tailVisited = new Set<string>();
   private knots: Point[];
-  private map2d = new Map2D<boolean>();
 
   constructor(numOfKnots: number) {
     this.knots = Array.from({ length: numOfKnots }, () => [0, 0]);
+  }
+
+  get numOfTailPositions() {
+    return this.tailVisited.size;
   }
 
   move(direction: Direction, steps: number) {
@@ -78,13 +79,9 @@ class Rope {
           this.knots[j] = add(this.knots[j], vector);
         }
       }
-      // TODO track tail in a set instead of a map. And use map to track where the rope is, for testing
-      this.map2d.set(...last(this.knots), true);
+      this.tailVisited.add(JSON.stringify(last(this.knots)));
     }
-  }
-
-  tailVisited() {
-    return this.map2d.values().length();
+    // this.print();
   }
 
   journey(lines: string[]) {
@@ -93,6 +90,14 @@ class Rope {
       this.move(direction, steps);
     }
     return this;
+  }
+
+  print() {
+    const map2d = new Map2D<string>();
+    for (const [i, knot] of this.knots.entries()) {
+      map2d.set(...knot, i.toString());
+    }
+    map2d.print(([,,v]) => v ? v : ' ');
   }
 }
 
@@ -103,18 +108,18 @@ function parseLine(line: string) {
 
 /** @see https://adventofcode.com/2022/day/9 First Star */
 export async function firstStar() {
-  return new Rope(2).journey(input()).tailVisited();
+  return new Rope(2).journey(input()).numOfTailPositions;
 }
 
 /** @see https://adventofcode.com/2022/day/9#part2 Second Star */
 export async function secondStar() {
-  return new Rope(9).journey(input()).tailVisited();
+  return new Rope(10).journey(input()).numOfTailPositions;
 }
 
 main(module, async () => {
-  equal(new Rope(2).journey(testInput).tailVisited(), 13);
+  equal(new Rope(2).journey(testInput).numOfTailPositions, 13);
   console.log('First star:', await firstStar());
-  equal(new Rope(9).journey(testInput).tailVisited(), 1);
-  equal(new Rope(9).journey(testInput2).tailVisited(), 36);
+  equal(new Rope(10).journey(testInput).numOfTailPositions, 1);
+  equal(new Rope(10).journey(testInput2).numOfTailPositions, 36);
   console.log('Second star:', await secondStar());
 });
