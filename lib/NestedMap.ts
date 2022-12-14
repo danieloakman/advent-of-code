@@ -1,23 +1,25 @@
 import map from 'iteragain/map';
 import ObjectIterator from 'iteragain/internal/ObjectIterator';
 
-export class NestedMap<V = any> implements Map<string, V> {
+export type NestedMapValue<V> = V | Record<string, V>;
+
+export class NestedMap<V = any> implements Map<string, NestedMapValue<V>> {
   public [Symbol.toStringTag] = 'NestedMap';
-  protected _dict: any = {};
+  protected dict: any = {};
 
   public get size(): number {
-    return Object.keys(this._dict).length;
+    return Object.keys(this.dict).length;
   }
 
   public clear(): void {
-    this._dict = {} as Record<string, V>;
+    this.dict = {};
   }
 
   public delete(key: string): boolean;
   public delete(keys: string[]): boolean;
   public delete(keyOrKeys: string | string[]): boolean {
     const keys = Array.isArray(keyOrKeys) ? keyOrKeys : [keyOrKeys];
-    let dict = this._dict;
+    let dict = this.dict;
     for (let i = 0; i < keys.length - 1; i++) {
       if (!dict[keys[i]]) return false;
       dict = dict[keys[i]];
@@ -27,14 +29,14 @@ export class NestedMap<V = any> implements Map<string, V> {
     return true;
   }
 
-  public forEach(callbackfn: (value: V, key: string, map: Map<string, V>) => void, thisArg?: any): void {
+  public forEach(callbackfn: (value: NestedMapValue<V>, key: string, map: Map<string, NestedMapValue<V>>) => void, thisArg?: any): void {
     const it = this.entries();
-    let next: IteratorResult<[string, V]>;
+    let next: IteratorResult<[string, NestedMapValue<V>]>;
     while (!(next = it.next()).done) callbackfn.call(thisArg, next.value[1], next.value[0], this);
   }
 
-  public get(...keys: string[]): V | undefined {
-    let dict = this._dict;
+  public get(...keys: string[]): NestedMapValue<V> | undefined {
+    let dict = this.dict;
     for (const key of keys) {
       if (dict[key] === undefined) return undefined;
       dict = dict[key];
@@ -46,10 +48,10 @@ export class NestedMap<V = any> implements Map<string, V> {
     return this.get(...keys) !== undefined;
   }
 
-  public set(key: string, value: V): this;
-  public set(keys: string[], value: V): this;
-  public set(keyOrKeys: string | string[], value: V): this {
-    let dict = this._dict;
+  public set(key: string, value: NestedMapValue<V>): this;
+  public set(keys: string[], value: NestedMapValue<V>): this;
+  public set(keyOrKeys: string | string[], value: NestedMapValue<V>): this {
+    let dict = this.dict;
     const keys = Array.isArray(keyOrKeys) ? keyOrKeys : [keyOrKeys];
     for (let i = 0; i < keys.length - 1; i++) {
       if (dict[keys[i]] === undefined) dict[keys[i]] = {};
@@ -59,28 +61,28 @@ export class NestedMap<V = any> implements Map<string, V> {
     return this;
   }
 
-  public entries(): IterableIterator<[string, V]> {
-    return map(new ObjectIterator(this._dict), ([key, value]) => [key, value] as [string, V]);
+  public entries(): IterableIterator<[string, NestedMapValue<V>]> {
+    return map(new ObjectIterator(this.dict), ([key, value]) => [key, value] as [string, NestedMapValue<V>]);
   }
 
   public keys(): IterableIterator<string> {
-    return map(new ObjectIterator(this._dict), ([k]) => k as string);
+    return map(new ObjectIterator(this.dict), ([k]) => k);
   }
 
   public values(): IterableIterator<V> {
-    return map(new ObjectIterator(this._dict), ([, v]) => v);
+    return map(new ObjectIterator(this.dict), ([, v]) => v);
   }
 
-  public [Symbol.iterator](): IterableIterator<[string, V]> {
+  public [Symbol.iterator](): IterableIterator<[string, NestedMapValue<V>]> {
     return this.entries();
   }
 
-  public toJSON(): Record<string, V> {
-    return this._dict;
+  public toJSON(): Record<string, NestedMapValue<V>> {
+    return this.dict;
   }
 
   public toString(): string {
-    return JSON.stringify(this._dict);
+    return JSON.stringify(this.dict);
   }
 }
 
