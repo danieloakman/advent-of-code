@@ -1,5 +1,5 @@
 import once from 'lodash/once';
-import { main, sum, deepCopy, isBetween } from '../../lib/utils';
+import { main, deepCopy, isBetween, add } from '../../lib/utils';
 import iter from 'iteragain/iter';
 import { downloadInputSync } from '../../lib/downloadInput';
 import count from 'iteragain/count';
@@ -201,7 +201,7 @@ export async function firstStar(lines = input()) {
       .filter(([cycle]) => cyclesToGet.includes(cycle))
       // .tap(console.log)
       .map(([cycle, signal]) => signal * (cycle + 1))
-      .reduce(sum)
+      .reduce(add)
   );
 }
 

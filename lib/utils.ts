@@ -156,6 +156,7 @@ export function subArrays<T>(array: T[], subArrayLength: number, canOverlap = tr
   );
 }
 
+/** @deprecated Use `add` instead. */
 // @ts-ignore
 export const sum = <T extends string | number>(a: T, b: T): T => a + b;
 
