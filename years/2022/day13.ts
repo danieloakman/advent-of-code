@@ -74,6 +74,6 @@ export async function secondStar() {
 
 main(module, async () => {
   equal(await firstStar(testInput), 13);
-  console.log('First star:', await firstStar());
+  console.log('First star:', await firstStar()); // TODO: answer too high
   console.log('Second star:', await secondStar());
 });
