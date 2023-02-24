@@ -1,20 +1,25 @@
 // https://adventofcode.com/2015/day/1
 
-import { readFileSync } from 'fs';
+import once from 'lodash/once';
+import { downloadInput } from '../../lib/downloadInput';
+import { main } from '../../lib/utils';
 
-const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8');
+const input = once(() => downloadInput('2015', '1'));
 
-// First Star:
-let floor = 0;
-let firstBasement = null;
-let charNum = 0;
-for (const char of input) {
-  charNum++;
-  if (char === '(') floor++;
-  else floor--;
-  if (floor === -1 && firstBasement === null) firstBasement = charNum;
-}
-console.log({ floor });
+main(module, async () => {
+  // First Star:
+  let floor = 0;
+  let firstBasement = null;
+  let charNum = 0;
+  for (const char of await input()) {
+    charNum++;
+    if (char === '(') floor++;
+    else floor--;
+    if (floor === -1 && firstBasement === null) firstBasement = charNum;
+  }
+  console.log({ floor });
 
-// Second Star:
-console.log({ firstBasement });
+  // Second Star:
+  console.log({ firstBasement });
+});
+
