@@ -6,7 +6,7 @@ import { BinaryLike, BinaryToTextEncoding, createHash } from 'crypto';
 import iter from 'iteragain/iter';
 import readline from 'readline';
 import _range from 'iteragain/range';
-import { Tuple } from 'iteragain/internal/types';
+import { Tuple } from 'iteragain/types';
 import ExtendedIterator from 'iteragain/internal/ExtendedIterator';
 import toArray from 'iteragain/toArray';
 import map from 'iteragain/map';
