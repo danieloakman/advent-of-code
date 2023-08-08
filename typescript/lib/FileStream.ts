@@ -1,5 +1,3 @@
-// @ts-check
-
 import { createReadStream, createWriteStream, WriteStream } from 'fs';
 import { MapStream, split, mapSync } from 'event-stream';
 import Event from 'events';
