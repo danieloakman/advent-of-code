@@ -95,7 +95,7 @@ const CHROME_EXE_PATH = once(() => {
 export function openChrome(): Promise<string> {
   return new Promise((resolve, reject) => {
     const chrome = spawn(CHROME_EXE_PATH(), ['--remote-debugging-port=9222']);
-    function onData(data) {
+    function onData(data: any) {
       data = data.toString();
       if (/listening on .+/.test(data)) resolve(data.match(/ws.+/)[0]);
       else if (/error/i.test(data)) reject(data.stack || data);
