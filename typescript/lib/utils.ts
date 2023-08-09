@@ -14,7 +14,7 @@ import { join } from 'path';
 import { deepStrictEqual as equal } from 'assert';
 
 export const tmpdir = once(() => {
-  const tmpdir = join(__dirname, '..', 'tmp');
+  const tmpdir = join(__dirname, '../..', 'tmp');
   if (!existsSync(tmpdir)) mkdirSync(tmpdir);
   return tmpdir;
 });
@@ -81,6 +81,7 @@ const CHROME_EXE_PATH = once(() => {
     'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
     'C:/Program Files/Google/Chrome/Application/chrome.exe',
     'C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Google Chrome.lnk',
+    '/usr/bin/google-chrome',
   ])
     if (existsSync(path)) return path;
   throw new Error('Could not find Chrome executable on this device.');
