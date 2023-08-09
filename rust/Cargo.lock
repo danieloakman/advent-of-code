@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "advent-of-code"
+name = "aoc"
 version = "0.0.1"
 dependencies = [
  "pico-args",

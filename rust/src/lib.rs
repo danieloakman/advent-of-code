@@ -5,6 +5,7 @@
  */
 use std::env;
 use std::fs;
+use std::fs::create_dir_all;
 
 pub mod helpers;
 
@@ -41,13 +42,19 @@ macro_rules! solve {
     }};
 }
 
-pub fn read_file(folder: &str, day: u8) -> String {
-    let cwd = env::current_dir().unwrap();
+// pub fn read_file(folder: &str, day: u8) -> String {
+//     let cwd = env::current_dir().unwrap();
 
-    let filepath = cwd.join("src").join(folder).join(format!("{day:02}.txt"));
+//     let filepath = cwd.join("src").join(folder).join(format!("{day:02}.txt"));
 
-    let f = fs::read_to_string(filepath);
-    f.expect("could not open input file")
+//     let f = fs::read_to_string(filepath);
+//     f.expect("could not open input file")
+// }
+
+pub fn read_input_file(year: u16, day: u8) -> String {
+    let path = input_path(year, day);
+    fs::read_to_string(path)
+        .expect(format!("Could not open input file for year {} day {}", year, day).as_str())
 }
 
 fn parse_time(val: &str, postfix: &str) -> f64 {
@@ -231,4 +238,23 @@ pub mod aoc_cli {
             .output()
             .map_err(|_| AocCliError::CommandNotCallable)
     }
+}
+
+pub fn input_path(year: u16, day: u8) -> std::path::PathBuf {
+    let year_str = year.to_string();
+    let day_str = day.to_string();
+
+    let input_dir = std::env::current_dir()
+        .map(|mut p| {
+            p.push("../../");
+            p.push("inputs");
+            p
+        })
+        .unwrap();
+
+    create_dir_all(&input_dir).unwrap();
+
+    return input_dir
+        .join("year_".to_string() + &year_str)
+        .join("day_".to_string() + &day_str + ".txt");
 }
