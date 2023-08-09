@@ -3,7 +3,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 fn input_path(year: u16, day: u16) -> PathBuf {
-    return Path::new("tmp").join(format!("{}-{}-input", year, day));
+    return Path::new("../tmp").join(format!("{}-{}-input", year, day));
 }
 
 fn main() {
