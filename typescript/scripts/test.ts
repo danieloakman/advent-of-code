@@ -2,7 +2,7 @@
 
 import { terminal } from 'terminal-kit';
 import { walkdirSync } from 'more-node-fs';
-import { join } from 'path';
+import { join, relative } from 'path';
 import { execSync } from 'child_process';
 import iter from 'iteragain/iter';
 
@@ -12,9 +12,11 @@ const files = iter(walkdirSync(join(__dirname, '../'), { ignore: /node_modules/i
   .sort((a, b) => b.stats.mtimeMs - a.stats.mtimeMs)
   .map(({ path }) => path.replace(process.cwd() + '\\', ''));
 
+const relativeFiles = files.map(file => relative(process.cwd(), file));
+
 terminal.grabInput({});
 terminal.on('key', function (key, _matches, _data) {
-  if (key === 'CTRL_C' || key === 'ESCAPE') {
+  if (key === 'CTRL_C' || key === 'ESCAPE' || key === 'q') {
     terminal.clear('Exited test mode.');
     process.exit();
   }
@@ -30,7 +32,7 @@ function selectedText (err, res) {
   } catch (err) {
     terminal.clear()(err.stack);
   }
-  terminal.gridMenu(files, selectedText);
+  terminal.gridMenu(relativeFiles, selectedText);
 }
 
-terminal.gridMenu(files, selectedText);
+terminal.gridMenu(relativeFiles, selectedText);
