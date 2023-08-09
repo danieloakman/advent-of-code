@@ -81,6 +81,7 @@ const CHROME_EXE_PATH = once(() => {
     'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
     'C:/Program Files/Google/Chrome/Application/chrome.exe',
     'C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Google Chrome.lnk',
+    '/mnt/c/Program Files/Google/Chrome/Application/chrome.exe',
     '/usr/bin/google-chrome',
   ])
     if (existsSync(path)) return path;
