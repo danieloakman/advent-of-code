@@ -8,6 +8,7 @@
     "vadimcn.vscode-lldb",
     "rust-lang.rust-analyzer",
     "serayuzgur.crates",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "tamasfe.even-better-toml"
   ]
 }
