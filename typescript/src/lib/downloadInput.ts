@@ -75,7 +75,7 @@ async function newSessionCookie() {
 }
 
 export function inputPath(year: string, day: string) {
-  return join(tmpdir(), `${year}-${day}-input`);
+  return join(tmpdir(), `${year}-${day}-input.txt`);
 }
 
 /** Downloads the puzzle input for the given `year` and `day`. Limits to collecting only one download at a time. */

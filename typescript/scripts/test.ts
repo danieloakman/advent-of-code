@@ -6,8 +6,8 @@ import { promisify } from 'util';
 const exec = promisify(_exec);
 import iter from 'iteragain/iter';
 import { ArgumentParser } from 'argparse';
-import { main } from '../lib/utils';
-import { Nullish } from '../lib/types';
+import { main } from '../src/lib/utils';
+import { Nullish } from '../src/lib/types';
 
 export const files = iter(walkdirSync(join(__dirname, '../'), { ignore: /node_modules/i }))
   .filterMap(file => (file.stats.isFile() && /day\d+\.[tj]s/.test(file.path) ? file : null))
