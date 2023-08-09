@@ -3,7 +3,7 @@
  * There is no need to edit this file unless you want to change template functionality.
  */
 use std::{
-    fs::{create_dir_all, File, OpenOptions, metadata},
+    fs::{File, OpenOptions},
     io::Write,
     process,
 };
@@ -62,17 +62,12 @@ fn main() {
     let year = args.year.to_string();
     let day = args.day.to_string();
 
-    // let input_path = format!("src/inputs/{day}.txt");
-    // let example_path = format!("src/examples/{day}.txt");
-    let year_dir = format!("src/years/{year}");
-    let module_path = format!("src/years/{year}/day{day}.rs");
+    let module_path = format!("src/bin/{year}-{day}.rs");
 
     if std::path::Path::new(&module_path).exists() {
         eprintln!("Module file already exists: \"{}\"", &module_path);
         process::exit(1);
     }
-
-    create_dir_all(year_dir).unwrap();
 
     let mut file = match safe_create_file(&module_path) {
         Ok(file) => file,
@@ -82,7 +77,10 @@ fn main() {
         }
     };
 
-    match file.write_all(MODULE_TEMPLATE.replace("DAY", &day.to_string()).as_bytes()) {
+    match file.write_all(MODULE_TEMPLATE
+        .replace("DAY", &day)
+        .replace("YEAR", &year)
+        .as_bytes()) {
         Ok(_) => {
             println!("Created module file \"{}\"", &module_path);
         }

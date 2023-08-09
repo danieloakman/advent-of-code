@@ -3,7 +3,6 @@
  * There is no need to edit this file unless you want to change template functionality.
  * Prefer `./helpers.rs` if you want to extract code from your solutions.
  */
-use std::env;
 use std::fs;
 use std::fs::create_dir_all;
 
@@ -16,7 +15,7 @@ pub const ANSI_RESET: &str = "\x1b[0m";
 #[macro_export]
 macro_rules! solve {
     ($part:expr, $solver:ident, $input:expr) => {{
-        use advent_of_code::{ANSI_BOLD, ANSI_ITALIC, ANSI_RESET};
+        use aoc::{ANSI_BOLD, ANSI_ITALIC, ANSI_RESET};
         use std::fmt::Display;
         use std::time::Instant;
 
@@ -241,22 +240,14 @@ pub mod aoc_cli {
 }
 
 pub fn input_path(year: u16, day: u8) -> std::path::PathBuf {
-    let year_str = year.to_string();
-    let day_str = day.to_string();
-
     let input_dir = std::env::current_dir()
         .map(|mut p| {
-            p.push("../../../");
-            p.push("tmp");
+            p = p.join("../tmp");
             p
         })
         .unwrap();
 
-    print!("input_dir: {:?}", input_dir);
-
     create_dir_all(&input_dir).unwrap();
 
-    return input_dir
-        .join("year".to_string() + &year_str)
-        .join("day".to_string() + &day_str + ".txt");
+    return input_dir.join(format!("{}-{}-input", year, day));
 }

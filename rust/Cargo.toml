@@ -10,3 +10,4 @@ authors = ["Daniel Oakman"]
 
 [dependencies]
 clap = { version = "4.3.21", features = ["derive"] }
+memoize = "0.4.0"
