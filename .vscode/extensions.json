@@ -1,18 +1,13 @@
 {
   "recommendations": [
-    "hbenl.vscode-mocha-test-adapter",
     "eamodio.gitlens",
     "dbaeumer.vscode-eslint",
     "ms-vscode.vscode-typescript-next",
-    "visualstudioexptteam.intellicode-api-usage-examples",
-    "rvest.vs-code-prettier-eslint",
-    "redhat.vscode-yaml",
     "gruntfuggly.todo-tree",
-    "compulim.vscode-mocha",
-    "hbenl.vscode-test-explorer",
-    "VisualStudioExptTeam.vscodeintellicode",
+    "visualstudioexptteam.vscodeintellicode",
     "vadimcn.vscode-lldb",
     "rust-lang.rust-analyzer",
-    "serayuzgur.crates"
+    "serayuzgur.crates",
+    "esbenp.prettier-vscode"
   ]
 }
