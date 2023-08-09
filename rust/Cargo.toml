@@ -1,16 +1,12 @@
 [package]
 name = "advent-of-code"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
-include = ["years/**/*.rs"]
+publish = false
+authors = ["Daniel Oakman]
+default-run = "advent_of_code"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-
-[lib]
-path = "years/2015/day1.rs"
-
-[[bin]]
-name = "day1"
-path = "years/2015/day1.rs"
+pico-args = "0.5.0"

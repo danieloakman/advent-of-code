@@ -10,6 +10,9 @@
     "gruntfuggly.todo-tree",
     "compulim.vscode-mocha",
     "hbenl.vscode-test-explorer",
-    "VisualStudioExptTeam.vscodeintellicode"
+    "VisualStudioExptTeam.vscodeintellicode",
+    "vadimcn.vscode-lldb",
+    "rust-lang.rust-analyzer",
+    "serayuzgur.crates"
   ]
 }
