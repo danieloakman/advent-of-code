@@ -9,4 +9,4 @@ authors = ["Daniel Oakman"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-pico-args = "0.5.0"
+clap = { version = "4.3.21", features = ["derive"] }

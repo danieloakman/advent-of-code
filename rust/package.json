@@ -2,11 +2,8 @@
   "name": "@advent-of-code/rust",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": ""
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC"
 }

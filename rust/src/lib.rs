@@ -246,15 +246,17 @@ pub fn input_path(year: u16, day: u8) -> std::path::PathBuf {
 
     let input_dir = std::env::current_dir()
         .map(|mut p| {
-            p.push("../../");
-            p.push("inputs");
+            p.push("../../../");
+            p.push("tmp");
             p
         })
         .unwrap();
 
+    print!("input_dir: {:?}", input_dir);
+
     create_dir_all(&input_dir).unwrap();
 
     return input_dir
-        .join("year_".to_string() + &year_str)
-        .join("day_".to_string() + &day_str + ".txt");
+        .join("year".to_string() + &year_str)
+        .join("day".to_string() + &day_str + ".txt");
 }
