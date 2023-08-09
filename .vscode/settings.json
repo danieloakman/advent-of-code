@@ -1,7 +1,5 @@
 {
-    "mochaExplorer.files": "test/**/*.ts",
-    "mochaExplorer.require": "ts-node/register",
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "[jsonc]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
