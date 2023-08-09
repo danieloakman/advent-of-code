@@ -33,9 +33,9 @@ main(module, async () => {
 }
 
 export function createFiles(year: string, day: string) {
-  const tsFilePath = join(__dirname, '../', `years/${year}/day${day}.ts`);
+  const tsFilePath = join(__dirname, `../src/years/${year}/day${day}.ts`);
   const fileInputPath = inputPath(year, day);
-  const dir = join(__dirname, '../', `years/${year}`);
+  const dir = join(__dirname, `../src/years/${year}`);
   if (!existsSync(dir)) mkdirSync(dir);
   if (!existsSync(tsFilePath)) writeFileSync(tsFilePath, fileStr(year, day));
   else console.log(`"${tsFilePath}" already exists.`);
@@ -52,7 +52,7 @@ export type AdventOfCodeFile = ReturnType<typeof createFiles>;
 main(module, async () => {
   // Get command line arguments:
   const { ArgumentParser } = await import('argparse');
-  const argparser = new ArgumentParser({ description: 'Sync-Local-and-Cloud' });
+  const argparser = new ArgumentParser({ description: 'Create a new Advent of Code file' });
   argparser.add_argument('year');
   argparser.add_argument('day');
   const { year, day } = argparser.parse_args();
