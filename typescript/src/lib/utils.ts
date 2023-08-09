@@ -14,7 +14,7 @@ import { join } from 'path';
 import { deepStrictEqual as equal } from 'assert';
 
 export const tmpdir = once(() => {
-  const tmpdir = join(__dirname, '../..', 'tmp');
+  const tmpdir = join(__dirname, '../../..', 'tmp');
   if (!existsSync(tmpdir)) mkdirSync(tmpdir);
   return tmpdir;
 });
