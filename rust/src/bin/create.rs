@@ -9,11 +9,15 @@ use std::{
     process,
 };
 
-const MODULE_TEMPLATE: &str = r###"pub fn part_one(input: &str) -> Option<u32> {
+const MODULE_TEMPLATE: &str = r###"// Input: https://adventofcode.com/YEAR/day/DAY/input
+
+/// See [YEAR/DAY](https://adventofcode.com/YEAR/day/DAY)
+pub fn part_one(input: &str) -> Option<i64> {
     None
 }
 
-pub fn part_two(input: &str) -> Option<u32> {
+/// See [YEAR/DAY](https://adventofcode.com/YEAR/day/DAY#part2)
+pub fn part_two(input: &str) -> Option<i64> {
     None
 }
 
