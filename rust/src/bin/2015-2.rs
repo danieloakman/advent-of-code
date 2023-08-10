@@ -37,7 +37,6 @@ impl Present {
         let a = vec[0];
         let b = vec[1];
         a + a + b + b
-
     }
 
     fn smallest_side_area(&self) -> u32 {
@@ -55,13 +54,11 @@ impl Present {
 
 /// See [2015/2](https://adventofcode.com/2015/day/2)
 pub fn part_one(input: &str) -> Option<i64> {
-    let p = Present {
-        width: 1,
-        length: 2,
-        height: 3,
-    };
-    let a = p.area();
-    None
+    aoc::get_input(2015, 2)
+        .split("\n")
+        .map(|s| Present::from(s))
+        .fold(0u32, |acc, p| acc + p.area())
+        
 }
 
 /// See [2015/2](https://adventofcode.com/2015/day/2#part2)
