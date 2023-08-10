@@ -240,5 +240,5 @@ pub fn input_path(year: u16, day: u8) -> std::path::PathBuf {
 
     create_dir_all(&input_dir).unwrap();
 
-    return input_dir.join(format!("{}-{}-input", year, day));
+    return input_dir.join(format!("{}-{}-input.txt", year, day));
 }
