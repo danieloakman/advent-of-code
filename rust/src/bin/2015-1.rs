@@ -38,7 +38,7 @@ pub fn part_two(input: &str) -> Option<u32> {
 }
 
 fn main() {
-    let input = &aoc::read_input_file(2015, 1);
+    let input = &aoc::get_input(2015, 1);
     aoc::solve!(1, part_one, input);
     aoc::solve!(2, part_two, input);
 }
@@ -49,13 +49,13 @@ mod tests {
 
     #[test]
     fn test_part_one() {
-        let input = aoc::read_input_file(2015, 1);
+        let input = aoc::get_input(2015, 1);
         assert_ne!(part_one(&input), None);
     }
 
     #[test]
     fn test_part_two() {
-        let input = aoc::read_input_file(2015, 1);
+        let input = aoc::get_input(2015, 1);
         assert_ne!(part_two(&input), None);
     }
 }

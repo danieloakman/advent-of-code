@@ -3,8 +3,8 @@
  * There is no need to edit this file unless you want to change template functionality.
  * Prefer `./helpers.rs` if you want to extract code from your solutions.
  */
-use std::fs;
 use std::fs::create_dir_all;
+use std::io::Read;
 
 pub mod helpers;
 
@@ -41,11 +41,11 @@ macro_rules! solve {
     }};
 }
 
-pub fn read_input_file(year: u16, day: u8) -> String {
-    let path = input_path(year, day);
-    fs::read_to_string(path)
-        .expect(format!("Could not open input file for year {} day {}", year, day).as_str())
-}
+// pub fn read_input_file(year: u16, day: u8) -> String {
+//     let path = input_path(year, day);
+//     fs::read_to_string(path)
+//         .expect(format!("Could not open input file for year {} day {}", year, day).as_str())
+// }
 
 fn parse_time(val: &str, postfix: &str) -> f64 {
     val.split(postfix).next().unwrap().parse().unwrap()
@@ -233,12 +233,46 @@ pub mod aoc_cli {
 pub fn input_path(year: u16, day: u8) -> std::path::PathBuf {
     let input_dir = std::env::current_dir()
         .map(|mut p| {
-            p = p.join("../tmp");
+            p = p.join("../tmp").canonicalize().unwrap();
             p
         })
         .unwrap();
 
     create_dir_all(&input_dir).unwrap();
 
-    return input_dir.join(format!("{}-{}-input.txt", year, day));
+    return input_dir.join(format!("{year}-{day}-input.txt"));
+}
+
+pub fn get_input(year: u16, day: u8) -> String {
+    let input_path = input_path(year, day);
+
+    // If input file already exists, return it:
+    if input_path.exists() {
+        return std::fs::read_to_string(input_path).unwrap();
+    }
+
+    let mut session_cookie_path = input_path.clone();
+    session_cookie_path.pop();
+    session_cookie_path.push("sessionCookie.txt");
+
+
+    let session_cookie =
+        std::fs::read_to_string(session_cookie_path).expect("Could not read sessionCookie.txt");
+
+    let client = reqwest::blocking::Client::new();
+    let mut res = client
+        .get(format!("https://adventofcode.com/{year}/day/{day}/input"))
+        .header("Cookie", format!("session={session_cookie}"))
+        .send()
+        .unwrap();
+
+    let mut body = String::new();
+    res
+        .read_to_string(&mut body)
+        .expect("Could not read response body.");
+
+    // Write response body to file:
+    std::fs::write(input_path, &body).unwrap();
+
+    return body;
 }

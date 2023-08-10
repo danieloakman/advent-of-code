@@ -22,7 +22,7 @@ pub fn part_two(input: &str) -> Option<i64> {
 }
 
 fn main() {
-    let input = &aoc::read_input_file(YEAR, DAY);
+    let input = &aoc::get_input(YEAR, DAY);
     aoc::solve!(1, part_one, input);
     aoc::solve!(2, part_two, input);
 }
@@ -33,13 +33,13 @@ mod tests {
 
     #[test]
     fn test_part_one() {
-        let input = aoc::read_input_file(YEAR, DAY);
+        let input = aoc::get_input(YEAR, DAY);
         assert_ne!(part_one(&input), None);
     }
 
     #[test]
     fn test_part_two() {
-        let input = aoc::read_input_file(YEAR, DAY);
+        let input = aoc::get_input(YEAR, DAY);
         assert_ne!(part_two(&input), None);
     }
 }

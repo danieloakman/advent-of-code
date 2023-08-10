@@ -11,3 +11,4 @@ default-run = "aoc"
 [dependencies]
 clap = { version = "4.3.21", features = ["derive"] }
 memoize = "0.4.0"
+reqwest = { version = "0.11.18", features = ["blocking"] }
