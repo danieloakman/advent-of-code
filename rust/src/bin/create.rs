@@ -2,12 +2,12 @@
  * This file contains template code.
  * There is no need to edit this file unless you want to change template functionality.
  */
+use clap::Parser;
 use std::{
     fs::{File, OpenOptions},
     io::Write,
     process,
 };
-use clap::Parser;
 
 const MODULE_TEMPLATE: &str = r###"pub fn part_one(input: &str) -> Option<u32> {
     None
@@ -44,8 +44,7 @@ mod tests {
 #[derive(clap::Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct CLIArgs {
-    year: u16,
-    day: u8,
+    year_day: String,
 }
 
 fn safe_create_file(path: &str) -> Result<File, std::io::Error> {
@@ -59,8 +58,13 @@ fn safe_create_file(path: &str) -> Result<File, std::io::Error> {
 fn main() {
     let args = CLIArgs::parse();
 
-    let year = args.year.to_string();
-    let day = args.day.to_string();
+    // Split year and day from args.year_day:
+    let dash_index = args
+        .year_day
+        .find('-')
+        .expect("Invalid year and day format. Expected \"YYYY-DD\"");
+    let (year, mut day) = args.year_day.split_at(dash_index);
+    day = &day[1..]; // remove leading dash.
 
     let module_path = format!("src/bin/{year}-{day}.rs");
 
@@ -77,10 +81,12 @@ fn main() {
         }
     };
 
-    match file.write_all(MODULE_TEMPLATE
-        .replace("DAY", &day)
-        .replace("YEAR", &year)
-        .as_bytes()) {
+    match file.write_all(
+        MODULE_TEMPLATE
+            .replace("DAY", &day)
+            .replace("YEAR", &year)
+            .as_bytes(),
+    ) {
         Ok(_) => {
             println!("Created module file \"{}\"", &module_path);
         }
@@ -111,8 +117,5 @@ fn main() {
     // }
 
     println!("---");
-    println!(
-        "🎄 Type `cargo solve {} {}` to run your solution.",
-        &year, &day
-    );
+    println!("🎄 Type `cargo solve {year}-{day}` to run your solution.",);
 }
