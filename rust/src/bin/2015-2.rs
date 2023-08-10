@@ -1,8 +1,12 @@
-pub fn part_one(input: &str) -> Option<u32> {
+// Input: https://adventofcode.com/2015/day/2/input
+
+/// See [2015/2](https://adventofcode.com/2015/day/2)
+pub fn part_one(input: &str) -> Option<i64> {
     None
 }
 
-pub fn part_two(input: &str) -> Option<u32> {
+/// See [2015/2](https://adventofcode.com/2015/day/2#part2)
+pub fn part_two(input: &str) -> Option<i64> {
     None
 }
 
