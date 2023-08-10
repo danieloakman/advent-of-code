@@ -76,11 +76,11 @@ fn main() {
 }
 
 #[cfg(test)]
-mod tests {
+mod tests_2015_2 {
     use super::*;
 
     #[test]
-    fn test_2015_2_part_1() {
+    fn test_part_one() {
         assert_eq!(Present::from("2x3x4").area(), 52);
         assert_eq!(Present::from("1x1x10").area(), 42);
         assert_eq!(Present::from("2x3x4").smallest_side_area(), 6);
@@ -91,7 +91,7 @@ mod tests {
     }
 
     // #[test]
-    // fn test_2015_2_part_2() {
+    // fn test_part_two() {
     //     let input = aoc::get_input(2015, 2);
     //     assert_ne!(part_two(&input), None);
     // }
