@@ -6,30 +6,33 @@ import { downloadInput, inputPath } from '../src/lib/downloadInput';
 import { main } from '../src/lib/utils';
 
 export function fileStr(year: string, day: string) {
-  return `import once from 'lodash/once';
-import { main } from '../../lib/utils';
+  return `
+import once from 'lodash/once';
+import { main, Solution, downloadInputSync } from '../../lib';
 import iter from 'iteragain/iter';
-import { downloadInputSync } from '../../lib/downloadInput';
 // import { ok as assert, deepStrictEqual as equal } from 'assert';
 
 /** @see https://adventofcode.com/${year}/day/${day}/input */
 export const input = once(() => downloadInputSync('${year}', '${day}').split(/[\\n\\r]+/));
 
-/** @see https://adventofcode.com/${year}/day/${day} First Star */
-export async function firstStar() {
-  //
+export const solution: Solution = {
+  /** @see https://adventofcode.com/${year}/day/${day} First Star */
+  firstStar: async () => {
+    return null;
+  },
+
+  /** @see https://adventofcode.com/${year}/day/${day}#part2 Second Star */
+  secondStar: async () => {
+    return null;
+  }
 }
 
-/** @see https://adventofcode.com/${year}/day/${day}#part2 Second Star */
-export async function secondStar() {
-  //
-}
 
 main(module, async () => {
-  console.log('First star:', await firstStar());
-  console.log('Second star:', await secondStar());
+  console.log('First star:', await solution.firstStar());
+  console.log('Second star:', await solution.secondStar());
 });
-`;
+`.trimStart();
 }
 
 export function createFiles(year: string, day: string) {
