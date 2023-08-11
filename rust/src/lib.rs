@@ -243,7 +243,7 @@ pub fn input_path(year: u16, day: u8) -> std::path::PathBuf {
 
     create_dir_all(&input_dir).unwrap();
 
-    return input_dir.join(format!("{year}-{day}-input.txt"));
+    input_dir.join(format!("{year}-{day}-input.txt"))
 }
 
 #[memoize]

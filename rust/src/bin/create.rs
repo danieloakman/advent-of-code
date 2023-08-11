@@ -87,8 +87,8 @@ fn main() {
 
     match file.write_all(
         MODULE_TEMPLATE
-            .replace("DAY", &day)
-            .replace("YEAR", &year)
+            .replace("DAY", day)
+            .replace("YEAR", year)
             .as_bytes(),
     ) {
         Ok(_) => {

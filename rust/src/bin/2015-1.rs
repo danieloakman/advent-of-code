@@ -30,11 +30,11 @@ fn solver(input: String) -> Option<Solution> {
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
-    return solver(input.to_string()).map(|s| s.floor as u32);
+    solver(input.to_string()).map(|s| s.floor as u32)
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    return solver(input.to_string()).map(|s| s.first_basement);
+    solver(input.to_string()).map(|s| s.first_basement)
 }
 
 fn main() {

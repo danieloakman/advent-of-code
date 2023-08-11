@@ -10,7 +10,7 @@ struct Present {
 
 impl Present {
     pub fn from(str: &str) -> Result<Present, ParseIntError> {
-        let mut parts = str.split("x");
+        let mut parts = str.split('x');
         Ok(Present {
             length: parts.next().unwrap().parse()?,
             width: parts.next().unwrap().parse()?,
@@ -39,7 +39,7 @@ impl Present {
     }
 
     fn smallest_side_area(&self) -> u32 {
-        vec![
+        *vec![
             self.length * self.width,
             self.width * self.height,
             self.height * self.length,
@@ -47,7 +47,6 @@ impl Present {
         .iter()
         .min()
         .unwrap()
-        .clone()
     }
 }
 
@@ -57,7 +56,7 @@ pub fn part_one(input: &str) -> Option<u32> {
         input
             .split('\n')
             .filter(|s| s.is_empty())
-            .map(|s| Present::from(s).expect(format!("Could not parse \"{s}\"").as_str()))
+            .map(|s| Present::from(s).unwrap_or_else(|_| panic!("Could not parse \"{s}\"")))
             .map(|p| p.area() + p.smallest_side_area())
             .sum(),
     )
@@ -69,7 +68,7 @@ pub fn part_two(input: &str) -> Option<i64> {
         input
             .split('\n')
             .filter(|s| s.is_empty())
-            .map(|s| Present::from(s).expect(format!("Could not parse \"{s}\"").as_str()))
+            .map(|s| Present::from(s).unwrap_or_else(|_| panic!("Could not parse \"{s}\"")))
             .map(|p| p.ribbon_length())
             .sum::<u32>() as i64,
     )
