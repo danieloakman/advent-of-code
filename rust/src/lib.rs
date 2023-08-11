@@ -6,6 +6,8 @@
 use std::fs::create_dir_all;
 use std::io::Read;
 
+use memoize::memoize;
+
 pub mod helpers;
 
 pub const ANSI_ITALIC: &str = "\x1b[3m";
@@ -121,7 +123,7 @@ mod tests {
     }
 }
 
-pub mod aoc_cli {
+/* pub mod aoc_cli {
     use std::{
         fmt::Display,
         fs::create_dir_all,
@@ -228,8 +230,9 @@ pub mod aoc_cli {
             .output()
             .map_err(|_| AocCliError::CommandNotCallable)
     }
-}
+} */
 
+#[memoize]
 pub fn input_path(year: u16, day: u8) -> std::path::PathBuf {
     let input_dir = std::env::current_dir()
         .map(|mut p| {
@@ -243,6 +246,7 @@ pub fn input_path(year: u16, day: u8) -> std::path::PathBuf {
     return input_dir.join(format!("{year}-{day}-input.txt"));
 }
 
+#[memoize]
 pub fn get_input(year: u16, day: u8) -> String {
     let input_path = input_path(year, day);
 
