@@ -55,7 +55,7 @@ pub fn part_one(input: &str) -> Option<u32> {
     Some(
         input
             .split('\n')
-            .filter(|s| s.is_empty())
+            .filter(|s| !s.is_empty())
             .map(|s| Present::from(s).unwrap_or_else(|_| panic!("Could not parse \"{s}\"")))
             .map(|p| p.area() + p.smallest_side_area())
             .sum(),
@@ -67,7 +67,7 @@ pub fn part_two(input: &str) -> Option<i64> {
     Some(
         input
             .split('\n')
-            .filter(|s| s.is_empty())
+            .filter(|s| !s.is_empty())
             .map(|s| Present::from(s).unwrap_or_else(|_| panic!("Could not parse \"{s}\"")))
             .map(|p| p.ribbon_length())
             .sum::<u32>() as i64,
@@ -92,7 +92,7 @@ mod tests_2015_2 {
         assert_eq!(Present::from("1x1x10").unwrap().smallest_side_area(), 1);
 
         let input = aoc::get_input(2015, 2);
-        let mut split = input.split('\n').filter(|s| s.is_empty());
+        let mut split = input.split('\n').filter(|s| !s.is_empty());
         let p = Present::from(split.next().unwrap()).unwrap();
         assert!(p.area() > 0);
 
