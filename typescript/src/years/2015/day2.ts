@@ -1,7 +1,7 @@
 // https://adventofcode.com/2015/day/2
 
 import once from 'lodash/once';
-import { Solution, downloadInput, downloadInputSync, main } from '../../lib';
+import { Solution, downloadInputSync, main } from '../../lib';
 
 class Present {
   constructor(public length: number, public width: number, public height: number) {}
