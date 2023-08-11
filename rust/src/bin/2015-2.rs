@@ -1,22 +1,27 @@
 // Input: https://adventofcode.com/2015/day/2/input
 
+use std::num::ParseIntError;
+
 struct Present {
     length: u32,
     width: u32,
     height: u32,
 }
 
+// fn parse_u32(s: &str) -> u32 {
+//     s.parse::<u32>()
+//         .or_else(|_| Ok::<u32, u32>(0u32))
+//         .expect(format!("Could not parse \"{s}\" as u32").as_str())
+// }
+
 impl Present {
-    pub fn from(str: &str) -> Present {
+    pub fn from(str: &str) -> Result<Present, ParseIntError> {
         let mut parts = str.split("x");
-        let length = parts.next().unwrap().parse::<u32>().unwrap();
-        let width = parts.next().unwrap().parse::<u32>().unwrap();
-        let height = parts.next().unwrap().parse::<u32>().unwrap();
-        Present {
-            length,
-            width,
-            height,
-        }
+        Ok(Present {
+            length: parts.next().unwrap().parse()?,
+            width: parts.next().unwrap().parse()?,
+            height: parts.next().unwrap().parse()?,
+        })
     }
 
     fn area(&self) -> u32 {
@@ -53,11 +58,15 @@ impl Present {
 }
 
 /// See [2015/2](https://adventofcode.com/2015/day/2)
-pub fn part_one(input: &str) -> Option<i64> {
-    aoc::get_input(2015, 2)
-        .split("\n")
-        .map(|s| Present::from(s))
-        .fold(0u32, |acc, p| acc + p.area())
+pub fn part_one(input: &str) -> Option<u32> {
+    Some(
+        input
+            .split("\n")
+            .filter(|s| s.len() > 0)
+            .map(|s| Present::from(s).expect(format!("Could not parse \"{s}\"").as_str()))
+            .map(|p| p.area() + p.smallest_side_area())
+            .sum(),
+    )
 }
 
 /// See [2015/2](https://adventofcode.com/2015/day/2#part2)
@@ -77,11 +86,19 @@ mod tests_2015_2 {
 
     #[test]
     fn test_part_one() {
-        assert_eq!(Present::from("2x3x4").area(), 52);
-        assert_eq!(Present::from("1x1x10").area(), 42);
-        assert_eq!(Present::from("2x3x4").smallest_side_area(), 6);
-        assert_eq!(Present::from("1x1x10").smallest_side_area(), 1);
+        assert_eq!(Present::from("2x3x4").unwrap().area(), 52);
+        assert_eq!(Present::from("1x1x10").unwrap().area(), 42);
+        assert_eq!(Present::from("2x3x4").unwrap().smallest_side_area(), 6);
+        assert_eq!(Present::from("1x1x10").unwrap().smallest_side_area(), 1);
 
+        let input = aoc::get_input(2015, 2);
+        let mut split = input.split("\n").filter(|s| s.len() > 0);
+        let p = Present::from(split.next().unwrap()).unwrap();
+        assert!(p.area() > 0);
+
+        split
+            .map(Present::from)
+            .for_each(|p| assert!(p.unwrap().area() > 0));
         // let input = aoc::get_input(2015, 2);
         // assert_ne!(part_one(&input), None);
     }
