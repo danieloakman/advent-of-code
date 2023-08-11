@@ -79,7 +79,10 @@ export function inputPath(year: string, day: string) {
 }
 
 /** Downloads the puzzle input for the given `year` and `day`. Limits to collecting only one download at a time. */
-export const downloadInput = limitConcurrentCalls(async (year: string, day: string): Promise<string> => {
+export const downloadInput = limitConcurrentCalls(async (year: string | number, day: string | number): Promise<string> => {
+  year = year.toString();
+  day = day.toString();
+
   const path = inputPath(year, day);
   if (existsSync(path)) return readFile(path, 'utf8').then(fileStr => fileStr.trimEnd()); // Return cached input
 
