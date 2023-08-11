@@ -272,5 +272,5 @@ pub fn get_input(year: u16, day: u8) -> String {
     // Write response body to file:
     std::fs::write(input_path, &body).unwrap();
 
-    return body;
+    return body.trim().to_string();
 }
