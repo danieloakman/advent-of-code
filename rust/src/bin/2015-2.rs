@@ -58,7 +58,6 @@ pub fn part_one(input: &str) -> Option<i64> {
         .split("\n")
         .map(|s| Present::from(s))
         .fold(0u32, |acc, p| acc + p.area())
-        
 }
 
 /// See [2015/2](https://adventofcode.com/2015/day/2#part2)

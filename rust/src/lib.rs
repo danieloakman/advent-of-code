@@ -255,7 +255,6 @@ pub fn get_input(year: u16, day: u8) -> String {
     session_cookie_path.pop();
     session_cookie_path.push("sessionCookie.txt");
 
-
     let session_cookie =
         std::fs::read_to_string(session_cookie_path).expect("Could not read sessionCookie.txt");
 
@@ -267,8 +266,7 @@ pub fn get_input(year: u16, day: u8) -> String {
         .unwrap();
 
     let mut body = String::new();
-    res
-        .read_to_string(&mut body)
+    res.read_to_string(&mut body)
         .expect("Could not read response body.");
 
     // Write response body to file:
