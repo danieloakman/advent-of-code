@@ -1,6 +1,7 @@
 // https://adventofcode.com/2015/day/2
 
-import { readFileSync } from 'fs';
+import once from 'lodash/once';
+import { Solution, downloadInput, downloadInputSync, main } from '../../lib';
 
 class Present {
   constructor(public length: number, public width: number, public height: number) {}
@@ -28,12 +29,26 @@ class Present {
   }
 }
 
-const presents = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
-  .split(/[\n\r]+/)
-  .map(line => new Present(...(line.split('x').map(Number) as [number, number, number])));
+const presents = once(() =>
+  downloadInputSync('2015', '2')
+    .split(/[\n\r]+/)
+    .map(line => new Present(...(line.split('x').map(Number) as [number, number, number]))),
+);
 
-// First Star:
-console.log({ squareFeetOfWrappingPaper: presents.reduce((p, box) => p + box.area, 0) });
+export const solution: Solution = {
+  firstStar: async () => {
+    return presents().reduce((p, box) => p + box.area, 0);
+  },
 
-// Second Star:
-console.log({ ribbonLength: presents.reduce((p, box) => p + box.ribbonLength, 0) });
+  secondStar: async () => {
+    return presents().reduce((p, box) => p + box.ribbonLength, 0);
+  }
+};
+
+main(module, async () => {
+  // First Star:
+  console.log('First star:', await solution.firstStar());
+
+  // Second Star:
+  console.log('Second star:', await solution.secondStar());
+});
