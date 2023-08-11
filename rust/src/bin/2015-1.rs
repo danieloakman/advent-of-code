@@ -34,7 +34,7 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    return solver(input.to_string()).map(|s| s.first_basement as u32);
+    return solver(input.to_string()).map(|s| s.first_basement);
 }
 
 fn main() {
