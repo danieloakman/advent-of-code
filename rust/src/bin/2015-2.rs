@@ -8,12 +8,6 @@ struct Present {
     height: u32,
 }
 
-// fn parse_u32(s: &str) -> u32 {
-//     s.parse::<u32>()
-//         .or_else(|_| Ok::<u32, u32>(0u32))
-//         .expect(format!("Could not parse \"{s}\" as u32").as_str())
-// }
-
 impl Present {
     pub fn from(str: &str) -> Result<Present, ParseIntError> {
         let mut parts = str.split("x");
@@ -29,7 +23,7 @@ impl Present {
     }
 
     fn ribbon_length(&self) -> u32 {
-        self.smallest_side_area() + self.volume()
+        self.smallest_perimeter() + self.volume()
     }
 
     fn volume(&self) -> u32 {
@@ -61,8 +55,8 @@ impl Present {
 pub fn part_one(input: &str) -> Option<u32> {
     Some(
         input
-            .split("\n")
-            .filter(|s| s.len() > 0)
+            .split('\n')
+            .filter(|s| s.is_empty())
             .map(|s| Present::from(s).expect(format!("Could not parse \"{s}\"").as_str()))
             .map(|p| p.area() + p.smallest_side_area())
             .sum(),
@@ -71,7 +65,14 @@ pub fn part_one(input: &str) -> Option<u32> {
 
 /// See [2015/2](https://adventofcode.com/2015/day/2#part2)
 pub fn part_two(input: &str) -> Option<i64> {
-    None
+    Some(
+        input
+            .split('\n')
+            .filter(|s| s.is_empty())
+            .map(|s| Present::from(s).expect(format!("Could not parse \"{s}\"").as_str()))
+            .map(|p| p.ribbon_length())
+            .sum::<u32>() as i64,
+    )
 }
 
 fn main() {
@@ -92,20 +93,18 @@ mod tests_2015_2 {
         assert_eq!(Present::from("1x1x10").unwrap().smallest_side_area(), 1);
 
         let input = aoc::get_input(2015, 2);
-        let mut split = input.split("\n").filter(|s| s.len() > 0);
+        let mut split = input.split('\n').filter(|s| s.is_empty());
         let p = Present::from(split.next().unwrap()).unwrap();
         assert!(p.area() > 0);
 
         split
             .map(Present::from)
             .for_each(|p| assert!(p.unwrap().area() > 0));
-        // let input = aoc::get_input(2015, 2);
-        // assert_ne!(part_one(&input), None);
     }
 
-    // #[test]
-    // fn test_part_two() {
-    //     let input = aoc::get_input(2015, 2);
-    //     assert_ne!(part_two(&input), None);
-    // }
+    #[test]
+    fn test_part_two() {
+        assert_eq!(Present::from("2x3x4").unwrap().ribbon_length(), 34);
+        assert_eq!(Present::from("1x1x10").unwrap().ribbon_length(), 14);
+    }
 }
