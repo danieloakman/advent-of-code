@@ -82,6 +82,7 @@ name = "aoc"
 version = "0.0.1"
 dependencies = [
  "clap",
+ "lazy_static",
  "md5",
  "memoize",
  "reqwest",
