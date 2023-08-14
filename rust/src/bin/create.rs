@@ -31,13 +31,11 @@ fn main() {
 mod tests_YEAR_DAY {
     use super::*;
 
-    // #[test]
-    // fn test_part_one() {
-    // }
-
-    // #[test]
-    // fn test_part_two() {
-    // }
+    #[test]
+    #[ignore]
+    fn test_part_one() {
+        unimplemented!("");
+    }
 }
 "###;
 
