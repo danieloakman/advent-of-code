@@ -8,7 +8,7 @@ import { main } from '../src/lib/utils';
 export function fileStr(year: string, day: string) {
   return `
 import once from 'lodash/once';
-import { main, Solution, downloadInputSync } from '../../lib';
+import { main, Solution, solve, downloadInputSync } from '../../lib';
 import iter from 'iteragain/iter';
 // import { ok as assert, deepStrictEqual as equal } from 'assert';
 
@@ -28,10 +28,7 @@ export const solution: Solution = {
 }
 
 
-main(module, async () => {
-  console.log('First star:', await solution.firstStar());
-  console.log('Second star:', await solution.secondStar());
-});
+main(module, () => solve(solution));
 `.trimStart();
 }
 
