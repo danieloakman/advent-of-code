@@ -14,11 +14,11 @@ export class Solution<FirstStar extends SolutionMethod, SecondStar extends Solut
   async solve() {
     const timer = new Timer();
 
-    console.log('First star:', await this.firstStar(), timer.elapsedPretty());
+    console.log('🎄 First star:', await this.firstStar(), timer.elapsedPretty());
 
     timer.reset();
 
-    console.log('Second star:', await this.secondStar(), timer.elapsedPretty());
+    console.log('🎄 Second star:', await this.secondStar(), timer.elapsedPretty());
   }
 }
 
