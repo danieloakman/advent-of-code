@@ -29,3 +29,16 @@
 //         assert_eq!(counter, 1);
 //     }
 // }
+
+pub fn it_len<T>(iter: impl Iterator<Item = T>) -> u64 {
+    iter.fold(0, |acc, _| acc + 1)
+}
+
+pub fn pairwise<T>(iter: impl Iterator<Item = T>) -> impl Iterator<Item = (T, T)> where T: Clone {
+    let mut iter = iter.peekable();
+    std::iter::from_fn(move || {
+        let current = iter.next()?;
+        let next = iter.peek()?;
+        Some((current, next.clone()))
+    })
+}
