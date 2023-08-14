@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 const isNice = (() => {
   const notAllowedStrings = ['ab', 'cd', 'pq', 'xy'];
   const vowels = 'aeiou';
-  return str => {
+  return (str: string): boolean => {
     if (notAllowedStrings.some(s => str.includes(s))) return false;
     let hasDouble = false;
     let vowelsCount = 0;
@@ -25,11 +25,7 @@ console.log({ numOfNiceStrings: input.filter(isNice).length });
 
 // Second Star:
 
-/**
- * @param {string} str
- * @returns {boolean}
- */
-function isNice2(str) {
+function isNice2(str: string): boolean {
   const map = {};
   let contains2Pairs = false;
   let containsRepeat = false;
