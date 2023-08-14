@@ -9,6 +9,8 @@
     "rust-lang.rust-analyzer",
     "serayuzgur.crates",
     "esbenp.prettier-vscode",
-    "tamasfe.even-better-toml"
+    "tamasfe.even-better-toml",
+    "ms-vscode.cpptools",
+    "kosz78.nim"
   ]
 }
