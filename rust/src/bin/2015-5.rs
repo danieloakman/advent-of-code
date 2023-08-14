@@ -81,14 +81,14 @@ pub fn part_one(input: &str) -> Option<u64> {
 }
 
 /// See [2015/5](https://adventofcode.com/2015/day/5#part2)
-pub fn part_two(_input: &str) -> Option<u64> {
-    todo!("Part 2 answer is wrong");
-    // Some(it_len(
-    //     input
-    //         .split('\n')
-    //         .filter(|s| !s.is_empty())
-    //         .filter(|s| is_nice_2(s)))
-    // )
+pub fn part_two(input: &str) -> Option<u64> {
+    // TODO Part 2 answer is wrong
+    Some(it_len(
+        input
+            .split('\n')
+            .filter(|s| !s.is_empty())
+            .filter(|s| is_nice_2(s)))
+    )
 }
 
 fn main() {
