@@ -12,8 +12,6 @@ import toArray from 'iteragain/toArray';
 import map from 'iteragain/map';
 import { join } from 'path';
 import { deepStrictEqual as equal } from 'assert';
-import { Solution } from './types';
-import Timer from './Timer';
 
 export const tmpdir = once(() => {
   const tmpdir = join(__dirname, '../../..', 'tmp');
@@ -441,14 +439,4 @@ equal(spiralRange(2, 2).toArray(), [[0, 0], [1, 0], [1, 1], [0, 1]]);
 
 export function isBetween(value: number, minInclusive: number, maxInclusive: number): boolean {
   return value >= minInclusive && value <= maxInclusive;
-}
-
-export async function solve(solution: Solution) {
-  const timer = new Timer();
-
-  console.log('First star:', await solution.firstStar(), `(elapsed ${timer.elapsed()}ms)`);
-
-  timer.reset();
-
-  console.log('Second star:', await solution.secondStar(), `(elapsed ${timer.elapsed()}ms)`);
 }

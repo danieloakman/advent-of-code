@@ -4,6 +4,7 @@ export * from './Graph';
 export * from './IncrementorMap';
 export * from './Map2D';
 export * from './NestedMap';
+export * from './Solution';
 export * from './Timer';
 export * from './types';
 export * from './utils';
