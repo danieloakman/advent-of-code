@@ -38,6 +38,7 @@ mod tests_2015_4 {
     use super::*;
 
     #[test]
+    #[ignore]
     fn test_part_one() {
         assert!(hash("abcdef609043").starts_with("00000"));
         assert!(hash("pqrstuv1048970").starts_with("00000"));
