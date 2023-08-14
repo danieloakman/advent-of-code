@@ -1,26 +1,32 @@
 #include <stdio.h>
+#include <string.h>
 
 void hi()
 {
   printf("%s", "hi");
 }
 
-struct String
-{
-  char *str;
-  // int len;
-};
+// struct String
+// {
+//   char *str;
+//   // int len;
+// };
 
-String create_string(char *str){
-  struct String s;
-  s.str = str;
-  return s;
-}
+// struct String String__new(char *str)
+// {
+//   struct String s = {str};
+//   return s;
+// }
+
+// void String__print(struct String *s)
+// {
+//   printf("%s\n", s->str);
+// }
 
 int main()
 {
-  struct String path;
-  path.str = "../tmp/2015-1-input.txt";
+  // struct String path = String__new("../tmp/2015-1-input.txt");
+  // String__print(&path);
 
   FILE *fptr;
 
