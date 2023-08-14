@@ -12,12 +12,12 @@ use std::{
 const MODULE_TEMPLATE: &str = r###"// Input: https://adventofcode.com/YEAR/day/DAY/input
 
 /// See [YEAR/DAY](https://adventofcode.com/YEAR/day/DAY)
-pub fn part_one(input: &str) -> Option<i64> {
+pub fn part_one(_input: &str) -> Option<i64> {
     None
 }
 
 /// See [YEAR/DAY](https://adventofcode.com/YEAR/day/DAY#part2)
-pub fn part_two(input: &str) -> Option<i64> {
+pub fn part_two(_input: &str) -> Option<i64> {
     None
 }
 
@@ -31,17 +31,13 @@ fn main() {
 mod tests_YEAR_DAY {
     use super::*;
 
-    #[test]
-    fn test_part_one() {
-        let input = aoc::get_input(YEAR, DAY);
-        assert_ne!(part_one(&input), None);
-    }
+    // #[test]
+    // fn test_part_one() {
+    // }
 
-    #[test]
-    fn test_part_two() {
-        let input = aoc::get_input(YEAR, DAY);
-        assert_ne!(part_two(&input), None);
-    }
+    // #[test]
+    // fn test_part_two() {
+    // }
 }
 "###;
 
