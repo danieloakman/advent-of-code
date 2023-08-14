@@ -35,20 +35,14 @@ const presents = once(() =>
     .map(line => new Present(...(line.split('x').map(Number) as [number, number, number]))),
 );
 
-export const solution: Solution = {
-  firstStar: async () => {
+export const solution = new Solution(
+  async () => {
     return presents().reduce((p, box) => p + box.area, 0);
   },
 
-  secondStar: async () => {
+  async () => {
     return presents().reduce((p, box) => p + box.ribbonLength, 0);
   }
-};
+);
 
-main(module, async () => {
-  // First Star:
-  console.log('First star:', await solution.firstStar());
-
-  // Second Star:
-  console.log('Second star:', await solution.secondStar());
-});
+main(module, () => solution.solve());
