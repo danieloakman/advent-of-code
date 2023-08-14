@@ -40,7 +40,7 @@ fn is_nice(str: &str) -> bool {
     false
 }
 
-fn is_nice_2(input: &str) -> bool {
+fn is_nice_2(_input: &str) -> bool {
     todo!("Implement is_nice_2");
 }
 

@@ -1,5 +1,5 @@
 // Input: https://adventofcode.com/2015/day/4/input
-use md5;
+
 
 fn hash(input: &str) -> String {
     format!("{:x}", md5::compute(input))
