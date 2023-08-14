@@ -10,5 +10,8 @@
   "[c]": {
     "editor.defaultFormatter": "ms-vscode.cpptools"
   },
-  "rust-analyzer.linkedProjects": ["./rust/Cargo.toml"]
+  "rust-analyzer.linkedProjects": ["./rust/Cargo.toml"],
+  "files.associations": {
+    ".env*": "dotenv"
+  }
 }
