@@ -99,7 +99,10 @@ export const downloadInput = limitConcurrentCalls(async (year: string | number, 
   return input;
 }, 1);
 
-export function downloadInputSync(year: string, day: string): string {
+export function downloadInputSync(year: string | number, day: string | number): string {
+  year = year.toString();
+  day = day.toString();
+
   const path = inputPath(year, day);
   if (existsSync(path)) return readFileSync(path, 'utf-8').trimEnd(); // Return cached input
 
