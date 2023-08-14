@@ -42,3 +42,11 @@ pub fn pairwise<T>(iter: impl Iterator<Item = T>) -> impl Iterator<Item = (T, T)
         Some((current, next.clone()))
     })
 }
+
+pub fn char_at(string: &str, index: usize) -> Option<&str> {
+    if index < string.len() {
+        Some(&string[index..index + 1])
+    } else {
+        None
+    }
+}
