@@ -33,8 +33,8 @@ mod tests_YEAR_DAY {
 
     #[test]
     #[ignore]
-    fn test_part_one() {
-        unimplemented!("");
+    fn test_examples() {
+        unimplemented!("No unit tests for examples");
     }
 }
 "###;
