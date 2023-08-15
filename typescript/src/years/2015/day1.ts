@@ -1,7 +1,7 @@
 // https://adventofcode.com/2015/day/1
 
 import once from 'lodash/once';
-import { Solution } from '../../lib';
+import { Solution } from '@lib';
 
 
 const solve = once((input: string) => {

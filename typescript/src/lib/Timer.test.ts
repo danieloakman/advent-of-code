@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sleep, Timer } from './';
+import { sleep, Timer } from '@lib';
 
 describe('Timer', () => {
   it('ms', async () => {

@@ -2,9 +2,10 @@
   "name": "@advent-of-code/typescript",
   "version": "0.0.1",
   "scripts": {
-    "solve": "ts-node src/solve.ts",
+    "tsn": "node -r ts-node/register -r tsconfig-paths/register",
+    "solve": "tsn scripts/solve.ts",
     "test": "vitest",
-    "create": "ts-node scripts/create.ts",
+    "create": "tsn scripts/create.ts",
     "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "prettier --write \"./**/*.ts\""
   },
@@ -17,7 +18,6 @@
     "@types/geometric": "^2.5.0",
     "@types/lodash": "^4.14.197",
     "@types/node": "^18.17.5",
-    "@types/prettier": "^3.0.0",
     "@types/terminal-kit": "^2.5.1",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
@@ -37,7 +37,9 @@
     "rxjs": "^7.8.1",
     "terminal-kit": "^3.0.0",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.6",
+    "vite-tsconfig-paths": "^4.2.0",
     "vitest": "^0.34.1"
   }
 }
