@@ -469,3 +469,14 @@ export const newLine = /[\n\r]+/;
 export function iife<T extends AnyFunc>(fn: T): ReturnType<T> {
   return fn();
 }
+
+/** TODO */
+export async function tests(
+  cb: (describe: import('vitest').SuiteAPI, it: import('vitest').TestAPI, expect: import('vitest').ExpectStatic) => void,
+) {
+  console.log(process.argv);
+  if (process.argv.some(arg => arg.includes('test'))) {
+    const { describe, it, expect } = await import('vitest');
+    cb(describe, it, expect);
+  }
+}
