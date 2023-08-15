@@ -1,23 +1,19 @@
 // https://adventofcode.com/2015/day/6
-
-import { Solution, downloadInputSync, main } from '@lib';
-import once from 'lodash/once';
+import { Solution, matches, newLine } from '@lib';
 
 type Point = [x: number, y: number];
 
-const input = once(() =>
-  downloadInputSync(2015, 6)
-    .split(/[\n\r]+/)
-    .map(str => {
-      const cmd = str.match(/^\D+/)[0].trim();
-      const [start, end] = str
-        .replace(cmd, '')
-        .trim()
-        .split(' through ')
-        .map(nums => nums.split(',').map(Number) as Point);
-      return { cmd, start, end };
-    }),
-);
+const mapInput = (input: string) =>
+  matches(newLine, input).map(match => {
+    const str = match[0];
+    const cmd = str.match(/^\D+/)[0].trim();
+    const [start, end] = str
+      .replace(cmd, '')
+      .trim()
+      .split(' through ')
+      .map(nums => nums.split(',').map(Number) as Point);
+    return { cmd, start, end };
+  });
 
 function* lightsWithin(start: Point, end: Point) {
   for (let x = start[0]; x <= end[0]; x++) {
@@ -32,9 +28,11 @@ function countLights(lights: number[][]) {
 }
 
 export const solution = new Solution(
-  async () => {
+  2015,
+  6,
+  async input => {
     const lights: number[][] = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
-    for (const { cmd, start, end } of input()) {
+    for (const { cmd, start, end } of mapInput(input)) {
       for (const [x, y] of lightsWithin(start, end)) {
         if (cmd === 'turn on') lights[y][x] = 1;
         else if (cmd === 'turn off') lights[y][x] = 0;
@@ -43,9 +41,9 @@ export const solution = new Solution(
     }
     return countLights(lights);
   },
-  async () => {
+  async input => {
     const lights: number[][] = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
-    for (const { cmd, start, end } of input()) {
+    for (const { cmd, start, end } of mapInput(input)) {
       for (const [x, y] of lightsWithin(start, end)) {
         if (cmd === 'turn on') lights[y][x] += 1;
         else if (cmd === 'turn off') lights[y][x] = Math.max(lights[y][x] - 1, 0);
@@ -56,4 +54,4 @@ export const solution = new Solution(
   },
 );
 
-main(module, () => solution.solve());
+solution.main(module);
