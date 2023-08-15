@@ -1,12 +1,11 @@
 {
   "name": "advent-of-code",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "<https://adventofcode.com>",
   "type": "commonjs",
   "scripts": {
     "test": "ts-node scripts/test.ts",
     "create": "ts-node scripts/create.ts",
-    "mocha": "ts-mocha test/test-mocha.ts",
     "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "prettier-eslint --ignore .gitignore --write \"./src/**/*\""
   },

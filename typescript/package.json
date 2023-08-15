@@ -1,12 +1,9 @@
 {
   "name": "@advent-of-code/typescript",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
   "scripts": {
     "test": "ts-node scripts/test.ts",
     "create": "ts-node scripts/create.ts",
-    "mocha": "ts-mocha test/test-mocha.ts",
     "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "prettier-eslint --ignore .gitignore --write \"./src/**/*\""
   },
