@@ -12,6 +12,7 @@ import toArray from 'iteragain/toArray';
 import map from 'iteragain/map';
 import { join } from 'path';
 import { deepStrictEqual as equal } from 'assert';
+import { AnyFunc } from './types';
 
 export const tmpdir = once(() => {
   const tmpdir = join(__dirname, '../../..', 'tmp');
@@ -196,7 +197,10 @@ export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
 export function groupByProps<T>(objects: T[], props: string[]): { [key: string]: T[] } {
   const groups = {};
   for (const object of objects) {
-    const propsStr = props.length > 1 ? props.reduce((p, c) => (object as any)[p] + ',' + (object as any)[c]) : (object as any)[props[0]];
+    const propsStr =
+      props.length > 1
+        ? props.reduce((p, c) => (object as any)[p] + ',' + (object as any)[c])
+        : (object as any)[props[0]];
     if (!(groups as any)[propsStr]) (groups as any)[propsStr] = [object];
     else (groups as any)[propsStr].push(object);
   }
@@ -461,3 +465,7 @@ export function isBetween(value: number, minInclusive: number, maxInclusive: num
 
 /** Matches a new line character. Useful for splitting the AOC input into lines. */
 export const newLine = /[\\n\\r]+/;
+
+export function iife<T extends AnyFunc>(fn: T): ReturnType<T> {
+  return fn();
+}
