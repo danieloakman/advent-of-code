@@ -1,9 +1,6 @@
 // https://adventofcode.com/2015/day/3
 
-import { downloadInputSync, main, Solution } from '../../lib';
-import once from 'lodash/once';
-
-const input = once(() => downloadInputSync(2015, 3).trim());
+import { newLine, Solution } from '@lib';
 
 class Houses {
   readonly positions: Record<string, any> = {};
@@ -17,10 +14,12 @@ class Houses {
 }
 
 export const solution = new Solution(
-  async function firstStar() {
+  2015,
+  3,
+  async function firstStar(input) {
     const santa = { x: 0, y: 0 };
     const houses = new Houses();
-    for (const move of input()) {
+    for (const move of input.split(newLine)) {
       if (move === '^') santa.y--;
       else if (move === 'v') santa.y++;
       else if (move === '>') santa.x++;
@@ -30,12 +29,13 @@ export const solution = new Solution(
     // console.log({ houses: Object.keys(houses.positions).length });
     return Object.keys(houses.positions).length;
   },
-  async function secondStar() {
+  async function secondStar(input) {
+    const lines = input.split(newLine);
     const santa = { x: 0, y: 0 };
     const roboSanta = { x: 0, y: 0 };
     const houses = new Houses();
-    for (let i = 0; i < input().length; i++) {
-      const move = input()[i];
+    for (let i = 0; i < lines.length; i++) {
+      const move = lines[i];
       const s = i % 2 === 0 ? santa : roboSanta;
       if (move === '^') s.y--;
       else if (move === 'v') s.y++;
@@ -47,4 +47,4 @@ export const solution = new Solution(
   }
 );
 
-main(module, () => solution.solve());
+solution.main(module);

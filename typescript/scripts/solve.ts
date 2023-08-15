@@ -20,7 +20,7 @@ const relativeFiles = files.map(file => relative(process.cwd(), file));
 export async function test(year: number | string, day: number | string, { log = false }: { log?: boolean } = {}) {
   try {
     const result = await exec(
-      `npx ts-node --transpileOnly ${join(__dirname, '../src/years', year.toString(), `day${day.toString()}.ts`)}`,
+      `pnpm tsn ${join(__dirname, '../src/years', year.toString(), `day${day.toString()}.ts`)}`,
     );
     if (log && result.stderr) terminal.error(result.stderr);
     if (log && result.stdout) terminal(result.stdout);

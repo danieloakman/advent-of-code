@@ -1,21 +1,23 @@
 // https://adventofcode.com/2015/day/6
 
-import { Solution, downloadInputSync, main } from '../../lib';
+import { Solution, downloadInputSync, main } from '@lib';
 import once from 'lodash/once';
 
 type Point = [x: number, y: number];
 
-const input = once(() =>downloadInputSync(2015, 6)
-  .split(/[\n\r]+/)
-  .map(str => {
-    const cmd = str.match(/^\D+/)[0].trim();
-    const [start, end] = str
-      .replace(cmd, '')
-      .trim()
-      .split(' through ')
-      .map(nums => nums.split(',').map(Number) as Point);
-    return { cmd, start, end };
-  }));
+const input = once(() =>
+  downloadInputSync(2015, 6)
+    .split(/[\n\r]+/)
+    .map(str => {
+      const cmd = str.match(/^\D+/)[0].trim();
+      const [start, end] = str
+        .replace(cmd, '')
+        .trim()
+        .split(' through ')
+        .map(nums => nums.split(',').map(Number) as Point);
+      return { cmd, start, end };
+    }),
+);
 
 function* lightsWithin(start: Point, end: Point) {
   for (let x = start[0]; x <= end[0]; x++) {

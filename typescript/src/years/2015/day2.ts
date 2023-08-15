@@ -1,7 +1,7 @@
 // https://adventofcode.com/2015/day/2
 
 import once from 'lodash/once';
-import { Solution, downloadInputSync, main } from '../../lib';
+import { Solution, newLine } from '@lib';
 
 class Present {
   constructor(public length: number, public width: number, public height: number) {}
@@ -29,20 +29,22 @@ class Present {
   }
 }
 
-const presents = once(() =>
-  downloadInputSync('2015', '2')
-    .split(/[\n\r]+/)
+const presents = once((input: string) =>
+  input
+    .split(newLine)
     .map(line => new Present(...(line.split('x').map(Number) as [number, number, number]))),
 );
 
 export const solution = new Solution(
-  async () => {
-    return presents().reduce((p, box) => p + box.area, 0);
+  2015,
+  2,
+  async (input) => {
+    return presents(input).reduce((p, box) => p + box.area, 0);
   },
 
-  async () => {
-    return presents().reduce((p, box) => p + box.ribbonLength, 0);
+  async (input) => {
+    return presents(input).reduce((p, box) => p + box.ribbonLength, 0);
   }
 );
 
-main(module, () => solution.solve());
+solution.main(module);

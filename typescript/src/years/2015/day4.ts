@@ -1,13 +1,11 @@
 // https://adventofcode.com/2015/day/4
 
 import iter from 'iteragain/iter';
-import { hash, downloadInputSync, Solution, main } from '../../lib';
+import { hash, Solution } from '@lib';
 import once from 'lodash/once';
 import count from 'iteragain/count';
 
-const input = once(() => downloadInputSync(2015, 4).trim());
-
-const hasher = iter(count()).map(i => [i, hash(input() + i, 'md5')] as const);
+const hasher = once((input: string) => iter(count()).map(i => [i, hash(input + i, 'md5')] as const));
 
 // let i = 0;
 // const zerosIt = iter(range(1, 7))
@@ -17,8 +15,20 @@ const hasher = iter(count()).map(i => [i, hash(input() + i, 'md5')] as const);
 const ZEROS = ['00000', '000000'];
 
 export const solution = new Solution(
-  once(async () => hasher.filter(([, h]) => h.startsWith(ZEROS[0])).next().value[0]),
-  once(async () => hasher.filter(([, h]) => h.startsWith(ZEROS[1])).next().value[0]),
+  2015,
+  4,
+  once(
+    async input =>
+      hasher(input)
+        .filter(([, h]) => h.startsWith(ZEROS[0]))
+        .next().value[0],
+  ),
+  once(
+    async input =>
+      hasher(input)
+        .filter(([, h]) => h.startsWith(ZEROS[1]))
+        .next().value[0],
+  ),
 );
 
-main(module, () => solution.solve());
+solution.main(module);

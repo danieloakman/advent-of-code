@@ -66,7 +66,7 @@ export class FileStream {
     this.reader = createReadStream(this.fileName)
       .pipe(split(this.separator))
       .pipe(
-        mapSync(line => {
+        mapSync((line: string) => {
           this.lineNum++;
           this.event.emit('data', line);
         })

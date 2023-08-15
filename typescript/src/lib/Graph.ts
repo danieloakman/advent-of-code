@@ -38,7 +38,7 @@ export class Graph {
     visited.add(start);
     const path = [start];
     if (visited.size === this.nodes.size || !this.edges[start]) return path;
-    const nextPaths = Object.keys(this.edges[start])
+    const nextPaths: string[][] = Object.keys(this.edges[start])
       .filter(node => !visited.has(node))
       .sort((a, b) => this.edges[start][a] - this.edges[start][b])
       .map(node => this.findEulerianPath(node, visited));
