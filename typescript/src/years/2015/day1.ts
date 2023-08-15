@@ -1,16 +1,15 @@
 // https://adventofcode.com/2015/day/1
 
 import once from 'lodash/once';
-import { main, downloadInput, Solution } from '../../lib';
+import { Solution } from '../../lib';
 
-const input = once(() => downloadInput('2015', '1'));
 
-const solve = once(async () => {
+const solve = once((input: string) => {
   let floor = 0;
   let firstBasement = null;
   let charNum = 0;
 
-  for (const char of await input()) {
+  for (const char of input) {
     charNum++;
     if (char === '(') floor++;
     else floor--;
@@ -21,9 +20,10 @@ const solve = once(async () => {
 });
 
 export const solution = new Solution(
-  () => solve().then(({ floor }) => floor),
-  () => solve().then(({ firstBasement }) => firstBasement),
+  2015,
+  1,
+  async input => solve(input).floor,
+  async input => solve(input).firstBasement,
 );
 
-main(module, () => solution.solve());
-
+solution.main(module);

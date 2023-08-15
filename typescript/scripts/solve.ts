@@ -49,7 +49,7 @@ async function selectedText(err?: Error, res?: { selectedText: string }) {
 
 main(module, async () => {
   const parser = new ArgumentParser({
-    description: 'Test Advent of Code Typescript solutions',
+    description: 'Solve Advent of Code Typescript solutions',
   });
   parser.add_argument('year', {
     type: 'int',
@@ -68,7 +68,7 @@ main(module, async () => {
   }
 
   terminal.grabInput({});
-  terminal.on('key', function (key, _matches, _data) {
+  terminal.on('key', function (key: string, _matches: unknown, _data: unknown) {
     if (key === 'CTRL_C' || key === 'ESCAPE' || key === 'q') {
       terminal.clear('Exited test mode.');
       process.exit();

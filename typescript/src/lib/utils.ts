@@ -43,7 +43,9 @@ export function callSafely<T extends (...args: any[]) => any>(
 ): ReturnType<T> | null {
   try {
     const result = fn.call(_this, ...args);
-    return typeof result === 'object' && typeof result.catch === 'function' ? result.catch(_ => null) : result;
+    return typeof result === 'object' && typeof result.catch === 'function'
+      ? result.catch((_: Error): null => null)
+      : result;
   } catch (_) {
     return null;
   }
@@ -194,9 +196,9 @@ export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
 export function groupByProps<T>(objects: T[], props: string[]): { [key: string]: T[] } {
   const groups = {};
   for (const object of objects) {
-    const propsStr = props.length > 1 ? props.reduce((p, c) => object[p] + ',' + object[c]) : object[props[0]];
-    if (!groups[propsStr]) groups[propsStr] = [object];
-    else groups[propsStr].push(object);
+    const propsStr = props.length > 1 ? props.reduce((p, c) => (object as any)[p] + ',' + (object as any)[c]) : (object as any)[props[0]];
+    if (!(groups as any)[propsStr]) (groups as any)[propsStr] = [object];
+    else (groups as any)[propsStr].push(object);
   }
   return groups;
 }
@@ -214,10 +216,10 @@ export function groupByAllProps<T extends Record<PropertyKey, any>>(
   const groups = {};
   for (const object of objects)
     for (const prop of Object.keys(object)) {
-      if (!groups[prop]) groups[prop] = {};
+      if (!(groups as any)[prop]) (groups as any)[prop] = {};
       const value = object[prop];
-      if (!groups[prop][value]) groups[prop][value] = [object];
-      else groups[prop][value].push(object);
+      if (!(groups as any)[prop][value]) (groups as any)[prop][value] = [object];
+      else (groups as any)[prop][value].push(object);
     }
 
   return groups;
@@ -283,7 +285,7 @@ export const isInDebug = function () {
   return typeof require('inspector').url() !== 'undefined';
 };
 
-export const question = async function (questionStr, defaultAnswer = undefined) {
+export const question = async function (questionStr: string, defaultAnswer: string = undefined): Promise<string> {
   return new Promise(resolve => {
     if (isInDebug()) resolve(defaultAnswer);
     else {
@@ -316,7 +318,7 @@ export function main(module: any, mainFunction: () => Promise<void>) {
 }
 
 export function lazyTuple<T, Size extends number>(size: Size, getter: (index: number) => T): Readonly<Tuple<T, Size>> {
-  const array = [];
+  const array: T[] = [];
   for (let i = 0; i < size; i++)
     Object.defineProperty(array, i, {
       get: once(() => getter(i)),
@@ -428,14 +430,30 @@ export function spiralRange(xMax: number, yMax: number, xMin = 0, yMin = 0) {
         yield iter(_range(yMax - 1, yMin - 1)).map(n => [xMin, n] as const);
         xMin++;
       }
-    })())
+    })(),
+  )
     .flatten(1)
     .enumerate()
     .takeWhile(([i]) => i < iterations)
     .map(([_, v]) => v);
 }
-equal(spiralRange(3, 3).toArray(), [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2], [1, 2], [0, 2], [0, 1], [1, 1]]);
-equal(spiralRange(2, 2).toArray(), [[0, 0], [1, 0], [1, 1], [0, 1]]);
+equal(spiralRange(3, 3).toArray(), [
+  [0, 0],
+  [1, 0],
+  [2, 0],
+  [2, 1],
+  [2, 2],
+  [1, 2],
+  [0, 2],
+  [0, 1],
+  [1, 1],
+]);
+equal(spiralRange(2, 2).toArray(), [
+  [0, 0],
+  [1, 0],
+  [1, 1],
+  [0, 1],
+]);
 
 export function isBetween(value: number, minInclusive: number, maxInclusive: number): boolean {
   return value >= minInclusive && value <= maxInclusive;
