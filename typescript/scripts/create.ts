@@ -7,15 +7,12 @@ import { main } from '../src/lib/utils';
 
 export function fileStr(year: string, day: string) {
   return `
-import once from 'lodash/once';
-import { main, Solution, downloadInputSync } from '../../lib';
-import iter from 'iteragain/iter';
-// import { ok as assert, deepStrictEqual as equal } from 'assert';
-
-/** @see https://adventofcode.com/${year}/day/${day}/input */
-export const input = once(() => downloadInputSync('${year}', '${day}').split(/[\\n\\r]+/));
+// @see https://adventofcode.com/${year}/day/${day}/input
+import { Solution } from '@lib';
 
 export const solution = new Solution(
+  ${year},
+  ${day},
   /** @see https://adventofcode.com/${year}/day/${day} First Star */
   async () => {
     return null;
@@ -27,8 +24,7 @@ export const solution = new Solution(
   }
 );
 
-
-main(module, () => solution.solve());
+solution.main(module);
 `.trimStart();
 }
 
