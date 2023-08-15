@@ -9,11 +9,6 @@ use std::collections::HashMap;
 
 type Point = (u32, u32);
 
-// lazy_static! {
-//     static ref INPUT: String = aoc::get_input(2015, 6);
-//     // static ref NOT_NUMBERS: Regex = Regex::new(r"^\D+").unwrap();
-// }
-
 fn commands(str: &str) -> Box<dyn Iterator<Item = (&str, Point, Point)> + '_> {
     let not_numbers = Regex::new(r"^\D+").unwrap();
     Box::new(str.split('\n').filter(|s| !s.is_empty()).map(move |s| {
