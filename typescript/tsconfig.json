@@ -18,7 +18,8 @@
     "paths": {
       "@lib/*": ["./src/lib/*"],
       "@lib": ["./src/lib/index.ts"]
-    }
+    },
+    "types": ["vitest/importMeta"]
   },
   "include": ["src/**/*", "scripts"],
   "exclude": ["node_modules", "test", "dist", "benchmark"]
