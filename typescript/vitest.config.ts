@@ -5,6 +5,7 @@ export default defineConfig({
   test: {
     includeSource: ['src/**/*.ts'],
     include: ['src/**/*.test.ts'],
+    
   },
   plugins: [tsconfigPaths()],
   define: {
