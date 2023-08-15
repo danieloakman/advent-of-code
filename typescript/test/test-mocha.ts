@@ -1,3 +1,5 @@
+// @ts-nocheck
+// DEPRECATED, will probably be removed in the future
 import { walkdirSync } from 'more-node-fs';
 import { join } from 'path';
 import { groupByProps } from '../lib/utils';
