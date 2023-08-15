@@ -464,7 +464,7 @@ export function isBetween(value: number, minInclusive: number, maxInclusive: num
 }
 
 /** Matches a new line character. Useful for splitting the AOC input into lines. */
-export const newLine = /[\\n\\r]+/;
+export const newLine = /[\n\r]+/;
 
 export function iife<T extends AnyFunc>(fn: T): ReturnType<T> {
   return fn();
