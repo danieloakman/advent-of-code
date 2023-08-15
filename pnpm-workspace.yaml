@@ -1,4 +1,7 @@
 packages:
-  - typescript
-  - rust
+  - c
   - golang
+  - nim
+  - rust
+  - typescript
+  - zig
