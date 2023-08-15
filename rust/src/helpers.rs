@@ -50,3 +50,32 @@ pub fn char_at(string: &str, index: usize) -> Option<&str> {
         None
     }
 }
+
+/// Creates a HashMap with some nifty syntax.
+/// 
+/// #### Example
+/// ```rust
+/// let mut map1 = map!(String, u64);
+/// let mut map2 = map!(
+///     "id1".to_owned() => 0,
+///     "id2".to_owned() => 1,
+/// )
+/// ```
+#[macro_export]
+macro_rules! map {
+    ($key:ty, $val:ty) => {
+        {
+            let map: HashMap<$key, $val> = HashMap::new();
+            map
+        }
+    };
+    ($($key:expr => $val:expr),*) => {
+        {
+            let mut map = HashMap::new();
+            $(
+                map.insert($key, $val);
+            )*
+            map
+        }
+    };
+}
