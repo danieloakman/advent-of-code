@@ -14,12 +14,12 @@ export const solution = new Solution(
   ${year},
   ${day},
   /** @see https://adventofcode.com/${year}/day/${day} First Star */
-  async () => {
+  async input => {
     return null;
   },
 
   /** @see https://adventofcode.com/${year}/day/${day}#part2 Second Star */
-  async () => {
+  async input => {
     return null;
   }
 );
