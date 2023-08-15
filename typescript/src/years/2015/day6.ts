@@ -31,7 +31,7 @@ function countLights(lights: number[][]) {
 
 export const solution = new Solution(
   async () => {
-    const lights = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
+    const lights: number[][] = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
     for (const { cmd, start, end } of input()) {
       for (const [x, y] of lightsWithin(start, end)) {
         if (cmd === 'turn on') lights[y][x] = 1;
@@ -42,7 +42,7 @@ export const solution = new Solution(
     return countLights(lights);
   },
   async () => {
-    const lights = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
+    const lights: number[][] = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
     for (const { cmd, start, end } of input()) {
       for (const [x, y] of lightsWithin(start, end)) {
         if (cmd === 'turn on') lights[y][x] += 1;
