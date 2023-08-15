@@ -1,5 +1,5 @@
 // https://adventofcode.com/2015/day/5
-import { Solution, iife, newLine } from '@lib';
+import { Solution, iife, newLine, tests } from '@lib';
 
 // First Star:
 const isNice = iife(() => {
@@ -49,3 +49,22 @@ export const solution = new Solution(
 );
 
 solution.main(module);
+
+tests((describe, it, expect) => {
+  describe('2015/day5', () => {
+    it('isNice', () => {
+      expect(isNice('ugknbfddgicrmopn')).toBe(true);
+      expect(isNice('aaa')).toBe(true);
+      expect(isNice('jchzalrnumimnmhp')).toBe(false);
+      expect(isNice('haegwjzuvuyypxyu')).toBe(false);
+      expect(isNice('dvszwmarrgswjxmb')).toBe(false);
+    });
+
+    it('isNice2', () => {
+      expect(isNice2('qjhvhtzxzqqjkmpb')).toBe(true);
+      expect(isNice2('xxyxx')).toBe(true);
+      expect(isNice2('uurcxstgmygtbstg')).toBe(false);
+      expect(isNice2('ieodomkazucvgmuy')).toBe(false);
+    });
+  });
+});
