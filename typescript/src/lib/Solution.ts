@@ -4,7 +4,10 @@ import { main } from './utils';
 import { downloadInput } from './downloadInput';
 
 export interface SolutionMethod {
-  (input: string): Promise<Nullish<string | number>>;
+  (
+    /** The current day's input string. */
+    input: string,
+  ): Promise<Nullish<string | number>>;
 }
 
 export class Solution<FirstStar extends SolutionMethod, SecondStar extends SolutionMethod> {
