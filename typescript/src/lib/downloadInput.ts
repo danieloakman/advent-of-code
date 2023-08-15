@@ -106,7 +106,7 @@ export function downloadInputSync(year: string | number, day: string | number): 
   const path = inputPath(year, day);
   if (existsSync(path)) return readFileSync(path, 'utf-8').trimEnd(); // Return cached input
 
-  const input = execSync(`npx ts-node ${__filename} --download "${year},${day}"`, { encoding: 'utf-8' });
+  const input = execSync(`pnpm tsn ${__filename} --download "${year},${day}"`, { encoding: 'utf-8' });
   return input.trimEnd();
 }
 

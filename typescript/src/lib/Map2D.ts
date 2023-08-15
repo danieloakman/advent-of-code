@@ -221,7 +221,7 @@ export class Map2D<T> {
   /** @depreacted Use `pointsInside` instead. */
   *getInside(
     bounds = { xMin: this.xMin, xMax: this.xMax, yMin: this.yMin, yMax: this.yMax },
-    predicate: (value: T, x: number, y: number) => any = v => typeof v !== undefined,
+    predicate: (value: T, x: number, y: number) => any = v => typeof v !== 'undefined',
   ) {
     for (let y = bounds.yMin; y <= bounds.yMax; y++)
       for (let x = bounds.xMin; x <= bounds.xMax; x++) {
