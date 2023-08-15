@@ -1,8 +1,8 @@
 // https://adventofcode.com/2015/day/5
+import { Solution, iife, newLine } from '@lib';
 
-import { readFileSync } from 'fs';
-
-const isNice = (() => {
+// First Star:
+const isNice = iife(() => {
   const notAllowedStrings = ['ab', 'cd', 'pq', 'xy'];
   const vowels = 'aeiou';
   return (str: string): boolean => {
@@ -16,17 +16,11 @@ const isNice = (() => {
     }
     return false;
   };
-})();
-
-const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split(/[\n\r]+/);
-
-// First Star:
-console.log({ numOfNiceStrings: input.filter(isNice).length });
+});
 
 // Second Star:
-
 function isNice2(str: string): boolean {
-  const map = {};
+  const map: Record<string, number> = {};
   let contains2Pairs = false;
   let containsRepeat = false;
   for (let i = 0; i < str.length; i++) {
@@ -44,5 +38,14 @@ function isNice2(str: string): boolean {
   }
   return contains2Pairs && containsRepeat;
 }
-console.log(isNice2('qjhvhtzxzqqjkmpb'), isNice2('xxyxx'), isNice2('uurcxstgmygtbstg'), isNice2('ieodomkazucvgmuy'));
-console.log({ numOfNiceStrings: input.filter(isNice2).length });
+
+// console.log(isNice2('qjhvhtzxzqqjkmpb'), isNice2('xxyxx'), isNice2('uurcxstgmygtbstg'), isNice2('ieodomkazucvgmuy'));
+
+export const solution = new Solution(
+  2015,
+  5,
+  async input => input.split(newLine).filter(isNice).length,
+  async input => input.split(newLine).filter(isNice2).length,
+);
+
+solution.main(module);
