@@ -458,3 +458,6 @@ equal(spiralRange(2, 2).toArray(), [
 export function isBetween(value: number, minInclusive: number, maxInclusive: number): boolean {
   return value >= minInclusive && value <= maxInclusive;
 }
+
+/** Matches a new line character. Useful for splitting the AOC input into lines. */
+export const newLine = /[\\n\\r]+/;
