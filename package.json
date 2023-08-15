@@ -4,10 +4,11 @@
   "description": "<https://adventofcode.com>",
   "type": "commonjs",
   "scripts": {
-    "test": "ts-node scripts/test.ts",
-    "create": "ts-node scripts/create.ts",
-    "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
-    "format": "prettier-eslint --ignore .gitignore --write \"./src/**/*\""
+    "solve": "pnpm -r --stream solve",
+    "test": "pnpm -r --stream test",
+    "create": "pnpm -r --stream solve",
+    "lint": "pnpm -r --stream lint",
+    "format": "pnpm -r --stream format"
   },
   "repository": {
     "type": "git",
