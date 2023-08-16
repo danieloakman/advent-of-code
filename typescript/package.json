@@ -4,7 +4,8 @@
   "scripts": {
     "tsn": "node -r ts-node/register -r tsconfig-paths/register",
     "solve": "pnpm tsn scripts/solve.ts",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "create": "pnpm tsn scripts/create.ts",
     "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "prettier --write \"./**/*.ts\""

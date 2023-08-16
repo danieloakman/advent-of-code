@@ -1,0 +1,9 @@
+{
+  "name": "@advent-of-code/zig",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "zig test src/main.zig",
+    "solve": "echo \"Error no solve script\"",
+    "create": "echo \"Error no create script\""
+  }
+}

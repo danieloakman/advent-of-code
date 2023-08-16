@@ -8,6 +8,12 @@ importers:
 
   .: {}
 
+  c: {}
+
+  golang: {}
+
+  nim: {}
+
   rust: {}
 
   typescript:
@@ -99,6 +105,8 @@ importers:
       vitest:
         specifier: ^0.34.1
         version: 0.34.1
+
+  zig: {}
 
 packages:
 

@@ -1,0 +1,9 @@
+{
+  "name": "@advent-of-code/nim",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "echo \"Error: no test specified\"",
+    "solve": "echo \"Error no solve script\"",
+    "create": "echo \"Error no create script\""
+  }
+}
