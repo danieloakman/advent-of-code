@@ -12,7 +12,7 @@ import toArray from 'iteragain/toArray';
 import map from 'iteragain/map';
 import { join } from 'path';
 import { deepStrictEqual as equal } from 'assert';
-import { AnyFunc } from './types';
+import { AnyFunc, Nullish } from './types';
 
 export const tmpdir = once(() => {
   const tmpdir = join(__dirname, '../../..', 'tmp');
@@ -60,10 +60,35 @@ export function callSafely<T extends (...args: any[]) => any>(
  * @throws Throws an Error if regex does not have the global flag set.
  */
 export function matches(regex: RegExp, string: string): ExtendedIterator<RegExpExecArray> {
-  if (!(regex instanceof RegExp) || !regex.flags.includes('g'))
-    throw new Error("regex parameter must be a RegExp and have the global 'g' flag assigned to it.");
+  if (!regex.flags.includes('g')) regex = new RegExp(regex.source, regex.flags + 'g');
   return iter(() => regex.exec(string), null);
 }
+
+/**
+ * A convenient type for using the most commonly used result of `RegExp.exec` or `String.match`
+ * (when not using the "g" flag). For example `'abc'.match(/a/)[0]` returns the first complete capture group string of
+ * the match. This type is just that string itself, as well as having the `start`, `end` and `input` properties.
+ */
+export type CompleteRegExpMatch = string & {
+  /** The start index of this match in `input`. */
+  start: number;
+  /** The end index of this match in `input`. */
+  end: number;
+  /** The input string that was searched. */
+  input: string;
+};
+
+/**
+ * @param value Result from `RegExp.exec` or `String.match`.
+ * @returns The first match from the result of `RegExp.exec` or `String.match`. I.e. result[0], result.index and
+ * result.input.
+ */
+export function toMatch(value: Nullish<RegExpExecArray | RegExpMatchArray>): Nullish<CompleteRegExpMatch> {
+  if (!value || typeof value.index !== 'number' || typeof value.input !== 'string') return null;
+  const str = value[0];
+  return Object.assign(str, { start: value.index, end: value.index + str.length, input: value.input });
+}
+
 
 /**
  * Implementation of Array.splice but with strings. It's quicker than doing
