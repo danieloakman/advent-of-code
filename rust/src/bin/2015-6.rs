@@ -2,7 +2,7 @@
 
 // TODO: this solution is very slow. May be because of the hashmap, unsure.
 
-use aoc::map;
+use aoc::{map, helpers::Vec2D};
 use itertools::Itertools;
 use regex::Regex;
 use std::collections::HashMap;
@@ -31,23 +31,34 @@ fn points_within(start: Point, end: Point) -> Box<dyn Iterator<Item = Point>> {
 /// See [2015/6](https://adventofcode.com/2015/day/6)
 pub fn part_one(input: &str) -> Option<u32> {
     let cmds = commands(input);
-    let mut lights = map!(Point, u32);
+    // let mut lights = map!(Point, u32);
+    // let mut lights = vec!(0, 1000 * 1000);
+    let mut lights = Vec2D::new(0, 1000);
 
     for (cmd, start, end) in cmds {
         for (x, y) in points_within(start, end) {
-            match cmd {
-                "turn on" => *lights.entry((x, y)).or_insert(0) = 1,
-                "turn off" => *lights.entry((x, y)).or_insert(0) = 0,
+            let _ = match cmd {
+                // "turn on" => *lights.entry((x, y)).or_insert(0) = 1,
+                // "turn on" => lights.insert((x, y), 1u32).unwrap(),
+                "turn on" => lights.set(x, y, 1),
+                // "turn off" => *lights.entry((x, y)).or_insert(0) = 0,
+                // "turn off" => lights.insert((x , y), 0u32).or_else(|| lights.),
+                "turn off" => lights.set(x, y, 0),
                 "toggle" => {
-                    let light = lights.entry((x, y)).or_insert(0);
-                    *light = if *light == 0 { 1 } else { 0 }
+                    let mut value = lights.get(x, y);
+                    value = if value == 0 { 1 } else { 0 };
+                    // let value = if lights.get(&(x, y)).unwrap_or(&0u32) == &0 { 1u32 } else { 0u32 };
+                    // lights.insert((x, y), value).unwrap();
+                    // value
+                    // let light = lights.entry((x, y)).or_insert(0);
+                    // *light = if *light == 0 { 1 } else { 0 }
                 }
                 _ => panic!("Unknown command: {cmd}"),
-            }
+            };
         }
     }
 
-    Some(lights.values().sum())
+    Some(lights.iter().sum())
 }
 
 /// See [2015/6](https://adventofcode.com/2015/day/6#part2)

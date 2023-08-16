@@ -65,6 +65,42 @@ macro_rules! map {
     };
 }
 
+pub struct Vec2D {
+    /// This is used to calculate the number of elements in the vector i.e. `vec!(0, size * size)`.
+    size: u32,
+    // x_max: u32,
+    // y_max: u32,
+    vec: Vec<u32>
+}
+
+impl Vec2D {
+    /// ### Example
+    /// ```
+    /// let vec2d = Vec2D::new(0, 10); // 10x10 grid
+    /// vec2d.set(0, 0, 1); // set x=0, y=0 to 1
+    /// vec2d.set(1, 0, 2); // set x=1, y=0 to 2
+    /// ```
+    pub fn new(init: u32, size: u32) -> Vec2D {
+        Vec2D {
+            size,
+            vec: vec!(init, size * size)
+        }
+    }
+
+    pub fn get(&self, x: u32, y: u32) -> u32 {
+        self.vec[(x + y * self.size) as usize]
+    }
+
+    pub fn set(&mut self, x: u32, y: u32, val: u32) {
+        self.vec[(x + y * self.size) as usize] = val;
+    }
+
+    pub fn iter(&self) -> impl Iterator<Item = &u32> {
+        self.vec.iter()
+    }
+
+}
+
 #[cfg(test)]
 mod tests_helpers {
     use super::*;
