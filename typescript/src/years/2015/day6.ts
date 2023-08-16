@@ -1,11 +1,11 @@
 // https://adventofcode.com/2015/day/6
-import { Solution, matches, newLine } from '@lib';
+import { Solution, newLine } from '../../lib';
+import iter from 'iteragain/iter';
 
 type Point = [x: number, y: number];
 
 const mapInput = (input: string) =>
-  matches(newLine, input).map(match => {
-    const str = match[0];
+  iter(input.split(newLine)).map(str => {
     const cmd = str.match(/^\D+/)[0].trim();
     const [start, end] = str
       .replace(cmd, '')
