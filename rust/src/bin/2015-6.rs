@@ -1,11 +1,8 @@
 // Input: https://adventofcode.com/2015/day/6/input
 
-// TODO: this solution is very slow. May be because of the hashmap, unsure.
-
-use aoc::{map, helpers::Vec2D};
+use aoc::helpers::Vec2D;
 use itertools::Itertools;
 use regex::Regex;
-use std::collections::HashMap;
 
 type Point = (u32, u32);
 
@@ -31,27 +28,16 @@ fn points_within(start: Point, end: Point) -> Box<dyn Iterator<Item = Point>> {
 /// See [2015/6](https://adventofcode.com/2015/day/6)
 pub fn part_one(input: &str) -> Option<u32> {
     let cmds = commands(input);
-    // let mut lights = map!(Point, u32);
-    // let mut lights = vec!(0, 1000 * 1000);
     let mut lights = Vec2D::new(0, 1000);
 
     for (cmd, start, end) in cmds {
         for (x, y) in points_within(start, end) {
             let _ = match cmd {
-                // "turn on" => *lights.entry((x, y)).or_insert(0) = 1,
-                // "turn on" => lights.insert((x, y), 1u32).unwrap(),
                 "turn on" => lights.set(x, y, 1),
-                // "turn off" => *lights.entry((x, y)).or_insert(0) = 0,
-                // "turn off" => lights.insert((x , y), 0u32).or_else(|| lights.),
                 "turn off" => lights.set(x, y, 0),
                 "toggle" => {
-                    let mut value = lights.get(x, y);
-                    value = if value == 0 { 1 } else { 0 };
-                    // let value = if lights.get(&(x, y)).unwrap_or(&0u32) == &0 { 1u32 } else { 0u32 };
-                    // lights.insert((x, y), value).unwrap();
-                    // value
-                    // let light = lights.entry((x, y)).or_insert(0);
-                    // *light = if *light == 0 { 1 } else { 0 }
+                    let value = lights.get_mut(x, y);
+                    *value = if *value == 0 { 1 } else { 0 };
                 }
                 _ => panic!("Unknown command: {cmd}"),
             };
@@ -64,25 +50,28 @@ pub fn part_one(input: &str) -> Option<u32> {
 /// See [2015/6](https://adventofcode.com/2015/day/6#part2)
 pub fn part_two(input: &str) -> Option<u32> {
     let cmds = commands(input);
-    let mut lights = map!(Point, u32);
+    let mut lights = Vec2D::new(0, 1000);
 
     for (cmd, start, end) in cmds {
         for (x, y) in points_within(start, end) {
             match cmd {
-                "turn on" => *lights.entry((x, y)).or_insert(0) += 1,
+                // "turn on" => *lights.entry((x, y)).or_insert(0) += 1,
+                "turn on" => *lights.get_mut(x, y) += 1,
                 "turn off" => {
-                    let light = lights.entry((x, y)).or_insert(0);
-                    *light = if *light == 0 { 0 } else { *light - 1 }
+                    let light = lights.get_mut(x, y);
+                    if *light > 0 {
+                        *light -= 1;
+                    }
                 },
                 "toggle" => {
-                    *lights.entry((x, y)).or_insert(0) += 2;
+                    *lights.get_mut(x, y) += 2;
                 }
                 _ => panic!("Unknown command: {cmd}"),
             }
         }
     }
 
-    Some(lights.values().sum())
+    Some(lights.iter().sum())
 }
 
 fn main() {
@@ -100,5 +89,8 @@ mod tests_2015_6 {
         assert_eq!(part_one("turn on 0,0 through 999,999"), Some(1_000_000));
         assert_eq!(part_one("toggle 0,0 through 999,0"), Some(1_000));
         assert_eq!(part_one("turn off 499,499 through 500,500"), Some(0));
+
+        assert_eq!(part_two("turn on 0,0 through 0,0"), Some(1));
+        assert_eq!(part_two("toggle 0,0 through 999,999"), Some(2_000_000));
     }
 }
