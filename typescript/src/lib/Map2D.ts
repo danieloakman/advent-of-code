@@ -1,7 +1,7 @@
 import iter from 'iteragain/iter';
 import range from 'iteragain/range';
 
-type Get<T> = {
+export type Get<T> = {
   (x: number, y: number): T;
   up: (x: number, y: number) => T;
   down: (x: number, y: number) => T;
