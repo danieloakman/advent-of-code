@@ -4,10 +4,11 @@ My solutions to the AOC puzzles. An ongoing project to learn different languages
 
 ## Setup
 
-Because of the many languages used, I use *rtx-cli* to install and use compilers and runtimes of different languages.
+Because of the many languages used, *rtx-cli* is used to install and use compilers and runtimes of different languages.
 
 1. Install *rtx-cli*: `cargo install rtx-cli`. Follow the additional instructions to activate *rtx* in your shell.
-2. Follow the individual README.md files in the language folders to install the required compilers and runtimes.
+2. Use `rtx install` when in the appropriate language directory.
+3. Follow the individual README.md files in the language folders to install the required compilers and runtimes.
 
 ## Usage
 
