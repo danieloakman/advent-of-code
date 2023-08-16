@@ -1,5 +1,5 @@
 // https://adventofcode.com/2015/day/5
-import { Solution, iife, newLine } from '@lib';
+import { Solution, iife, newLine, canTest } from '@lib';
 import { describe, it, expect } from 'vitest';
 
 // First Star:
@@ -52,13 +52,7 @@ export const solution = new Solution(
 solution.main(module);
 
 // import.meta.vitest
-
-// //@ts-ignore
-// if (import.meta.vitest) {
-//   // @ts-ignore
-//   const { describe, it, expect } = import.meta.vitest;
-// tests((describe, it, expect) => {
-if (process.argv.some(arg => arg.includes('tinypool'))) {
+if (canTest()) {
   describe('2015/day5', () => {
     it('isNice', () => {
       expect(isNice('ugknbfddgicrmopn')).toBe(true);
@@ -67,7 +61,7 @@ if (process.argv.some(arg => arg.includes('tinypool'))) {
       expect(isNice('haegwjzuvuyypxyu')).toBe(false);
       expect(isNice('dvszwmarrgswjxmb')).toBe(false);
     });
-  
+
     it('isNice2', () => {
       expect(isNice2('qjhvhtzxzqqjkmpb')).toBe(true);
       expect(isNice2('xxyxx')).toBe(true);
@@ -76,5 +70,3 @@ if (process.argv.some(arg => arg.includes('tinypool'))) {
     });
   });
 }
-// });
-// }

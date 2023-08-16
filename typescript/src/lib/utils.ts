@@ -89,7 +89,6 @@ export function toMatch(value: Nullish<RegExpExecArray | RegExpMatchArray>): Nul
   return Object.assign(str, { start: value.index, end: value.index + str.length, input: value.input });
 }
 
-
 /**
  * Implementation of Array.splice but with strings. It's quicker than doing
  * str.split('').map(func).join('') or similar as it just uses two slice methods.
@@ -495,17 +494,7 @@ export function iife<T extends AnyFunc>(fn: T): ReturnType<T> {
   return fn();
 }
 
-/** TODO */
-export async function tests(
-  cb: (
-    describe: import('vitest').SuiteAPI,
-    it: import('vitest').TestAPI,
-    expect: import('vitest').ExpectStatic,
-  ) => void,
-) {
-  console.log(process.argv);
-  if (process.argv.some(arg => arg.includes('test') || arg.includes('tinypool'))) {
-    const { describe, it, expect } = await import('vitest');
-    cb(describe, it, expect);
-  }
+/** Return true if this process can run tests. */
+export function canTest(): boolean {
+  return process.argv.some(arg => arg.includes('test') || arg.includes('tinypool'));
 }
