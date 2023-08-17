@@ -31,11 +31,12 @@ export class NDArray<T, N extends Dimensions> {
   }
 
   update(coordinates: Tuple<number, N['length']>, updater: (value: T) => T): void {
-    this.set(updater(this.get(...coordinates)), ...coordinates);
+    const index = this.toIndex(coordinates);
+    this.arr[index] = updater(this.arr[index] ?? this.defaultValue);
   }
 
   iter() {
-    return iter(this.arr).enumerate().map(([i, value]) => [this.toCoord(i), value] as const);
+    return iter(this.arr).enumerate().map(([i, value]) => [this.toCoord(i), value ?? this.defaultValue] as const);
   }
 
   /**
@@ -84,10 +85,10 @@ if (canTest()) {
       // 3D map:
       const map3d = new NDArray(0, [5, 5, 5]);
       expect(map3d.get(0, 0, 0)).toBe(0);
-      map3d.set(1, 0, 0, 0);
-      expect(map3d.get(0, 0, 0)).toBe(1);
+      map3d.set(-1, 0, 0, 0);
+      expect(map3d.get(0, 0, 0)).toBe(-1);
       map3d.set(2, 0, 0, 1);
-      expect(map3d.iter().filterMap(([_, v]) => v).toArray()).toEqual([1, 2]);
+      expect(map3d.iter().filterMap(([_, v]) => v).minmax()).toEqual([-1, 2]);
     });
   });
 }
