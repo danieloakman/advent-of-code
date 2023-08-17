@@ -1,5 +1,5 @@
 // https://adventofcode.com/2015/day/6
-import { NDArray } from '@lib/NDArray';
+import { Array2D } from '@lib/NDArray';
 import { Solution, newLine } from '../../lib';
 import iter from 'iteragain/iter';
 
@@ -32,8 +32,8 @@ export const solution = new Solution(
   2015,
   6,
   async input => {
-    // const lights: number[][] = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
-    const lights = new NDArray(0, [1000, 1000]);
+    // const lights = new NDArray(0, [1000, 1000]);
+    const lights = new Array2D<number>(1000);
     for (const { cmd, start, end } of mapInput(input)) {
       for (const [x, y] of lightsWithin(start, end)) {
         if (cmd === 'turn on') lights.set(1, x, y);
@@ -44,8 +44,8 @@ export const solution = new Solution(
     return lights.iter().reduce((acc, [, light]) => acc + light, 0);
   },
   async input => {
-    // const lights: number[][] = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
-    const lights = new NDArray(0, [1000, 1000]);
+    // const lights = new NDArray(0, [1000, 1000]);
+    const lights = new Array2D<number>(1000);
     for (const { cmd, start, end } of mapInput(input)) {
       for (const [x, y] of lightsWithin(start, end)) {
         if (cmd === 'turn on') lights.update([x, y], v => ++v);

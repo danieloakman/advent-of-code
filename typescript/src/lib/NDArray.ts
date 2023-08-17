@@ -14,13 +14,17 @@ export type Dimensions =
   | Tuple<number, 9>
   | Tuple<number, 10>;
 
+// export interface NDArray
+
 export class NDArray<T, N extends Dimensions> {
-  protected readonly arr: T[] = [];
+  protected readonly arr: T[];
 
   constructor(
     readonly defaultValue: T,
     readonly dimensions: N,
-  ) {}
+  ) {
+    this.arr = Array.from({ length: dimensions.reduce((acc, dim) => acc * dim) }, () => defaultValue);
+  }
 
   get(...coordinates: Tuple<number, N['length']>): T {
     return this.arr[this.toIndex(coordinates)] ?? this.defaultValue;
@@ -64,6 +68,49 @@ export class NDArray<T, N extends Dimensions> {
   }
 }
 
+// function toIndex(size: number, x: number, y: number) {
+//   return x + y * size;
+// }
+
+// export function array2DProxy<T>(): { [x: string]: { [y: string]: T } } {
+//   const arr: T[] = [];
+//   // eslint-disable-next-line no-undef
+//   return new Proxy([], {
+//     get: (target, prop) => {
+//       // if ()
+//     },
+//   }) as any;
+// }
+
+export class Array2D<T> {
+  protected readonly arr: T[];
+
+  constructor(readonly size: number) {
+    this.arr = new Array(size * size).fill(0);
+  }
+
+  get(x: number, y: number) {
+    return this.arr[x + y * this.size];
+  }
+
+  set(value: T, x: number, y: number) {
+    this.arr[x + y * this.size] = value;
+  }
+
+  update(coords: [x: number, y: number], updater: (value: T) => T) {
+    const index = coords[0] + coords[1] * this.size;
+    this.arr[index] = updater(this.arr[index]);
+  }
+
+  iter() {
+    return iter(this.arr).enumerate().map(([i, value]) => [i % this.size, Math.floor(i / this.size), value] as const);
+  }
+
+  // private toIndex(x: number, y: number): number {
+  //   return x + y * this.size;
+  // }
+}
+
 // import.meta.vitest
 if (canTest()) {
   describe('Array2D', () => {
@@ -89,6 +136,13 @@ if (canTest()) {
       expect(map3d.get(0, 0, 0)).toBe(-1);
       map3d.set(2, 0, 0, 1);
       expect(map3d.iter().filterMap(([_, v]) => v).minmax()).toEqual([-1, 2]);
+    });
+
+    it('performance', async () => {
+      const { setupSuite } = await import('../../../../iteragain/benchmark/bm-util.js');
+      setupSuite({ name: 'NDArray performance' })
+        .add('', () => {})
+        .run();
     });
   });
 }
