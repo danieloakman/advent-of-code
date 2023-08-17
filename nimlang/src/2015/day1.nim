@@ -1,10 +1,4 @@
-import std/strutils
-
-iterator fileLines(path: string): string =
-  let f = open(path)
-  defer: f.close()
-  while not f.endOfFile:
-    yield f.readLine()
+from "../../lib/utils" import fileLines
 
 proc solve(): (int, int) =
   var
@@ -19,8 +13,8 @@ proc solve(): (int, int) =
       elif char == ')': floor -= 1
       if floor == -1 and firstBasement == -1:
         firstBasement = charNum
-        
+
   return (floor, firstBasement)
 
 when isMainModule:
-  discard solve()
+  echo solve()
