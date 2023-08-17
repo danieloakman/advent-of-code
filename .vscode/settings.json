@@ -13,5 +13,8 @@
   "rust-analyzer.linkedProjects": ["./rust/Cargo.toml"],
   "files.associations": {
     ".env*": "dotenv"
+  },
+  "[nim]": {
+    "editor.defaultFormatter": "kosz78.nim"
   }
 }
