@@ -1,4 +1,5 @@
 from os import paramCount, paramStr
+from std/strutils import contains
 
 iterator fileLines*(path: string): string =
   let f = open(path)
@@ -6,20 +7,20 @@ iterator fileLines*(path: string): string =
   while not f.endOfFile:
     yield f.readLine()
 
-# proc countTo*(n: int): iterator(): int =
 iterator countTo*(n: int): int =
-    var i = 0
-    while i <= n:
-      yield i
-      inc i
+  var i = 0
+  while i <= n:
+    yield i
+    inc i
 
-proc canTest(): bool =
-  # return true if an argument contains test:
-  let c = countTo(5)
+## Contanis all command line params:
+iterator argv*(): string =
+  for i in countTo(paramCount()):
+    yield paramStr(i)
+
+## Return true if an argument contains test.
+proc canTest*(): bool =
+  for arg in argv():
+    if arg.contains "test":
+      return true
   return false
-  # for i in c:
-    # if paramStr(i).contains("test"):
-      # return true
-  # for arg in paramStr():
-  #   if arg.contains "test":
-  #     return true
