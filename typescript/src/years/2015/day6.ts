@@ -1,4 +1,5 @@
 // https://adventofcode.com/2015/day/6
+import { NDArray } from '@lib/NDArray';
 import { Solution, newLine } from '../../lib';
 import iter from 'iteragain/iter';
 
@@ -23,34 +24,36 @@ function* lightsWithin(start: Point, end: Point) {
   }
 }
 
-function countLights(lights: number[][]) {
-  return lights.reduce((acc, row) => acc + row.reduce((acc, light) => acc + light, 0), 0);
-}
+// function countLights(lights: number[][]) {
+//   return lights.reduce((acc, row) => acc + row.reduce((acc, light) => acc + light, 0), 0);
+// }
 
 export const solution = new Solution(
   2015,
   6,
   async input => {
-    const lights: number[][] = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
+    // const lights: number[][] = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
+    const lights = new NDArray(0, [1000, 1000]);
     for (const { cmd, start, end } of mapInput(input)) {
       for (const [x, y] of lightsWithin(start, end)) {
-        if (cmd === 'turn on') lights[y][x] = 1;
-        else if (cmd === 'turn off') lights[y][x] = 0;
-        else if (cmd === 'toggle') lights[y][x] = lights[y][x] === 0 ? 1 : 0;
+        if (cmd === 'turn on') lights.set(1, x, y);
+        else if (cmd === 'turn off') lights.set(0, x, y);
+        else if (cmd === 'toggle') lights.update([x, y], v => (v === 0 ? 1 : 0));
       }
     }
-    return countLights(lights);
+    return lights.iter().reduce((acc, [, light]) => acc + light, 0);
   },
   async input => {
-    const lights: number[][] = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
+    // const lights: number[][] = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
+    const lights = new NDArray(0, [1000, 1000]);
     for (const { cmd, start, end } of mapInput(input)) {
       for (const [x, y] of lightsWithin(start, end)) {
-        if (cmd === 'turn on') lights[y][x] += 1;
-        else if (cmd === 'turn off') lights[y][x] = Math.max(lights[y][x] - 1, 0);
-        else if (cmd === 'toggle') lights[y][x] += 2;
+        if (cmd === 'turn on') lights.update([x, y], v => ++v);
+        else if (cmd === 'turn off') lights.update([x, y], v => Math.max(v - 1, 0));
+        else if (cmd === 'toggle') lights.update([x, y], v => v + 2);
       }
     }
-    return countLights(lights);
+    return lights.iter().reduce((acc, [, light]) => acc + light, 0);
   },
 );
 
