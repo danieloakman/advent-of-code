@@ -1,8 +1,3 @@
-/*
- * This file contains template code.
- * There is no need to edit this file unless you want to change template functionality.
- * Prefer `./helpers.rs` if you want to extract code from your solutions.
- */
 use std::fs::create_dir_all;
 use std::io::Read;
 
