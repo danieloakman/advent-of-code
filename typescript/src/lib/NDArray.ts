@@ -14,10 +14,7 @@ export type Dimensions =
   | Tuple<number, 9>
   | Tuple<number, 10>;
 
-// export interface NDArray
-
-// const a = new Uint32Array(1000);
-interface FixedLengthArray {
+export interface FixedLengthArray {
   [index: number]: number;
   length: number;
   set: (value: ArrayLike<number>, offset: number) => void;
@@ -27,8 +24,7 @@ interface FixedLengthArray {
   [Symbol.iterator]: () => IterableIterator<number>;
 }
 
-// const arr = new Uint32Array(100);
-
+// Tests what types of arrays can be used with `FixedLengthArray`.
 // const arrs: /* ArrayLike<number>[] */FixedLengthArray[] = [
 //   new Uint32Array(100),
 //   new Float32Array(100),
@@ -105,34 +101,34 @@ export class NDArray<N extends Dimensions> {
 //   }) as any;
 // }
 
-export class Array2D<T> {
-  protected readonly arr: T[];
+// export class Array2D<T> {
+//   protected readonly arr: T[];
 
-  constructor(readonly size: number) {
-    this.arr = new Array(size * size).fill(0);
-  }
+//   constructor(readonly size: number) {
+//     this.arr = new Array(size * size).fill(0);
+//   }
 
-  get(x: number, y: number) {
-    return this.arr[x + y * this.size];
-  }
+//   get(x: number, y: number) {
+//     return this.arr[x + y * this.size];
+//   }
 
-  set(value: T, x: number, y: number) {
-    this.arr[x + y * this.size] = value;
-  }
+//   set(value: T, x: number, y: number) {
+//     this.arr[x + y * this.size] = value;
+//   }
 
-  update(coords: [x: number, y: number], updater: (value: T) => T) {
-    const index = coords[0] + coords[1] * this.size;
-    this.arr[index] = updater(this.arr[index]);
-  }
+//   update(coords: [x: number, y: number], updater: (value: T) => T) {
+//     const index = coords[0] + coords[1] * this.size;
+//     this.arr[index] = updater(this.arr[index]);
+//   }
 
-  iter() {
-    return iter(this.arr).enumerate().map(([i, value]) => [i % this.size, Math.floor(i / this.size), value] as const);
-  }
+//   iter() {
+//     return iter(this.arr).enumerate().map(([i, value]) => [i % this.size, Math.floor(i / this.size), value] as const);
+//   }
 
-  // private toIndex(x: number, y: number): number {
-  //   return x + y * this.size;
-  // }
-}
+//   // private toIndex(x: number, y: number): number {
+//   //   return x + y * this.size;
+//   // }
+// }
 
 // import.meta.vitest
 if (canTest()) {
