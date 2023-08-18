@@ -16,15 +16,15 @@ export type Get<T> = {
 export type ValuePoint<T> = [number, number, T];
 
 export class Map2D<T> {
-  public get = Object.defineProperties((x: number, y: number) => this.map[`${x},${y}`], {
-    'up': { value: (x: number, y: number) => this.map[`${x},${y - 1}`] },
-    'down': { value: (x: number, y: number) => this.map[`${x},${y + 1}`] },
-    'left': { value: (x: number, y: number) => this.map[`${x - 1},${y}`] },
-    'right': { value: (x: number, y: number) => this.map[`${x + 1},${y}`] },
-    'upLeft': { value: (x: number, y: number) => this.map[`${x - 1},${y - 1}`] },
-    'upRight': { value: (x: number, y: number) => this.map[`${x + 1},${y - 1}`] },
-    'downLeft': { value: (x: number, y: number) => this.map[`${x - 1},${y + 1}`] },
-    'downRight': { value: (x: number, y: number) => this.map[`${x + 1},${y + 1}`] },
+  public get = Object.defineProperties((x: number, y: number) => this.map.get(`${x},${y}`), {
+    'up': { value: (x: number, y: number) => this.map.get(`${x},${y - 1}`) },
+    'down': { value: (x: number, y: number) => this.map.get(`${x},${y + 1}`) },
+    'left': { value: (x: number, y: number) => this.map.get(`${x - 1},${y}`) },
+    'right': { value: (x: number, y: number) => this.map.get(`${x + 1},${y}`) },
+    'upLeft': { value: (x: number, y: number) => this.map.get(`${x - 1},${y - 1}`) },
+    'upRight': { value: (x: number, y: number) => this.map.get(`${x + 1},${y - 1}`) },
+    'downLeft': { value: (x: number, y: number) => this.map.get(`${x - 1},${y + 1}`) },
+    'downRight': { value: (x: number, y: number) => this.map.get(`${x + 1},${y + 1}`) },
   }) as Get<T>;
 
   public point = {
@@ -42,7 +42,7 @@ export class Map2D<T> {
   public xMax: number;
   public yMin: number;
   public yMax: number;
-  private map: Record<string, T> = {};
+  private readonly map = new Map<string, T>();
 
   constructor({ xMin, xMax, yMin, yMax }: { xMin?: number; xMax?: number; yMin?: number; yMax?: number } = {}) {
     this.xMin = xMin || 0;
@@ -74,22 +74,29 @@ export class Map2D<T> {
 
   set(x: number, y: number, value: T) {
     this.setBounds(x, y);
-    this.map[`${x},${y}`] = value;
+    this.map.set(`${x},${y}`, value);
+  }
+
+  update(x: number, y: number, updater: (value: T) => T) {
+    this.setBounds(x, y);
+    const key = `${x},${y}`;
+    this.map.set(key, updater(this.map.get(key)));
   }
 
   has(x: number, y: number) {
-    return this.map[`${x},${y}`] !== undefined;
+    return this.map.has(`${x},${y}`);
+    // return this.map[`${x},${y}`] !== undefined;
   }
 
   clear(x: number, y: number) {
-    delete this.map[`${x},${y}`];
+    this.map.delete(`${x},${y}`);
   }
 
   toArray() {
     const arr: T[][] = [];
     for (let y = this.yMin; y <= this.yMax; y++) {
       const row: T[] = [];
-      for (let x = this.xMin; x <= this.xMax; x++) row.push(this.map[`${x},${y}`]);
+      for (let x = this.xMin; x <= this.xMax; x++) row.push(this.map.get(`${x},${y}`));
       arr.push(row);
     }
     return arr;
@@ -102,7 +109,7 @@ export class Map2D<T> {
     for (let y = this.yMin; y <= this.yMax; y++) {
       const line: string[] = [];
       for (let x = this.xMin; x <= this.xMax; x++) {
-        const value = toString([x, y, this.map[`${x},${y}`]]);
+        const value = toString([x, y, this.map.get(`${x},${y}`)]);
         padding = Math.max(padding, value.length);
         line.push(value);
       }
@@ -134,7 +141,7 @@ export class Map2D<T> {
         y++;
       }
       if (y > this.yMax) return null;
-      return [x++, y, this.map[`${x - 1},${y}`]] as ValuePoint<T>;
+      return [x++, y, this.map.get(`${x - 1},${y}`)] as ValuePoint<T>;
     }, null);
   }
 
@@ -148,7 +155,7 @@ export class Map2D<T> {
         y++;
       }
       if (y > bounds.yMax) return null;
-      return [x++, y, this.map[`${x - 1},${y}`]] as ValuePoint<T>;
+      return [x++, y, this.map.get(`${x - 1},${y}`)] as ValuePoint<T>;
     }, null);
   }
 
@@ -162,7 +169,7 @@ export class Map2D<T> {
   rows(reverse = false) {
     return iter(reverse ? range(this.yMax, this.yMin - 1) : range(this.yMin, this.yMax)).map(y =>
       iter(reverse ? range(this.xMax, this.xMin - 1) : range(this.xMin, this.xMax)).map(
-        x => [x, y, this.map[`${x},${y}`]] as ValuePoint<T>,
+        x => [x, y, this.map.get(`${x},${y}`)] as ValuePoint<T>,
       ),
     );
   }
@@ -170,7 +177,7 @@ export class Map2D<T> {
   columns(reverse = false) {
     return iter(reverse ? range(this.xMax, this.xMin - 1) : range(this.xMin, this.xMax)).map(x =>
       iter(reverse ? range(this.yMax, this.yMin - 1) : range(this.yMin, this.yMax)).map(
-        y => [x, y, this.map[`${x},${y}`]] as ValuePoint<T>,
+        y => [x, y, this.map.get(`${x},${y}`)] as ValuePoint<T>,
       ),
     );
   }
@@ -179,7 +186,7 @@ export class Map2D<T> {
   neighbours(x: number, y: number) {
     return iter(Object.values(this.point)).map(fn => {
       const [nx, ny] = fn(x, y);
-      return [nx, ny, this.map[`${nx},${ny}`]] as ValuePoint<T>;
+      return [nx, ny, this.map.get(`${nx},${ny}`)] as ValuePoint<T>;
     });
   }
 
@@ -187,7 +194,7 @@ export class Map2D<T> {
   adjacentNeighbours(x: number, y: number) {
     return iter([this.point.up, this.point.down, this.point.left, this.point.right]).map(fn => {
       const [nx, ny] = fn(x, y);
-      return [nx, ny, this.map[`${nx},${ny}`]] as ValuePoint<T>;
+      return [nx, ny, this.map.get(`${nx},${ny}`)] as ValuePoint<T>;
     });
   }
 
@@ -195,7 +202,7 @@ export class Map2D<T> {
   diagonalNeighbours(x: number, y: number) {
     return iter([this.point.upLeft, this.point.upRight, this.point.downLeft, this.point.downRight]).map(fn => {
       const [nx, ny] = fn(x, y);
-      return [nx, ny, this.map[`${nx},${ny}`]] as ValuePoint<T>;
+      return [nx, ny, this.map.get(`${nx},${ny}`)] as ValuePoint<T>;
     });
   }
 
@@ -213,7 +220,7 @@ export class Map2D<T> {
   *getValues(predicate: (value: T, x: number, y: number) => any = v => typeof v !== 'undefined') {
     for (const key in this.map) {
       const [x, y] = key.split(',').map(Number);
-      const value = this.map[key];
+      const value = this.map.get(key);
       if (predicate(value, x, y)) yield { x, y, value };
     }
   }
@@ -225,7 +232,7 @@ export class Map2D<T> {
   ) {
     for (let y = bounds.yMin; y <= bounds.yMax; y++)
       for (let x = bounds.xMin; x <= bounds.xMax; x++) {
-        const value = this.map[`${x},${y}`];
+        const value = this.map.get(`${x},${y}`);
         if (predicate(value, x, y)) yield { x, y, value };
       }
   }

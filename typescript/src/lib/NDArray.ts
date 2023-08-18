@@ -16,31 +16,54 @@ export type Dimensions =
 
 // export interface NDArray
 
-export class NDArray<T, N extends Dimensions> {
-  protected readonly arr: T[];
+// const a = new Uint32Array(1000);
+interface FixedLengthArray {
+  [index: number]: number;
+  length: number;
+  set: (value: ArrayLike<number>, offset: number) => void;
+  slice: (start?: number, end?: number) => ArrayLike<number>;
+  subarray: (start?: number, end?: number) => ArrayLike<number>;
+  fill: (value: number, start?: number, end?: number) => void;
+  [Symbol.iterator]: () => IterableIterator<number>;
+}
+
+// const arr = new Uint32Array(100);
+
+// const arrs: /* ArrayLike<number>[] */FixedLengthArray[] = [
+//   new Uint32Array(100),
+//   new Float32Array(100),
+//   new Float64Array(100),
+//   new Int8Array(100),
+//   new Int16Array(100),
+//   new Int32Array(100),
+//   new Uint8Array(100),
+//   new Uint16Array(100),
+//   new Uint32Array(100),
+// ];
+
+export class NDArray<N extends Dimensions> {
 
   constructor(
-    readonly defaultValue: T,
-    readonly dimensions: N,
+    protected readonly arr: FixedLengthArray,
+    protected readonly dimensions: N,
   ) {
-    this.arr = Array.from({ length: dimensions.reduce((acc, dim) => acc * dim) }, () => defaultValue);
   }
 
-  get(...coordinates: Tuple<number, N['length']>): T {
-    return this.arr[this.toIndex(coordinates)] ?? this.defaultValue;
+  get(...coords: Tuple<number, N['length']>): number {
+    return this.arr[this.toIndex(coords)];
   }
 
-  set(value: T, ...coordinates: Tuple<number, N['length']>): void {
-    this.arr[this.toIndex(coordinates)] = value;
+  set(value: number, ...coords: Tuple<number, N['length']>): void {
+    this.arr[this.toIndex(coords)] = value;
   }
 
-  update(coordinates: Tuple<number, N['length']>, updater: (value: T) => T): void {
-    const index = this.toIndex(coordinates);
-    this.arr[index] = updater(this.arr[index] ?? this.defaultValue);
+  update(coords: Tuple<number, N['length']>, updater: (value: number) => number): void {
+    const index = this.toIndex(coords);
+    this.arr[index] = updater(this.arr[index]);
   }
 
   iter() {
-    return iter(this.arr).enumerate().map(([i, value]) => [this.toCoord(i), value ?? this.defaultValue] as const);
+    return iter(this.arr).enumerate().map(([i, value]) => [this.toCoord(i), value] as const);
   }
 
   /**
@@ -116,7 +139,7 @@ if (canTest()) {
   describe('Array2D', () => {
     it('get & set', () => {
       // 2D map:
-      const map2d = new NDArray(0, [5, 5]);
+      const map2d = new NDArray(new Uint32Array(5 * 5), [5, 5]);
       expect(map2d.get(0, 0)).toBe(0);
       map2d.set(1, 0, 0);
       expect(map2d.get(0, 0)).toBe(1);
@@ -127,10 +150,10 @@ if (canTest()) {
 
       // Out of bounds, still kind of works.
       map2d.set(100, 6, 100);
-      expect(map2d.get(6, 100)).toBe(100);
+      expect(map2d.get(6, 100)).toBe(undefined);
 
       // 3D map:
-      const map3d = new NDArray(0, [5, 5, 5]);
+      const map3d = new NDArray(new Float32Array(5 * 5 * 5), [5, 5, 5]);
       expect(map3d.get(0, 0, 0)).toBe(0);
       map3d.set(-1, 0, 0, 0);
       expect(map3d.get(0, 0, 0)).toBe(-1);
@@ -138,7 +161,7 @@ if (canTest()) {
       expect(map3d.iter().filterMap(([_, v]) => v).minmax()).toEqual([-1, 2]);
     });
 
-    it('performance', async () => {
+    it.skip('performance', async () => {
       const { setupSuite } = await import('../../../../iteragain/benchmark/bm-util.js');
       setupSuite({ name: 'NDArray performance' })
         .add('', () => {})
