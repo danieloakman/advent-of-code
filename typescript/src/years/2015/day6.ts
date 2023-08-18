@@ -37,8 +37,8 @@ export const solution = new Solution(
     // const lights = new Array2D<number>(1000);
     for (const { cmd, start, end } of mapInput(input)) {
       for (const [x, y] of lightsWithin(start, end)) {
-        if (cmd === 'turn on') lights.set(1, x, y);
-        else if (cmd === 'turn off') lights.set(0, x, y);
+        if (cmd === 'turn on') lights.set([x, y], 1);
+        else if (cmd === 'turn off') lights.set([x, y], 0);
         else if (cmd === 'toggle') lights.update([x, y], v => (v === 0 ? 1 : 0));
       }
     }
