@@ -10,16 +10,16 @@ export class Timer {
   }
 
   /** Converts `ms` to an appropriate unit of time. Doesn't support less than 1 nanosecond. */
-  static toElapsedStr(ms: number): `(elapsed ${number}${'s' | 'ms' | 'ns' | 'µs'})` {
-    if (ms > 1e3) return `(elapsed ${ms / 1e3}s)`;
-    if (ms > 1) return `(elapsed ${ms}ms)`;
-    if (ms > 0.001) return `(elapsed ${ms * 1e3}µs)`;
-    return `(elapsed ${ms * 1e6}ns)`;
+  static toElapsedStr(ms: number): `(elapsed ${string}${'s' | 'ms' | 'ns' | 'µs'})` {
+    if (ms > 1e3) return `(elapsed ${(ms / 1e3).toFixed(2)}s)`;
+    if (ms > 1) return `(elapsed ${ms.toFixed(2)}ms)`;
+    if (ms > 0.001) return `(elapsed ${(ms * 1e3).toFixed(2)}µs)`;
+    return `(elapsed ${(ms * 1e6).toFixed(2)}ns)`;
   }
 
 
   /** Elapsed time formatted into a string. */
-  elapsed(): `(elapsed ${number}${'s' | 'ms' | 'ns' | 'µs'})` {
+  elapsed(): `(elapsed ${string}${'s' | 'ms' | 'ns' | 'µs'})` {
     return Timer.toElapsedStr(this.ms);
   }
 

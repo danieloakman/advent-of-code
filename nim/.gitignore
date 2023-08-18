@@ -1,0 +1,6 @@
+# This ignores everything then adds back anything with an extension or "."
+*
+!/**/
+!*.*
+
+*.exe

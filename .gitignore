@@ -110,5 +110,5 @@ sessionCookie.txt
 package-lock.json
 
 tmp/
-
 target
+*IGNORE*

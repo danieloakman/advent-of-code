@@ -10,8 +10,6 @@ importers:
 
   c: {}
 
-  golang: {}
-
   nim: {}
 
   rust: {}
