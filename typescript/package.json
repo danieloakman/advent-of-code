@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "tsn": "node -r ts-node/register -r tsconfig-paths/register",
+    "tsnd": "node -r ts-node/register -r tsconfig-paths/register --inspect",
     "solve": "pnpm tsn scripts/solve.ts",
     "test": "vitest run",
     "test:watch": "vitest",
