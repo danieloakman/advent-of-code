@@ -498,3 +498,8 @@ export function iife<T extends AnyFunc>(fn: T): ReturnType<T> {
 export function canTest(): boolean {
   return process.argv.some(arg => arg.includes('test') || arg.includes('tinypool'));
 }
+
+/** Returns `n.toFixed` with excess 0s removed. */
+export function toFixed(n: number, decimalPlaces: number): string {
+  return n.toFixed(decimalPlaces).replace(/\.?0+$/, '');
+}
