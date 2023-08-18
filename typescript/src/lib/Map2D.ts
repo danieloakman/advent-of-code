@@ -1,7 +1,10 @@
 import iter from 'iteragain/iter';
 import range from 'iteragain/range';
+import { canTest } from './utils';
+import { describe } from 'vitest';
+import { it } from 'node:test';
 
-export type Get<T> = {
+export interface Get<T> {
   (x: number, y: number): T;
   up: (x: number, y: number) => T;
   down: (x: number, y: number) => T;
@@ -11,10 +14,11 @@ export type Get<T> = {
   upRight: (x: number, y: number) => T;
   downLeft: (x: number, y: number) => T;
   downRight: (x: number, y: number) => T;
-};
+}
 
 export type ValuePoint<T> = [number, number, T];
 
+// TODO: would be nice for this to implement `MapLike<string, T>`
 export class Map2D<T> {
   public get = Object.defineProperties((x: number, y: number) => this.map.get(`${x},${y}`), {
     'up': { value: (x: number, y: number) => this.map.get(`${x},${y - 1}`) },
@@ -247,3 +251,10 @@ export class Map2D<T> {
 }
 
 export default Map2D;
+
+// import.meta.vitest
+if (canTest()) {
+  describe('Map2D', () => {
+    it.skip('get & set', () => {});
+  });
+}
