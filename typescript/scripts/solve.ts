@@ -1,13 +1,11 @@
 import { terminal } from 'terminal-kit';
 import { walkdirSync } from 'more-node-fs';
 import { join, relative } from 'path';
-import { exec as _exec } from 'child_process';
-import { promisify } from 'util';
-const exec = promisify(_exec);
 import iter from 'iteragain/iter';
 import { ArgumentParser } from 'argparse';
-import { main } from '../src/lib/utils';
+import { main, sh } from '../src/lib/utils';
 import { Nullish } from '../src/lib/types';
+import Solution from '../src/lib/Solution';
 
 export const files = iter(walkdirSync(join(__dirname, '../'), { ignore: /node_modules/i }))
   .filterMap(file => (file.stats.isFile() && /day\d+\.[tj]s/.test(file.path) ? file : null))
@@ -18,18 +16,11 @@ export const files = iter(walkdirSync(join(__dirname, '../'), { ignore: /node_mo
 const relativeFiles = files.map(file => relative(process.cwd(), file));
 
 export async function test(year: number | string, day: number | string, { log = false }: { log?: boolean } = {}) {
-  try {
-    const result = await exec(
-      `pnpm tsn ${join(__dirname, '../src/years', year.toString(), `day${day.toString()}.ts`)}`,
-    );
-    if (log && result.stderr) terminal.error(result.stderr);
-    if (log && result.stdout) terminal(result.stdout);
-    return result.stdout;
-  } catch (e) {
-    const message = e.message ?? e;
-    if (log && message) terminal.error(message);
-    return message;
-  }
+  const result = await sh(`pnpm tsn ${join(__dirname, '../src/years', year.toString(), `day${day.toString()}.ts`)}`, {
+    log,
+  });
+  if (result instanceof Error) terminal.error(log);
+  return result;
 }
 
 async function selectedText(err?: Error, res?: { selectedText: string }) {
@@ -62,8 +53,11 @@ main(module, async () => {
     default: null,
   });
   const args: { year: Nullish<number>; day: Nullish<number> } = parser.parse_args();
+
   if (args.year && args.day) {
-    await test(args.year, args.day, { log: true });
+    const file = require(join(__dirname, '../src/years', args.year.toString(), `day${args.day}`)) || { };
+    if (file.solution instanceof Solution) await file.solution.solve();
+    else await test(args.year, args.day, { log: true });
     return;
   }
 

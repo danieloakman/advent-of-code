@@ -5,6 +5,7 @@
     "tsn": "node -r ts-node/register -r tsconfig-paths/register",
     "tsnd": "node -r ts-node/register -r tsconfig-paths/register --inspect",
     "solve": "pnpm tsn scripts/solve.ts",
+    "solve:debug": "pnpm tsnd scripts/solve.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "create": "pnpm tsn scripts/create.ts",

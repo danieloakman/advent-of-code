@@ -17,3 +17,5 @@ const input = readFileSync(__filename.replace('.ts', '-input'), 'utf-8')
 console.log(input.reduce((sum, { stringCode, memoryStr }) => sum + (stringCode - memoryStr), 0));
 
 // Second Star:
+
+export const solution = Solution()
