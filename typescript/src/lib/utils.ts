@@ -12,7 +12,7 @@ import toArray from 'iteragain/toArray';
 import map from 'iteragain/map';
 import { join } from 'path';
 import { deepStrictEqual as equal } from 'assert';
-import { AnyFunc, Nullish } from './types';
+import { AnyFunc, Nullish, Result } from './types';
 
 export const tmpdir = once(() => {
   const tmpdir = join(__dirname, '../../..', 'tmp');
@@ -533,4 +533,42 @@ export function sh(command: string, options: ShellCommandOptions = {}): Promise<
     s.stdout?.on('data', handleData);
     s.stderr?.on('data', handleData);
   });
+}
+
+export function isObjectLike(value: unknown): value is Record<PropertyKey, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+/**
+ * Wraps the execution of `func` in a try catch block. Works on both synchronous and asynchronous
+ * functions. Is used for calling functions that don't require anything to be done in the catch
+ * block. Essentially just ommitting the need for a catch statement and having a way to safely call
+ * a function in one line.
+ * @param func
+ * @param params Optional. Append any params for use in `func`. Needs to be in correct order.
+ * @returns Null or undefined if `func` threw an error. If no error, then returns whatever `func` returns.
+ * Returning the null on an error is so that checking for a valid result is simpler.
+ */
+export function safeCall<T extends (...params: any[]) => any>(func: T, ...params: Parameters<T>): ReturnType<T> | null {
+  try {
+    const result = func(...params);
+    return isObjectLike(result) && typeof result.catch === 'function' ? result.catch((_: Error): null => null) : result;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Wraps the execution of `func` in a try catch block. Works on both synchronous and asynchronous. Similar to lodash's
+ * `attempt`, except this catches both sync and async errors.
+ * @param params Optional. Append any params for use in `func`. Needs to be in correct order.
+ * @returns Returns an error if `func` threw an error. If no error, then returns whatever `func` returns.
+ */
+export function attempt<T extends (...params: any[]) => any>(func: T, ...params: Parameters<T>): Result<ReturnType<T>> {
+  try {
+    const result = func(...params);
+    return isObjectLike(result) && typeof result.catch === 'function' ? result.catch((error: Error) => error) : result;
+  } catch (error) {
+    return error;
+  }
 }

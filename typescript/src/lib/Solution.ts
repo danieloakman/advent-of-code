@@ -7,7 +7,7 @@ export interface SolutionMethod {
   (
     /** The current day's input string. */
     input: string,
-  ): Promise<Nullish<string | number>>;
+  ): Promise<Nullish<string | number>> | Nullish<string | number>;
 }
 
 export class Solution<FirstStar extends SolutionMethod, SecondStar extends SolutionMethod> {
