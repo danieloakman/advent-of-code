@@ -11,6 +11,7 @@
     "esbenp.prettier-vscode",
     "tamasfe.even-better-toml",
     "ms-vscode.cpptools",
-    "kosz78.nim"
+    "kosz78.nim",
+    "oven.bun-vscode"
   ]
 }
