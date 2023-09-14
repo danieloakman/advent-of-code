@@ -37,16 +37,16 @@ async function selectedText(err?: Error, res?: { selectedText: string }) {
     process.exit(1);
   }
   try {
-    const [year, day] = res.selectedText.match(/\d+/g).map(parseFloat) as number[];
+    const [year, day] = res?.selectedText.match(/\d+/g)?.map(parseFloat) as number[];
     // terminal(`Testing day ${day} of year ${year}`);
     terminal.clear()(await test(year, day));
   } catch (err) {
-    terminal.clear()(err.stack);
+    if (err instanceof Error) terminal.clear()(err.stack);
   }
   terminal.gridMenu(relativeFiles, selectedText);
 }
 
-main(module, async () => {
+main(import.meta.path, async () => {
   const parser = new ArgumentParser({
     description: 'Solve Advent of Code Typescript solutions',
   });

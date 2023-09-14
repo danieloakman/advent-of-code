@@ -1,6 +1,5 @@
 import { Tuple } from 'iteragain/types';
-import { MapLike, canTest } from '.';
-import { describe, it, expect } from 'vitest';
+import { MapLike } from '.';
 import { iter } from 'iteragain/iter';
 import { range } from 'lodash';
 
@@ -54,12 +53,12 @@ export class NDArray<N extends Dimensions> implements MapLike<Tuple<number, N['l
   }
 
   delete(key: Tuple<number, N['length']>): boolean {
-    this.arr.set([undefined], this.toIndex(key));
+    this.arr.set([undefined as any], this.toIndex(key));
     return true;
   }
 
   clear(): void {
-    this.arr.fill(undefined);
+    this.arr.fill(undefined as any);
   }
 
   entries(): IterableIterator<[Tuple<number, N['length']>, number]> {
@@ -167,42 +166,42 @@ export class NDArray<N extends Dimensions> implements MapLike<Tuple<number, N['l
 // }
 
 // import.meta.vitest
-if (canTest()) {
-  describe('Array2D', () => {
-    it.skip('get & set', () => {
-      // 2D map:
-      const map2d = new NDArray(new Uint32Array(5 * 5), [5, 5]);
-      expect(map2d.get([0, 0])).toBe(0);
-      map2d.set([0, 0], 1);
-      expect(map2d.get([0, 0])).toBe(1);
-      map2d.set([1, 0], 2);
-      expect(map2d.get([1, 0])).toBe(2);
-      map2d.set([0, 1], 3);
-      expect(map2d.get([0, 1])).toBe(3);
+// if (canTest()) {
+// describe('Array2D', () => {
+//   it.skip('get & set', () => {
+//     // 2D map:
+//     const map2d = new NDArray(new Uint32Array(5 * 5), [5, 5]);
+//     expect(map2d.get([0, 0])).toBe(0);
+//     map2d.set([0, 0], 1);
+//     expect(map2d.get([0, 0])).toBe(1);
+//     map2d.set([1, 0], 2);
+//     expect(map2d.get([1, 0])).toBe(2);
+//     map2d.set([0, 1], 3);
+//     expect(map2d.get([0, 1])).toBe(3);
 
-      // Out of bounds, still kind of works.
-      map2d.set([6, 100], 100);
-      expect(map2d.get([6, 100])).toBe(undefined);
+//     // Out of bounds, still kind of works.
+//     map2d.set([6, 100], 100);
+//     expect(map2d.get([6, 100])).toBe(undefined);
 
-      // 3D map:
-      const map3d = new NDArray(new Float32Array(5 * 5 * 5), [5, 5, 5]);
-      expect(map3d.get([0, 0, 0])).toBe(0);
-      map3d.set([0, 0, 0], -1);
-      expect(map3d.get([0, 0, 0])).toBe(-1);
-      map3d.set([0, 0, 1], 2);
-      expect(
-        map3d
-          .iter()
-          .filterMap(([_, v]) => v)
-          .minmax(),
-      ).toEqual([-1, 2]);
-    });
+//     // 3D map:
+//     const map3d = new NDArray(new Float32Array(5 * 5 * 5), [5, 5, 5]);
+//     expect(map3d.get([0, 0, 0])).toBe(0);
+//     map3d.set([0, 0, 0], -1);
+//     expect(map3d.get([0, 0, 0])).toBe(-1);
+//     map3d.set([0, 0, 1], 2);
+//     expect(
+//       map3d
+//         .iter()
+//         .filterMap(([_, v]) => v)
+//         .minmax(),
+//     ).toEqual([-1, 2]);
+//   });
 
-    it.skip('performance', async () => {
-      const { setupSuite } = await import('../../../../iteragain/benchmark/bm-util.js');
-      setupSuite({ name: 'NDArray performance' })
-        .add('', () => {})
-        .run();
-    });
-  });
-}
+//   it.skip('performance', async () => {
+//     const { setupSuite } = await import('../../../../iteragain/benchmark/bm-util.js');
+//     setupSuite({ name: 'NDArray performance' })
+//       .add('', () => {})
+//       .run();
+//   });
+// });
+// }

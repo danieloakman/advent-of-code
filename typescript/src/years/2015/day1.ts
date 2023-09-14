@@ -26,4 +26,5 @@ export const solution = new Solution(
   async input => solve(input).firstBasement,
 );
 
+console.log({module});
 solution.main(module);

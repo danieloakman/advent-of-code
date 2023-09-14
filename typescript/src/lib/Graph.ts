@@ -8,7 +8,7 @@ export class Graph {
   public readonly nodes = new Set<string>();
 
   constructor(edges?: GraphEdgeInput[], directed = false) {
-    for (const edge of edges) {
+    for (const edge of edges ?? []) {
       const [start, end, weight] = edge;
       this.addEdge(start, end, weight, directed);
     }

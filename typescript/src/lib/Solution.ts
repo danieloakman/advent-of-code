@@ -1,6 +1,6 @@
+import { main } from './utils';
 import { Nullish } from './types';
 import Timer from './Timer';
-import { main } from './utils';
 import { downloadInput } from './downloadInput';
 
 export interface SolutionMethod {

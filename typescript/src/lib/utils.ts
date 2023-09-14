@@ -3,16 +3,19 @@ import once from 'lodash/once';
 import memoize from 'lodash/memoize';
 import { existsSync, mkdirSync } from 'fs';
 import { BinaryLike, BinaryToTextEncoding, createHash } from 'crypto';
-import iter from 'iteragain/iter';
+import { iter, range as _range, toArray, Tuple, map } from 'iteragain';
+import { ExtendedIterator } from 'iteragain/internal/ExtendedIterator';
 import readline from 'readline';
-import _range from 'iteragain/range';
-import { Tuple } from 'iteragain/types';
-import ExtendedIterator from 'iteragain/internal/ExtendedIterator';
-import toArray from 'iteragain/toArray';
-import map from 'iteragain/map';
 import { join } from 'path';
 import { deepStrictEqual as equal } from 'assert';
 import { AnyFunc, Nullish, Result } from './types';
+
+export const IS_RUNNING_WITH_BUN = 'Bun' in global;
+if (IS_RUNNING_WITH_BUN) {
+  // Polyfill module:
+  // @ts-ignore
+  global.module = { exports: {} };
+}
 
 export const tmpdir = once(() => {
   const tmpdir = join(__dirname, '../../..', 'tmp');
@@ -313,9 +316,9 @@ export const isInDebug = function () {
   return typeof require('inspector').url() !== 'undefined';
 };
 
-export const question = async function (questionStr: string, defaultAnswer: string = undefined): Promise<string> {
+export const question = async function (questionStr: string, defaultAnswer: Nullish<string> = undefined): Promise<string> {
   return new Promise(resolve => {
-    if (isInDebug()) resolve(defaultAnswer);
+    if (isInDebug()) resolve(defaultAnswer || '');
     else {
       const r1 = readline.createInterface({
         input: process.stdin,
@@ -323,7 +326,7 @@ export const question = async function (questionStr: string, defaultAnswer: stri
       });
       r1.question(questionStr, answer => {
         r1.close();
-        resolve(answer || defaultAnswer);
+        resolve(answer || defaultAnswer || '');
       });
     }
   });
@@ -337,11 +340,11 @@ export function range(...args: Parameters<typeof _range>) {
 /**
  * Declares and runs a main function if the entry point to the program is `module`. This is esstentially the same as
  * python's `if __name__ == '__main__'` block.
- * @param module The NodeModule where this main function is running from.
+ * @param module The NodeModule where this main function is running from or `import.meta.path`, i.e. the path where this is being called from.
  * @param mainFunction The main function to run.
  */
 export function main(module: any, mainFunction: () => Promise<void>) {
-  if (require?.main !== module) return;
+  if (!(require?.main === module || (IS_RUNNING_WITH_BUN && Bun.main === module))) return;
   return mainFunction();
 }
 
@@ -434,8 +437,8 @@ export function limitConcurrentCalls<T extends (...args: any[]) => Promise<any>>
 export function range2D(start: [number, number], stop: [number, number], step?: [number, number]) {
   const lastX = start[0];
   const lastY = start[1];
-  return iter(_range(start[0], stop[0], step?.[0]))
-    .zipLongest(_range(start[1], stop[1], step?.[1]))
+  return iter(_range(start[0], stop[0], step?.[0] ?? 1))
+    .zipLongest(_range(start[1], stop[1], step?.[1] ?? 1))
     .map(nums => [nums[0] ?? lastX, nums[1] ?? lastY] as [number, number]);
 }
 
@@ -569,6 +572,6 @@ export function attempt<T extends (...params: any[]) => any>(func: T, ...params:
     const result = func(...params);
     return isObjectLike(result) && typeof result.catch === 'function' ? result.catch((error: Error) => error) : result;
   } catch (error) {
-    return error;
+    return error as Result<ReturnType<T>>;
   }
 }

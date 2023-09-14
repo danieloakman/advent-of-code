@@ -49,6 +49,9 @@ importers:
       benchmark:
         specifier: ^2.1.4
         version: 2.1.4
+      bun-types:
+        specifier: ^1.0.1
+        version: 1.0.1
       eslint:
         specifier: ^8.47.0
         version: 8.47.0
@@ -65,6 +68,9 @@ importers:
         specifier: ^8.0.3
         version: 8.0.3
       iteragain:
+        specifier: ^3.17.4
+        version: 3.17.4
+      iteragain-es:
         specifier: ^3.17.4
         version: 3.17.4
       lodash:
@@ -592,6 +598,10 @@ packages:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
+    dev: true
+
+  /bun-types@1.0.1:
+    resolution: {integrity: sha512-7NrXqhMIaNKmWn2dSWEQ50znMZqrN/5Z0NBMXvQTRu/+Y1CvoXRznFy0pnqLe024CeZgVdXoEpARNO1JZLAPGw==}
     dev: true
 
   /callsites@3.1.0:
@@ -1225,6 +1235,10 @@ packages:
 
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+    dev: true
+
+  /iteragain-es@3.17.4:
+    resolution: {integrity: sha512-8CbYR9vtuu/ufgpG1pIuCgVrkKCXcRCXywPH7ePtJp1W/AzV0ufSYXxDS07x40B65kFVLeJHzFCUstWdvv2/1w==}
     dev: true
 
   /iteragain@3.17.4:

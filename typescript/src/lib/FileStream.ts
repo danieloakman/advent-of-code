@@ -4,11 +4,11 @@ import Event from 'events';
 
 export class FileStream {
   public lineNum: number;
-  private eof: boolean;
+  private eof = false;
   private separator: string | RegExp;
   private fileName: string;
   private event: Event;
-  private reader: MapStream;
+  private reader: MapStream | null = null;
   private writer: WriteStream;
 
   constructor(fileName: string, separator: string | RegExp = /[\n\r]+/) {
@@ -40,11 +40,11 @@ export class FileStream {
       ? null
       : new Promise(resolve => {
         this.event.once('data', data => {
-          this.reader.pause();
+          this.reader?.pause();
           resolve(data);
         });
         this.event.once('error', () => resolve(null));
-        this.reader.resume();
+        this.reader?.resume();
       });
   }
 
@@ -54,7 +54,7 @@ export class FileStream {
       this.event.on('data', data => lines.push(data));
       this.event.on('error', _ => resolve(undefined));
       this.event.on('end', resolve);
-      this.reader.resume();
+      this.reader?.resume();
     });
     this.event.removeAllListeners();
     return lines;
