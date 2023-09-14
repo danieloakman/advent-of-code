@@ -2,6 +2,8 @@
 
 ## Tests
 
+TODO: remove this as in source testing is no longer possible with bun, instead solutions have their own `test` methods.
+
 Tests can either be in files like: *utils.test.ts*. Or in source testing can be done with the following:
 
 ```js
