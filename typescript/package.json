@@ -4,8 +4,8 @@
   "scripts": {
     "solve": "bun run scripts/solve.ts",
     "solve:debug": "bun run scripts/solve.ts",
-    "test": "bun test",
-    "test:watch": "bun test --watch",
+    "test": "bun run scripts/test.ts",
+    "test:watch": "bun run scripts/test.ts -w",
     "create": "bun run create scripts/create.ts",
     "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "prettier --write \"./**/*.ts\""
