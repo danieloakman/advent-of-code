@@ -67,9 +67,6 @@ importers:
       husky:
         specifier: ^8.0.3
         version: 8.0.3
-      iteragain:
-        specifier: ^3.17.4
-        version: 3.17.4
       iteragain-es:
         specifier: ^3.17.4
         version: 3.17.4
@@ -1239,10 +1236,6 @@ packages:
 
   /iteragain-es@3.17.4:
     resolution: {integrity: sha512-8CbYR9vtuu/ufgpG1pIuCgVrkKCXcRCXywPH7ePtJp1W/AzV0ufSYXxDS07x40B65kFVLeJHzFCUstWdvv2/1w==}
-    dev: true
-
-  /iteragain@3.17.4:
-    resolution: {integrity: sha512-gnmLnkpHAXBe7d7OuE7CXdFowWD2UiW50c5OHRcoy9UGgWeSXGh6sJhoEwLfKuqC3Z9dSktftSBxRxf8oPt80Q==}
     dev: true
 
   /jpeg-js@0.4.4:
