@@ -3,12 +3,13 @@ import once from 'lodash/once';
 import memoize from 'lodash/memoize';
 import { existsSync, mkdirSync } from 'fs';
 import { BinaryLike, BinaryToTextEncoding, createHash } from 'crypto';
-import { iter, range as _range, toArray, Tuple, map } from 'iteragain';
-import { ExtendedIterator } from 'iteragain/internal/ExtendedIterator';
+import { iter, range as _range, toArray, Tuple, map } from 'iteragain-es';
+import { ExtendedIterator } from 'iteragain-es/internal/ExtendedIterator';
 import readline from 'readline';
 import { join } from 'path';
 import { deepStrictEqual as equal } from 'assert';
 import { AnyFunc, Nullish, Result } from './types';
+import { ArgumentOptions, ArgumentParser } from 'argparse';
 
 export const IS_RUNNING_WITH_BUN = 'Bun' in global;
 if (IS_RUNNING_WITH_BUN) {
@@ -574,4 +575,18 @@ export function attempt<T extends (...params: any[]) => any>(func: T, ...params:
   } catch (error) {
     return error as Result<ReturnType<T>>;
   }
+}
+
+export type AddArgumentParams =
+  | [arg: string, options?: ArgumentOptions]
+  | [arg1: string, arg2: string, options?: ArgumentOptions];
+
+export function parseArgs<T = unknown>(
+  constructorParams: ConstructorParameters<typeof ArgumentParser>[0],
+  ...args: AddArgumentParams[]
+): T {
+  const parser = new ArgumentParser(constructorParams);
+  // @ts-ignore
+  for (const arg of args) parser.add_argument(...arg);
+  return parser.parse_args();
 }
