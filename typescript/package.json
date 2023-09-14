@@ -2,12 +2,10 @@
   "name": "@advent-of-code/typescript",
   "version": "0.0.1",
   "scripts": {
-    "tsn": "node -r ts-node/register -r tsconfig-paths/register",
-    "tsnd": "node -r ts-node/register -r tsconfig-paths/register --inspect",
-    "solve": "pnpm tsn scripts/solve.ts",
-    "solve:debug": "pnpm tsnd scripts/solve.ts",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "solve": "bun run scripts/solve.ts",
+    "solve:debug": "bun run scripts/solve.ts",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
     "create": "pnpm tsn scripts/create.ts",
     "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "prettier --write \"./**/*.ts\""
@@ -42,7 +40,6 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.6",
-    "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^0.34.1"
+    "vite-tsconfig-paths": "^4.2.0"
   }
 }
