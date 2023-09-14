@@ -1,7 +1,7 @@
 import iter from 'iteragain/iter';
 import range from 'iteragain/range';
 import { canTest } from './utils';
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'vitest';
 
 export interface Get<T> {
   (x: number, y: number): T;
