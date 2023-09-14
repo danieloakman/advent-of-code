@@ -1,6 +1,6 @@
-import { Tuple } from 'iteragain/types';
+import { Tuple } from 'iteragain-es/types';
 import { MapLike } from '.';
-import { iter } from 'iteragain/iter';
+import { iter } from 'iteragain-es/iter';
 import { range } from 'lodash';
 
 export type Dimensions =

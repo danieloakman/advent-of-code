@@ -4,7 +4,7 @@
 
 import { readFileSync } from 'fs';
 const once = require('lodash/once');
-// import { iter as iterate } from 'iteragain';
+// import { iter as iterate } from 'iteragain-es';
 import { deepStrictEqual as equals, equal } from 'assert';
 const last = require('lodash/last');
 

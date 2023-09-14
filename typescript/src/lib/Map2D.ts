@@ -1,5 +1,5 @@
-import iter from 'iteragain/iter';
-import range from 'iteragain/range';
+import iter from 'iteragain-es/iter';
+import range from 'iteragain-es/range';
 
 export interface Get<T> {
   (x: number, y: number): T;

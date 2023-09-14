@@ -1,6 +1,6 @@
 import once from 'lodash/once';
 import { main, range2D, mult } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { downloadInputSync } from '../../lib/downloadInput';
 import Map2D from '../../lib/Map2D';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
@@ -55,10 +55,7 @@ class TreeMap extends Map2D<Tree> {
   }
 
   visibleTrees() {
-    return (
-      this.points()
-        .reduce((sum, v) => sum + (v[2].visible ? 1 : 0), 0)
-    );
+    return this.points().reduce((sum, v) => sum + (v[2].visible ? 1 : 0), 0);
   }
 
   scenicScore(x: number, y: number) {
@@ -76,11 +73,16 @@ class TreeMap extends Map2D<Tree> {
       .map(line =>
         line
           .map(line => this.get(...line))
-          .takeWhile(((end = false) => (other) => {
-            if (end) return false;
-            if (other.height >= tree.height) end = true;
-            return true;
-          })())
+          .takeWhile(
+            (
+              (end = false) =>
+              other => {
+                if (end) return false;
+                if (other.height >= tree.height) end = true;
+                return true;
+              }
+            )(),
+          )
           .length(),
       )
       .reduce(mult);
@@ -91,7 +93,6 @@ class TreeMap extends Map2D<Tree> {
       .map(([x, y]) => this.scenicScore(x, y))
       .max();
   }
-
 }
 
 /** @see https://adventofcode.com/2022/day/8 First Star */

@@ -1,9 +1,9 @@
 import once from 'lodash/once';
 import { main, sum } from '../../lib/utils';
-import iter from 'iteragain/iter';
-import range from 'iteragain/range';
+import iter from 'iteragain-es/iter';
+import range from 'iteragain-es/range';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
-import RangeIterator from 'iteragain/internal/RangeIterator';
+import RangeIterator from 'iteragain-es/internal/RangeIterator';
 import { downloadInputSync } from '../../lib/downloadInput';
 
 /** @see https://adventofcode.com/2022/day/4/input */

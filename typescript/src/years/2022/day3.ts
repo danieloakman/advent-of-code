@@ -1,6 +1,6 @@
 import once from 'lodash/once';
 import { main, sum } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { ok as assert, deepStrictEqual as equal } from 'assert';
 import IncrementorMap from '../../lib/IncrementorMap';
 import { downloadInputSync } from '../../lib/downloadInput';
@@ -19,8 +19,8 @@ CrZsJsPPZsGzwwsLwLmpwMDw`
 
 const priority = (
   (LETTERS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') =>
-    (char: string) =>
-      LETTERS.indexOf(char) + 1
+  (char: string) =>
+    LETTERS.indexOf(char) + 1
 )();
 equal(priority('a'), 1);
 equal(priority('A'), 27);
@@ -47,16 +47,18 @@ export async function firstStar() {
 }
 
 function rucksackPriorities2(input: string[]) {
-  return iter(input)
-    .chunks(3)
-    .map(lines => {
-      const line1 = iter(lines[0]).unique().reduce(sum);
-      for (const char of line1) {
-        if (lines[1].includes(char) && lines[2].includes(char)) return priority(char);
-      }
-    })
-    // .tap(console.log)
-    .reduce(sum);
+  return (
+    iter(input)
+      .chunks(3)
+      .map(lines => {
+        const line1 = iter(lines[0]).unique().reduce(sum);
+        for (const char of line1) {
+          if (lines[1].includes(char) && lines[2].includes(char)) return priority(char);
+        }
+      })
+      // .tap(console.log)
+      .reduce(sum)
+  );
 }
 
 /** @see https://adventofcode.com/2022/day/3#part2 Second Star */

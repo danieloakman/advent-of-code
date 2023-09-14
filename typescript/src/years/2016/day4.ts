@@ -3,7 +3,7 @@
 
 import { readFileSync } from 'fs';
 import { ok as assert, deepStrictEqual as equal } from 'assert';
-import iter, { iter as iterate } from 'iteragain/iter';
+import iter, { iter as iterate } from 'iteragain-es/iter';
 import once from 'lodash/once';
 
 const input = once(() => readFileSync(__filename.replace(/.[tj]s/, '-input'), 'utf-8').split(/[\n\r]+/));

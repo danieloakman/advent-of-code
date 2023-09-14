@@ -1,4 +1,4 @@
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 
 export class IncrementorMap {
   private map: Record<string, number> = {};

@@ -3,7 +3,7 @@
 
 import { readFileSync } from 'fs';
 import { ok as assert } from 'assert';
-import take from 'iteragain/take';
+import take from 'iteragain-es/take';
 import { middle } from '../../lib/utils';
 import Map2D from '../../lib/Map2D';
 

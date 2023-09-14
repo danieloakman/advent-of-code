@@ -2,7 +2,7 @@ import once from 'lodash/once';
 import { add, main } from '../../lib/utils';
 import { downloadInputSync } from '../../lib/downloadInput';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
-import { iter, pairwise, range } from 'iteragain';
+import { iter, pairwise, range } from 'iteragain-es';
 
 /** @see https://adventofcode.com/2022/day/20/input */
 export const input = once(() =>
@@ -58,7 +58,7 @@ function mix(nums: number[], findIndices: number[]) {
   for (const originalIdx of range(nums.length)) {
     let currentIdx = indices[originalIdx];
     let value = values[currentIdx];
-    while(value !== 0) {
+    while (value !== 0) {
       const step = Math.sign(value);
       value -= step;
       // const to = nthIndex(values, currentIdx + step);

@@ -6,7 +6,7 @@ import { readFileSync } from 'fs';
 const once = require('lodash/once');
 import { range, subStrings } from '../../lib/utils';
 import { ok as assert } from 'assert';
-// import { iter as iterate } from 'iteragain';
+// import { iter as iterate } from 'iteragain-es';
 
 const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8').split('-').map(Number));
 

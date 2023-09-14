@@ -1,6 +1,6 @@
 import once from 'lodash/once';
 import { main, sum } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { downloadInput } from '../../lib/downloadInput';
 // import { ok as assert, deepStrictEqual as equal } from 'assert';
 
@@ -10,7 +10,7 @@ export const elves = once(() =>
     iter(input.split(/[\n\r ]{2,}/))
       .map(line => line.split(/[\n\r ]+/).map(Number))
       .toArray(),
-  )
+  ),
 );
 
 /** @see https://adventofcode.com/2022/day/1 First Star */

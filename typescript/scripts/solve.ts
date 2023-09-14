@@ -1,7 +1,7 @@
 import { terminal } from 'terminal-kit';
 import { walkdirSync } from 'more-node-fs';
 import { join, relative } from 'path';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { ArgumentParser } from 'argparse';
 import { main, safeCall, sh } from '../src/lib/utils';
 import { Nullish } from '../src/lib/types';

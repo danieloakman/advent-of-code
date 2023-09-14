@@ -4,7 +4,7 @@
 
 import { readFileSync } from 'fs';
 import once from 'lodash/once';
-// import { iter as iterate } from 'iteragain';
+// import { iter as iterate } from 'iteragain-es';
 import { deepStrictEqual as equals } from 'assert';
 import { stringSplice } from '../../lib/utils';
 

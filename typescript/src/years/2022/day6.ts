@@ -1,6 +1,6 @@
 import once from 'lodash/once';
 import { main } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { downloadInputSync } from '../../lib/downloadInput';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
 
@@ -8,9 +8,11 @@ import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
 export const input = once(() => downloadInputSync('2022', '6'));
 
 function findIndexOfUniqueWindow(str: string, windowSize: number): number {
-  return iter(str)
-    .windows(windowSize, 1)
-    .findIndex(chars => new Set(chars).size === windowSize) + windowSize;
+  return (
+    iter(str)
+      .windows(windowSize, 1)
+      .findIndex(chars => new Set(chars).size === windowSize) + windowSize
+  );
 }
 
 /** @see https://adventofcode.com/2022/day/6 First Star */

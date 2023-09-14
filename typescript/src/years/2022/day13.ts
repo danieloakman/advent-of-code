@@ -1,9 +1,9 @@
 import once from 'lodash/once';
 import { main, sum } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { downloadInputSync } from '../../lib/downloadInput';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
-import { flatten } from 'iteragain';
+import { flatten } from 'iteragain-es';
 
 type Packet = number | Packet[];
 type PacketPair = [Packet, Packet];
@@ -51,20 +51,20 @@ function isInOrder(a: Packet, b: Packet): boolean {
     if (typeof left === 'number' && typeof right === 'number') {
       if (left === right) continue;
       return left < right;
-    } else if (typeof right !== 'number')
-      return false;
-    else if (typeof left !== 'number')
-      return true;
+    } else if (typeof right !== 'number') return false;
+    else if (typeof left !== 'number') return true;
   }
 }
 
 /** @see https://adventofcode.com/2022/day/13 First Star */
 export async function firstStar(packetPairs = input()) {
-  return iter(packetPairs)
-    .enumerate()
-    .filterMap(([i, packetPair]) => isInOrder(...packetPair) ? i + 1 : null)
-    // .tap(console.log)
-    .reduce(sum);
+  return (
+    iter(packetPairs)
+      .enumerate()
+      .filterMap(([i, packetPair]) => (isInOrder(...packetPair) ? i + 1 : null))
+      // .tap(console.log)
+      .reduce(sum)
+  );
 }
 
 /** @see https://adventofcode.com/2022/day/13#part2 Second Star */

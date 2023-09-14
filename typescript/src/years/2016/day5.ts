@@ -3,10 +3,10 @@
 
 import { readFileSync } from 'fs';
 import once from 'lodash/once';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 // import { deepStrictEqual as equal } from 'assert';
 import { hash } from '../../lib/utils';
-import range from 'iteragain/range';
+import range from 'iteragain-es/range';
 
 const input = once(() => readFileSync(__filename.replace('.ts', '-input'), 'utf-8'));
 

@@ -2,7 +2,7 @@
 // https://adventofcode.com/2018/day/3/input
 
 import { readFileSync } from 'fs';
-import { Tuple } from 'iteragain/internal/types';
+import { Tuple } from 'iteragain-es/internal/types';
 
 import Map2D from '../../lib/Map2D';
 
@@ -10,7 +10,13 @@ class Claim {
   static claims: Claim[] = [];
   static plot = new Map2D<number[]>();
 
-  constructor(public id: number, public x: number, public y: number, public w: number, public h: number) {
+  constructor(
+    public id: number,
+    public x: number,
+    public y: number,
+    public w: number,
+    public h: number,
+  ) {
     Claim.claims.push(this);
     for (const { x, y } of this.points()) {
       const v = Claim.plot.get(x, y);

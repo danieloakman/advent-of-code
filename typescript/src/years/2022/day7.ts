@@ -1,9 +1,9 @@
 import once from 'lodash/once';
 import { add, main } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { downloadInputSync } from '../../lib/downloadInput';
 import NestedMap, { NestedMapValue } from '../../lib/NestedMap';
-import ObjectIterator from 'iteragain/internal/ObjectIterator';
+import ObjectIterator from 'iteragain-es/internal/ObjectIterator';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
 
 /** @see https://adventofcode.com/2022/day/7/input */
@@ -31,7 +31,9 @@ $ ls
 4060174 j
 8033020 d.log
 5626152 d.ext
-7214296 k`.trim().split(/[\n\r]+/);
+7214296 k`
+  .trim()
+  .split(/[\n\r]+/);
 
 interface Command {
   type: 'cd' | 'ls' | 'dir';
@@ -47,20 +49,16 @@ class FileSystem extends NestedMap<File> {
   constructor(lines: string[]) {
     super();
     let path: string[] = [];
-    while(lines.length) {
+    while (lines.length) {
       const line = lines.pop();
       if (line.startsWith('$')) {
         // Command:
         const [cmd, arg] = line.replace(/^\$ +/, '').split(' ');
         if (cmd === 'cd') {
-          if (arg === '/')
-            path = [];
-          else if (arg === '..')
-            path.pop();
-          else if (typeof arg === 'string')
-            path.push(arg);
-          else
-            throw new Error(`Invalid argument for cd: ${arg}`);
+          if (arg === '/') path = [];
+          else if (arg === '..') path.pop();
+          else if (typeof arg === 'string') path.push(arg);
+          else throw new Error(`Invalid argument for cd: ${arg}`);
         }
       } else {
         const parts = line.split(' ');

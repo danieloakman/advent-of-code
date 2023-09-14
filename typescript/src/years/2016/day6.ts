@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs';
 import once from 'lodash/once';
-import iter from 'iteragain/iter';
-import range from 'iteragain/range';
-import enumerate from 'iteragain/enumerate';
+import iter from 'iteragain-es/iter';
+import range from 'iteragain-es/range';
+import enumerate from 'iteragain-es/enumerate';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
 import { IncrementorMap } from '../../lib/IncrementorMap';
 // import * as utils from '../../lib/utils';

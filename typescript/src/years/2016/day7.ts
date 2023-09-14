@@ -1,9 +1,9 @@
 import { readFileSync } from 'fs';
 import once from 'lodash/once';
 import { main } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { ok as assert /* , deepStrictEqual as equals */ } from 'assert';
-import range from 'iteragain/range';
+import range from 'iteragain-es/range';
 import memoize from 'lodash/memoize';
 
 /** @see https://adventofcode.com/2016/day/7/input */

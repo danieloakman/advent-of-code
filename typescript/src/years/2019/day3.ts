@@ -3,15 +3,15 @@
 
 import { readFileSync } from 'fs';
 import once from 'lodash/once';
-// import { iter as iterate } from 'iteragain';
+// import { iter as iterate } from 'iteragain-es';
 // const Map2D = require('../../lib/Map2D');
 import { deepStrictEqual as equal } from 'assert';
 import last from 'lodash/last';
 import { Point, Line, lineIntersectsLine } from 'geometric';
 import { pipe, add, mult, deepCopy, main, sub } from '../../lib/utils';
-import iter from 'iteragain/iter';
-import { enumerate } from 'iteragain';
-import ExtendedIterator from 'iteragain/internal/ExtendedIterator';
+import iter from 'iteragain-es/iter';
+import { enumerate } from 'iteragain-es';
+import ExtendedIterator from 'iteragain-es/internal/ExtendedIterator';
 
 // type ConnectedLine = Point[];
 
@@ -58,8 +58,7 @@ function lineIntersections(a: Line, b: Line): ExtendedIterator<Point> {
     (map, point) => ((map[`${point[0]},${point[1]}`] = point), map),
     {} as Record<string, Point>,
   );
-  return pointsInLine(b)
-    .filter(p => `${p[0]},${p[1]}` in aMap);
+  return pointsInLine(b).filter(p => `${p[0]},${p[1]}` in aMap);
 }
 
 const input = () =>
@@ -76,7 +75,7 @@ const testInput3 = () =>
 
 function closestIntersectionToOrigin(lines: ExtendedIterator<Line>[]) {
   // const pairedLines = lines.map(line => iter(line).pairwise().toArray());
-  // let minX = 
+  // let minX =
   for (const [i, lineA] of enumerate(lines)) {
     for (const [j, lineB] of enumerate(lines)) {
       if (i === j) continue;

@@ -1,9 +1,9 @@
 // https://adventofcode.com/2015/day/4
 
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { hash, Solution } from '@lib';
 import once from 'lodash/once';
-import count from 'iteragain/count';
+import count from 'iteragain-es/count';
 
 const hasher = once((input: string) => iter(count()).map(i => [i, hash(input + i, 'md5')] as const));
 

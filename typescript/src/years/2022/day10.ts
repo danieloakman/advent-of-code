@@ -1,8 +1,8 @@
 import once from 'lodash/once';
 import { main, deepCopy, isBetween, add } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { downloadInputSync } from '../../lib/downloadInput';
-import count from 'iteragain/count';
+import count from 'iteragain-es/count';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
 import Map2D from '../../lib/Map2D';
 

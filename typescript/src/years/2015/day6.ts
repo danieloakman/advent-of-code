@@ -1,7 +1,7 @@
 // https://adventofcode.com/2015/day/6
 import { NDArray } from '@lib/NDArray';
 import { Solution, newLine } from '../../lib';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 
 type Point = [x: number, y: number];
 

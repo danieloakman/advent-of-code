@@ -1,6 +1,6 @@
 import once from 'lodash/once';
 import { main, matches } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import { /* ok as assert, */ deepStrictEqual as equal } from 'assert';
 import last from 'lodash/last';
 import { downloadInputSync } from '../../lib/downloadInput';

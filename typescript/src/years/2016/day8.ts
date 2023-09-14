@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import once from 'lodash/once';
 import { main } from '../../lib/utils';
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 import Map2D from '../../lib/Map2D';
 // import { ok as assert, deepStrictEqual as equals } from 'assert';
 
@@ -12,7 +12,10 @@ class Screen extends Map2D<string> {
   public static FILLED = '#';
   public static EMPTY = '.';
 
-  constructor(public width: number, public height: number) {
+  constructor(
+    public width: number,
+    public height: number,
+  ) {
     super({ xMax: width - 1, yMax: height - 1 });
     this.rect(width, height, Screen.EMPTY);
   }
@@ -65,5 +68,5 @@ export async function secondStar() {
 
 main(module, async () => {
   console.log('First star:', await firstStar());
-  console.log('Second star:\n' + await secondStar());
+  console.log('Second star:\n' + (await secondStar()));
 });

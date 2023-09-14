@@ -1,5 +1,5 @@
-import map from 'iteragain/map';
-import ObjectIterator from 'iteragain/internal/ObjectIterator';
+import map from 'iteragain-es/map';
+import ObjectIterator from 'iteragain-es/internal/ObjectIterator';
 
 export type NestedMapValue<V> = V | Record<string, V>;
 
@@ -29,7 +29,10 @@ export class NestedMap<V = any> implements Map<string, NestedMapValue<V>> {
     return true;
   }
 
-  public forEach(callbackfn: (value: NestedMapValue<V>, key: string, map: Map<string, NestedMapValue<V>>) => void, thisArg?: any): void {
+  public forEach(
+    callbackfn: (value: NestedMapValue<V>, key: string, map: Map<string, NestedMapValue<V>>) => void,
+    thisArg?: any,
+  ): void {
     const it = this.entries();
     let next: IteratorResult<[string, NestedMapValue<V>]>;
     while (!(next = it.next()).done) callbackfn.call(thisArg, next.value[1], next.value[0], this);

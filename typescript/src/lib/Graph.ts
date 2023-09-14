@@ -1,4 +1,4 @@
-import iter from 'iteragain/iter';
+import iter from 'iteragain-es/iter';
 
 /** An edge representing [start, end, weight] */
 export type GraphEdgeInput = readonly [string, string, number];

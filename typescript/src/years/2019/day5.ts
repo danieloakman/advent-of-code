@@ -5,7 +5,7 @@
 import { readFileSync } from 'fs';
 const once = require('lodash/once');
 import { deepCopy } from '../../lib/utils';
-// import { iter as iterate } from 'iteragain';
+// import { iter as iterate } from 'iteragain-es';
 const {
   // ok: assert,
   deepStrictEqual: equal,
