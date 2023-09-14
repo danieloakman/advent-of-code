@@ -5,30 +5,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "type": "bun",
       "request": "launch",
-      "name": "TS-Node: Launch Current File",
+      "name": "Bun: Debug File",
       "program": "${file}",
-      "args": [],
-      "autoAttachChildProcesses": false,
-      "outputCapture": "std",
-      "sourceMaps": true,
-      "skipFiles": [
-        "<node_internals>/**"
-        // "${workspaceFolder}/node_modules/**"
-      ],
-      "runtimeArgs": ["-r", "ts-node/register"]
+      "cwd": "${workspaceFolder}",
+      "stopOnEntry": false,
+      "watchMode": false,
+      "internalConsoleOptions": "neverOpen"
     },
     {
-      "type": "node",
-      "request": "launch",
-      "name": "Vitest: Debug Current Test File",
-      "autoAttachChildProcesses": true,
-      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
-      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
-      "args": ["run", "${relativeFile}"],
-      "smartStep": true,
-      "console": "integratedTerminal"
-    },
+      "type": "bun",
+      "request": "attach",
+      "name": "Bun: Attach Process",
+      "url": "ws://localhost:6499/",
+      "stopOnEntry": false,
+      "internalConsoleOptions": "neverOpen"
+    }
   ]
 }
