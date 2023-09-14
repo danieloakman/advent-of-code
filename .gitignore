@@ -112,3 +112,4 @@ package-lock.json
 tmp/
 target
 *IGNORE*
+.vscode/*.ts
