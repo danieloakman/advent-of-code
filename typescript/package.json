@@ -6,7 +6,7 @@
     "solve:debug": "bun run scripts/solve.ts",
     "test": "bun test",
     "test:watch": "bun test --watch",
-    "create": "pnpm tsn scripts/create.ts",
+    "create": "bun run create scripts/create.ts",
     "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "prettier --write \"./**/*.ts\""
   },
