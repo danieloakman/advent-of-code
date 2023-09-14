@@ -45,7 +45,7 @@ export function createFiles(year: string, day: string) {
 
 export type AdventOfCodeFile = ReturnType<typeof createFiles>;
 
-main(module, async () => {
+main(import.meta.path, async () => {
   // Get command line arguments:
   const { ArgumentParser } = await import('argparse');
   const argparser = new ArgumentParser({ description: 'Create a new Advent of Code file' });
