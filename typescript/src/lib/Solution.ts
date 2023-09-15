@@ -10,12 +10,15 @@ export interface SolutionMethod {
   ): Promise<Nullish<string | number>> | Nullish<string | number>;
 }
 
+export type SolutionTest = [testName: string, test: () => void | Promise<void>];
+
 export class Solution<FirstStar extends SolutionMethod, SecondStar extends SolutionMethod> {
   constructor(
     private readonly year: number,
     private readonly day: number,
     private readonly firstStar: FirstStar,
     private readonly secondStar: SecondStar,
+    readonly tests: SolutionTest[] = [],
   ) {}
 
   /** Retrieves the solution's input, then runs `firstStar` and `secondStar` sequentially while timing their execution. */

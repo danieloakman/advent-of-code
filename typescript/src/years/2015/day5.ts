@@ -1,6 +1,5 @@
 // https://adventofcode.com/2015/day/5
-import { Solution, iife, newLine, canTest } from '@lib';
-import { describe, it, expect } from 'vitest';
+import { Solution, iife, newLine, assert } from '@lib';
 
 // First Star:
 const isNice = iife(() => {
@@ -47,26 +46,27 @@ export const solution = new Solution(
   5,
   async input => input.split(newLine).filter(isNice).length,
   async input => input.split(newLine).filter(isNice2).length,
+  [
+    [
+      'isNice',
+      async () => {
+        assert(isNice('ugknbfddgicrmopn'));
+        assert(isNice('aaa'));
+        assert(!isNice('jchzalrnumimnmhp'));
+        assert(!isNice('haegwjzuvuyypxyu'));
+        assert(!isNice('dvszwmarrgswjxmb'));
+      },
+    ],
+    [
+      'isNice2',
+      async () => {
+        assert(isNice2('qjhvhtzxzqqjkmpb'));
+        assert(isNice2('xxyxx'));
+        assert(!isNice2('uurcxstgmygtbstg'));
+        assert(!isNice2('ieodomkazucvgmuy'));
+      },
+    ],
+  ],
 );
 
-solution.main(module);
-
-// import.meta.vitest
-if (canTest()) {
-  describe('2015/day5', () => {
-    it('isNice', () => {
-      expect(isNice('ugknbfddgicrmopn')).toBe(true);
-      expect(isNice('aaa')).toBe(true);
-      expect(isNice('jchzalrnumimnmhp')).toBe(false);
-      expect(isNice('haegwjzuvuyypxyu')).toBe(false);
-      expect(isNice('dvszwmarrgswjxmb')).toBe(false);
-    });
-
-    it('isNice2', () => {
-      expect(isNice2('qjhvhtzxzqqjkmpb')).toBe(true);
-      expect(isNice2('xxyxx')).toBe(true);
-      expect(isNice2('uurcxstgmygtbstg')).toBe(false);
-      expect(isNice2('ieodomkazucvgmuy')).toBe(false);
-    });
-  });
-}
+solution.main(import.meta.path);

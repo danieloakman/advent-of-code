@@ -5,7 +5,6 @@ const { writeFile, readFile } = promises;
 import { connect } from 'puppeteer';
 import { join } from 'path';
 import { openChrome, tmpdir, limitConcurrentCalls, main, sleep } from './utils';
-import * as https from 'https';
 import { execSync } from 'child_process';
 
 const SESSION_COOKIE_PATH = join(tmpdir(), 'sessionCookie.txt');
@@ -28,27 +27,15 @@ const SESSION_COOKIE_PATH = join(tmpdir(), 'sessionCookie.txt');
 //   await Promise.all([browser.close(), writeFile(join(__dirname, '../', `${year}/day${day}-input`), input.trim())]);
 // }
 
-function getInput(year: string, day: string, sessionCookie: string): Promise<string> {
-  return new Promise(resolve => {
-    https.get(
-      `https://adventofcode.com/${year}/day/${day}/input`,
-      {
-        headers: {
-          'Cookie': `session=${sessionCookie}`,
-        },
-      },
-      res => {
-        res.setEncoding('utf8');
-        let body = '';
-        res.on('data', data => (body += data));
-        res.on('end', () =>
-          resolve(
-            body.includes('Puzzle inputs differ by user.  Please log in to get your puzzle input') ? '' : body.trim(),
-          ),
-        );
-      },
-    );
+async function getInput(year: string, day: string, sessionCookie: string): Promise<string> {
+  const res = await fetch(`https://adventofcode.com/${year}/day/${day}/input`, {
+    headers: {
+      Cookie: `session=${sessionCookie}`,
+      // 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+    }
   });
+  if (res.status === 200) return res.text();
+  return '';
 }
 
 async function newSessionCookie() {
@@ -110,7 +97,7 @@ export function downloadInputSync(year: string | number, day: string | number): 
   return input.trimEnd();
 }
 
-main(module, async () => {
+main(import.meta.path, async () => {
   if (process.argv.includes('--download')) {
     const [year, day] = process.argv[process.argv.indexOf('--download') + 1].split(',');
     const input = await downloadInput(year, day);

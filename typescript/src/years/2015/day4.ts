@@ -31,4 +31,4 @@ export const solution = new Solution(
   ),
 );
 
-solution.main(module);
+solution.main(import.meta.path);

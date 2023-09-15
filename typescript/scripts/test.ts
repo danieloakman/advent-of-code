@@ -18,12 +18,16 @@ main(import.meta.path, async () => {
   for await (const path of globIterate(args.path)) {
     if (!path.endsWith('.ts')) continue;
 
-    jobs.push(iife(async () => {
-      const file = Bun.file(path);
-      const text = await file.text();
-      if (!includesTest.test(text)) return;
-      await Bun.write(path.replace(/\.ts$/, '-IGNORE.test.ts'), text);
-    }));
+    console.log({ path });
+
+    jobs.push(
+      iife(async () => {
+        const file = Bun.file(path);
+        const text = await file.text();
+        if (!includesTest.test(text)) return;
+        await Bun.write(path.replace(/\.ts$/, '-IGNORE.test.ts'), text);
+      }),
+    );
   }
   await Promise.all(jobs);
 

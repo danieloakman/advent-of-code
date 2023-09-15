@@ -8,7 +8,7 @@ import { ExtendedIterator } from 'iteragain-es/internal/ExtendedIterator';
 import readline from 'readline';
 import { join } from 'path';
 import { deepStrictEqual as equal } from 'assert';
-import { AnyFunc, Nullish, Result } from './types';
+import { AnyFunc, Nullish, Ok, Result } from './types';
 import { ArgumentOptions, ArgumentParser } from 'argparse';
 
 export const IS_RUNNING_WITH_BUN = 'Bun' in global;
@@ -501,7 +501,10 @@ export function iife<T extends AnyFunc>(fn: T): ReturnType<T> {
   return fn();
 }
 
-/** Return true if this process can run tests. */
+/**
+ * @deprecated With the migration to using Bun, in source testing can no longer be done.
+ * Return true if this process can run tests.
+ */
 export function canTest(): boolean {
   return process.argv.some(arg => arg.includes('test') || arg.includes('tinypool'));
 }
@@ -592,4 +595,21 @@ export function parseArgs<T = unknown>(
   // @ts-ignore
   for (const arg of args) parser.add_argument(...arg);
   return parser.parse_args();
+}
+
+export const noop = () => { };
+
+export function isNullish(value: unknown): value is null | undefined {
+  return value == null || value == undefined;
+}
+
+/**
+ * @description Checks if `value` is not nullish or an error and returns it. This is analogous to the `unwrap` method in
+ * Rust or any other Result implementation. Its use is for when you don't need or care to handle a non-ok value.
+ * @throws {TypeError} Throws if `value` is an error or nullish.
+ */
+export function ok<T>(value: T): Ok<T> {
+  if (value instanceof Error) throw value;
+  if (isNullish(value)) throw new TypeError('Expected a non-nullish value.');
+  return value as Ok<T>;
 }

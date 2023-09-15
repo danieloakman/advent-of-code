@@ -15,6 +15,10 @@ importers:
   rust: {}
 
   typescript:
+    dependencies:
+      js-utils:
+        specifier: github:danieloakman/js-utils#bun
+        version: github.com/danieloakman/js-utils/fc46d22ad60ed3b4adf3451c848901fa3bc32c80
     devDependencies:
       '@types/argparse':
         specifier: ^2.0.10
@@ -566,7 +570,6 @@ packages:
 
   /argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
-    dev: true
 
   /array-union@2.1.0:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
@@ -2195,3 +2198,11 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  github.com/danieloakman/js-utils/fc46d22ad60ed3b4adf3451c848901fa3bc32c80:
+    resolution: {tarball: https://codeload.github.com/danieloakman/js-utils/tar.gz/fc46d22ad60ed3b4adf3451c848901fa3bc32c80}
+    name: js-utils
+    version: 0.1.0
+    dependencies:
+      argparse: 2.0.1
+    dev: false

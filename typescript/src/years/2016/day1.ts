@@ -1,7 +1,7 @@
 // https://adventofcode.com/2016/day/1
 import { Solution, canTest } from '../../lib';
 import memoize from 'lodash/memoize';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'bun:test';
 
 type Point = { x: number; y: number };
 
@@ -18,9 +18,9 @@ const solve = memoize((input: string) => {
     const turn = cmd[0];
     const dist = parseInt(cmd.slice(1), 10);
     if (turn === 'L') {
-      facing = { N: 'W', W: 'S', S: 'E', E: 'N' }[facing];
+      facing = { N: 'W', W: 'S', S: 'E', E: 'N' }[facing] ?? '';
     } else {
-      facing = { N: 'E', E: 'S', S: 'W', W: 'N' }[facing];
+      facing = { N: 'E', E: 'S', S: 'W', W: 'N' }[facing] ?? '';
     }
     if (facing === 'N') {
       pos.y -= dist;
@@ -54,7 +54,7 @@ solution.main(module);
 // import.meta.vitest
 if (canTest()) {
   describe('2016/1', () => {
-    it('examples', async () => {
+    it.todo('examples', async () => {
       // expect(solve('R2, L3').blocksAway).toEqual(5);
       // expect(solve('R2, R2, R2').blocksAway).toEqual(2);
       // expect(solve('R5, L5, R5, R3').blocksAway).toEqual(12);

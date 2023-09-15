@@ -90,10 +90,3 @@ export class NestedMap<V = any> implements Map<string, NestedMapValue<V>> {
 }
 
 export default NestedMap;
-
-// const nestedMap = new NestedMap<number>();
-// nestedMap.set(['a', 'b'], 1);
-// console.log([...nestedMap.values()]);
-// nestedMap.delete(['a', 'b']);
-// console.log([...nestedMap.values()]);
-// console.log([...nestedMap.keys()]);

@@ -2,12 +2,13 @@
 import { NDArray } from '@lib/NDArray';
 import { Solution, newLine } from '../../lib';
 import iter from 'iteragain-es/iter';
+import { ok } from 'js-utils';
 
 type Point = [x: number, y: number];
 
 const mapInput = (input: string) =>
   iter(input.split(newLine)).map(str => {
-    const cmd = str.match(/^\D+/)[0].trim();
+    const cmd = ok(str.match(/^\D+/)?.[0].trim());
     const [start, end] = str
       .replace(cmd, '')
       .trim()
@@ -58,4 +59,4 @@ export const solution = new Solution(
   },
 );
 
-solution.main(module);
+solution.main(import.meta.path);

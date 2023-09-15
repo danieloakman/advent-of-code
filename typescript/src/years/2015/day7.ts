@@ -1,9 +1,9 @@
 // https://adventofcode.com/2015/day/7
 
-import { Solution, canTest, newLine } from '@lib';
+import { Solution, newLine } from '@lib';
 import once from 'lodash/once';
-import { describe, it, expect } from 'vitest';
 import memoize from 'lodash/memoize';
+import { equal } from 'js-utils';
 
 function parseInput(signal: string, map: any) {
   signal = signal.trim();
@@ -59,17 +59,9 @@ export const solution = new Solution(
     circuit.b = () => sigA(input);
     return circuit.a();
   },
-);
-
-solution.main(module);
-
-// import.meta.vitest
-if (canTest()) {
-  describe('2015/day7', () => {
-    // TODO: this test fails, fix it.
-    it.skip('examples', async () => {
-      const circuit = createCircuit(
-        `
+  [['examples', async () => {
+    const circuit = createCircuit(
+      `
 123 -> x
 456 -> y
 x AND y -> d
@@ -78,16 +70,17 @@ x LSHIFT 2 -> f
 y RSHIFT 2 -> g
 NOT x -> h
 NOT y -> i
-      `.trim(),
-      );
-      expect(circuit.d()).toBe(72);
-      expect(circuit.e()).toBe(507);
-      expect(circuit.f()).toBe(492);
-      expect(circuit.g()).toBe(114);
-      expect(circuit.h()).toBe(65412);
-      expect(circuit.i()).toBe(65079);
-      expect(circuit.x()).toBe(123);
-      expect(circuit.y()).toBe(456);
-    });
-  });
-}
+    `.trim(),
+    );
+    equal(circuit.d(), 72);
+    equal(circuit.e(), 507);
+    equal(circuit.f(), 492);
+    equal(circuit.g(), 114);
+    equal(circuit.h(), 65412);
+    equal(circuit.i(), 65079);
+    equal(circuit.x(), 123);
+    equal(circuit.y(), 456);
+  }]]
+);
+
+solution.main(import.meta.path);

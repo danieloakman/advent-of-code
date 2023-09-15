@@ -26,5 +26,4 @@ export const solution = new Solution(
   async input => solve(input).firstBasement,
 );
 
-console.log({module});
-solution.main(module);
+solution.main(import.meta.path);

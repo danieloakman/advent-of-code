@@ -20,4 +20,4 @@ export const solution = new Solution(
   _input => '',
 );
 
-solution.main(module);
+solution.main(import.meta.path);
