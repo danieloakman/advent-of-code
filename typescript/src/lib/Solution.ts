@@ -17,6 +17,7 @@ export class Solution<FirstStar extends SolutionMethod, SecondStar extends Solut
     private readonly day: number,
     private readonly firstStar: FirstStar,
     private readonly secondStar: SecondStar,
+    // TODO: this should be refactored to be a method instead that returns a pseudo test like `it` function that can be handled in years.test.ts
     readonly tests: SolutionTest[] = [],
   ) {}
 
