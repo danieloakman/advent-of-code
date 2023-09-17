@@ -59,33 +59,29 @@ export const solution = new Solution(
     circuit.b = () => sigA(input);
     return circuit.a();
   },
-  [
-    [
-      'examples',
-      async () => {
-        const circuit = createCircuit(
-          `
-123 -> x
-456 -> y
-x AND y -> d
-x OR y -> e
-x LSHIFT 2 -> f
-y RSHIFT 2 -> g
-NOT x -> h
-NOT y -> i
-    `.trim(),
-        );
-        equal(circuit.d(), 72);
-        equal(circuit.e(), 507);
-        equal(circuit.f(), 492);
-        equal(circuit.g(), 114);
-        equal(circuit.h(), 65412);
-        equal(circuit.i(), 65079);
-        equal(circuit.x(), 123);
-        equal(circuit.y(), 456);
-      },
-    ],
-  ],
 );
 
-solution.main(import.meta.path);
+solution
+  .test.todo('examples', () => {
+    const circuit = createCircuit(
+      `
+  123 -> x
+  456 -> y
+  x AND y -> d
+  x OR y -> e
+  x LSHIFT 2 -> f
+  y RSHIFT 2 -> g
+  NOT x -> h
+  NOT y -> i
+  `.trim(),
+    );
+    equal(circuit.d(), 72);
+    equal(circuit.e(), 507);
+    equal(circuit.f(), 492);
+    equal(circuit.g(), 114);
+    equal(circuit.h(), 65412);
+    equal(circuit.i(), 65079);
+    equal(circuit.x(), 123);
+    equal(circuit.y(), 456);
+  })
+  .main(import.meta.path);

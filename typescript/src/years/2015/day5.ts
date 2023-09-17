@@ -46,27 +46,20 @@ export const solution = new Solution(
   5,
   async input => input.split(newLine).filter(isNice).length,
   async input => input.split(newLine).filter(isNice2).length,
-  [
-    [
-      'isNice',
-      async () => {
-        assert(isNice('ugknbfddgicrmopn'));
-        assert(isNice('aaa'));
-        assert(!isNice('jchzalrnumimnmhp'));
-        assert(!isNice('haegwjzuvuyypxyu'));
-        assert(!isNice('dvszwmarrgswjxmb'));
-      },
-    ],
-    [
-      'isNice2',
-      async () => {
-        assert(isNice2('qjhvhtzxzqqjkmpb'));
-        assert(isNice2('xxyxx'));
-        assert(!isNice2('uurcxstgmygtbstg'));
-        assert(!isNice2('ieodomkazucvgmuy'));
-      },
-    ],
-  ],
 );
 
-solution.main(import.meta.path);
+solution
+  .test('isNice', () => {
+    assert(isNice('ugknbfddgicrmopn'));
+    assert(isNice('aaa'));
+    assert(!isNice('jchzalrnumimnmhp'));
+    assert(!isNice('haegwjzuvuyypxyu'));
+    assert(!isNice('dvszwmarrgswjxmb'));
+  })
+  .test('isNice2', () => {
+    assert(isNice2('qjhvhtzxzqqjkmpb'));
+    assert(isNice2('xxyxx'));
+    assert(!isNice2('uurcxstgmygtbstg'));
+    assert(!isNice2('ieodomkazucvgmuy'));
+  })
+  .main(import.meta.path);

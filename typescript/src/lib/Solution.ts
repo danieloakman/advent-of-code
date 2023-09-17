@@ -9,16 +9,54 @@ export interface SolutionMethod {
   ): Promise<Nullish<string | number>> | Nullish<string | number>;
 }
 
-export type SolutionTest = [testName: string, test: () => void | Promise<void>];
+export type TestArgs = [testName: string, test: () => void | Promise<void>];
 
-export class Solution<FirstStar extends SolutionMethod, SecondStar extends SolutionMethod> {
+export interface SolutionTest {
+  testName: string;
+  test: () => void | Promise<void>;
+  status: 'todo' | 'skip' | 'run';
+}
+
+export class Solution {
+  readonly test: {
+    (...args: TestArgs): Solution;
+    skip: (...args: TestArgs) => Solution;
+    todo: (...args: TestArgs) => Solution;
+  } = Object.assign(
+    (testName: string, test: () => void | Promise<void>) => {
+      this.tests.push({
+        testName,
+        test,
+        status: 'run',
+      });
+      return this;
+    },
+    {
+      skip: (testName: string, test: () => void | Promise<void>) => {
+        this.tests.push({
+          testName,
+          test,
+          status: 'skip',
+        });
+        return this;
+      },
+      todo: (testName: string, test: () => void | Promise<void>) => {
+        this.tests.push({
+          testName,
+          test,
+          status: 'todo',
+        });
+        return this;
+      },
+    },
+  );
+  readonly tests: SolutionTest[] = [];
+
   constructor(
     private readonly year: number,
     private readonly day: number,
-    private readonly firstStar: FirstStar,
-    private readonly secondStar: SecondStar,
-    // TODO: this should be refactored to be a method instead that returns a pseudo test like `it` function that can be handled in years.test.ts
-    readonly tests: SolutionTest[] = [],
+    private readonly firstStar: SolutionMethod,
+    private readonly secondStar: SolutionMethod,
   ) {}
 
   /** Retrieves the solution's input, then runs `firstStar` and `secondStar` sequentially while timing their execution. */
@@ -33,7 +71,7 @@ export class Solution<FirstStar extends SolutionMethod, SecondStar extends Solut
 
   /** Internally calls `solve` wrapped in `main`. */
   async main(module: any) {
-    main(module, async () => this.solve());
+    await main(module, async () => this.solve());
   }
 }
 

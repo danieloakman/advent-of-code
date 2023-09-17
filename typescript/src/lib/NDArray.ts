@@ -164,8 +164,3 @@ export class NDArray<N extends Dimensions> implements MapLike<Tuple<number, N['l
 //   //   return x + y * this.size;
 //   // }
 // }
-
-// import.meta.vitest
-// if (canTest()) {
-
-// }

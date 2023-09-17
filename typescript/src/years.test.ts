@@ -18,8 +18,18 @@ const solutions = () =>
 
 describe('Solutions', () => {
   for (const [year, day, tests] of solutions()) {
-    for (const [testName, test] of tests) {
-      it(`${year}/${day} ${testName}`, test);
+    for (const { testName, test, status } of tests) {
+      switch (status) {
+        case 'skip':
+          it.skip(`${year}/${day} ${testName}`, test);
+          break;
+        case 'todo':
+          it.todo(`${year}/${day} ${testName}`, test);
+          break;
+        case 'run':
+          it(`${year}/${day} ${testName}`, test);
+          break;
+      }
     }
   }
 });

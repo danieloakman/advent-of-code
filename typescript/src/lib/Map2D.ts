@@ -252,10 +252,3 @@ export class Map2D<T> {
 }
 
 export default Map2D;
-
-// // import.meta.vitest
-// if (canTest()) {
-//   describe('Map2D', () => {
-//     it.skip('get & set', () => {});
-//   });
-// }

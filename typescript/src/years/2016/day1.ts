@@ -1,7 +1,6 @@
 // https://adventofcode.com/2016/day/1
-import { Solution, canTest } from '../../lib';
+import { Solution, equal } from '../../lib';
 import memoize from 'lodash/memoize';
-import { describe, expect, it } from 'bun:test';
 
 type Point = { x: number; y: number };
 
@@ -34,8 +33,7 @@ const solve = memoize((input: string) => {
     console.log(`${cmd} => ${facing} ${JSON.stringify(pos)}`);
 
     if (!blocksAwayFromFirstPosVisitedTwice) {
-      if (positions.has(`${pos.x},${pos.y}`))
-        blocksAwayFromFirstPosVisitedTwice = blocksAway(pos);
+      if (positions.has(`${pos.x},${pos.y}`)) blocksAwayFromFirstPosVisitedTwice = blocksAway(pos);
       else positions.add(`${pos.x},${pos.y}`);
     }
   }
@@ -45,20 +43,15 @@ const solve = memoize((input: string) => {
 export const solution = new Solution(
   2016,
   1,
-  async input => solve(input).blocksAway,
+  async input => solve(input).blocksAway, // TODO:
   async input => solve(input).blocksAwayFromFirstPosVisitedTwice,
 );
 
-solution.main(module);
-
-// import.meta.vitest
-if (canTest()) {
-  describe('2016/1', () => {
-    it.todo('examples', async () => {
-      // expect(solve('R2, L3').blocksAway).toEqual(5);
-      // expect(solve('R2, R2, R2').blocksAway).toEqual(2);
-      // expect(solve('R5, L5, R5, R3').blocksAway).toEqual(12);
-      expect(solve('R8, R4, R4, R8').blocksAwayFromFirstPosVisitedTwice).toEqual(4);
-    });
-  });
-}
+solution.test
+  .todo('examples', () => {
+    // expect(solve('R2, L3').blocksAway).toEqual(5);
+    // expect(solve('R2, R2, R2').blocksAway).toEqual(2);
+    // expect(solve('R5, L5, R5, R3').blocksAway).toEqual(12);
+    equal(solve('R8, R4, R4, R8').blocksAwayFromFirstPosVisitedTwice, 4);
+  })
+  .main(module);
