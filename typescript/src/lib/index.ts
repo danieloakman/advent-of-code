@@ -1,4 +1,3 @@
-export * from './assertions';
 export * from './downloadInput';
 export * from './FileStream';
 export * from './Graph';

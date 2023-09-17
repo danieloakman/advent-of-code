@@ -7,8 +7,9 @@
     "test": "bun run scripts/test.ts",
     "test:watch": "bun run scripts/test.ts -w",
     "create": "bun run create scripts/create.ts",
-    "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
-    "format": "prettier --write \"./**/*.ts\""
+    "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
+    "format": "bunx prettier --write \"./**/*.ts\"",
+    "check": "tsc --noEmit"
   },
   "author": "Daniel Oakman",
   "license": "ISC",
@@ -32,6 +33,7 @@
     "glob": "^10.3.4",
     "husky": "^8.0.3",
     "iteragain-es": "^3.17.4",
+    "js-utils": "github:danieloakman/js-utils#bun",
     "lodash": "^4.17.21",
     "more-node-fs": "^2.0.2",
     "prettier": "^3.0.2",
@@ -43,8 +45,5 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.6",
     "vite-tsconfig-paths": "^4.2.0"
-  },
-  "dependencies": {
-    "js-utils": "github:danieloakman/js-utils#bun"
   }
 }

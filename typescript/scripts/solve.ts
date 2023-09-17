@@ -3,9 +3,7 @@ import { walkdirSync } from 'more-node-fs';
 import { join, relative } from 'path';
 import iter from 'iteragain-es/iter';
 import { ArgumentParser } from 'argparse';
-import { main, safeCall, sh } from '../src/lib/utils';
-import { Nullish } from '../src/lib/types';
-import Solution from '../src/lib/Solution';
+import { main, safeCall, sh, Nullish, Solution } from '../src/lib';
 
 export const files = iter(walkdirSync(join(__dirname, '../'), { ignore: /node_modules/i }))
   .filterMap(file => (file.stats.isFile() && /day\d+\.[tj]s/.test(file.path) ? file : null))

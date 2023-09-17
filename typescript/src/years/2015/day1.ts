@@ -3,7 +3,6 @@
 import once from 'lodash/once';
 import { Solution } from '@lib';
 
-
 const solve = once((input: string) => {
   let floor = 0;
   let firstBasement = null;
