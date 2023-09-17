@@ -4,7 +4,8 @@ import { promises, existsSync, readFileSync } from 'fs';
 const { writeFile, readFile } = promises;
 import { connect } from 'puppeteer';
 import { join } from 'path';
-import { openChrome, tmpdir, limitConcurrentCalls, main, sleep } from './utils';
+import { limitConcurrentCalls, main, sleep } from 'js-utils';
+import { openChrome, tmpdir } from './utils';
 import { execSync } from 'child_process';
 
 const SESSION_COOKIE_PATH = join(tmpdir(), 'sessionCookie.txt');
