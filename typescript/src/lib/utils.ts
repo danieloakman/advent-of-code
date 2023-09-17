@@ -7,9 +7,6 @@ import { iter, range as _range, Tuple } from 'iteragain-es';
 import readline from 'readline';
 import { join } from 'path';
 import { deepStrictEqual as equal } from 'assert';
-// import { Nullish } from 'js-utils';
-// Re-export js-utils:
-export * from 'js-utils';
 
 export const IS_RUNNING_WITH_BUN = 'Bun' in global;
 if (IS_RUNNING_WITH_BUN) {

@@ -3,7 +3,7 @@ import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { execSync } from 'child_process';
 import { downloadInput, inputPath } from '../src/lib/downloadInput';
-import { main } from '../src/lib/utils';
+import { main } from 'js-utils';
 
 export function fileStr(year: string, day: string) {
   return `

@@ -1,5 +1,4 @@
-import { main } from './utils';
-import { Nullish } from 'js-utils';
+import { Nullish, main } from 'js-utils';
 import Timer from './Timer';
 import { downloadInput } from './downloadInput';
 

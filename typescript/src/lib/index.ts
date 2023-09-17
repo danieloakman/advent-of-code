@@ -9,3 +9,4 @@ export * from './Solution';
 export * from './Timer';
 export * from './types';
 export * from './utils';
+export * from 'js-utils';
