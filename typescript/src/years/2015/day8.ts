@@ -13,11 +13,6 @@ const solve = memoize((input: string) =>
   }),
 );
 
-export const solution = new Solution(
-  2015,
-  8,
-  input => solve(input).reduce((sum, { stringCode, memoryStr }) => sum + (stringCode - memoryStr), 0),
-  _input => '',
-);
-
-solution.main(import.meta.path);
+export const solution = new Solution(2015, 8)
+  .firstStar(input => solve(input).reduce((sum, { stringCode, memoryStr }) => sum + (stringCode - memoryStr), 0))
+  .main(import.meta.path);

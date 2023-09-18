@@ -13,10 +13,8 @@ class Houses {
   }
 }
 
-export const solution = new Solution(
-  2015,
-  3,
-  async function firstStar(input) {
+export const solution = new Solution(2015, 3)
+  .firstStar(async function firstStar(input) {
     const santa = { x: 0, y: 0 };
     const houses = new Houses();
     for (const move of input.split(newLine)) {
@@ -28,8 +26,8 @@ export const solution = new Solution(
     }
     // console.log({ houses: Object.keys(houses.positions).length });
     return Object.keys(houses.positions).length;
-  },
-  async function secondStar(input) {
+  })
+  .secondStar(async function secondStar(input) {
     const lines = input.split(newLine);
     const santa = { x: 0, y: 0 };
     const roboSanta = { x: 0, y: 0 };
@@ -44,7 +42,5 @@ export const solution = new Solution(
       houses.inc(s.x, s.y);
     }
     return Object.keys(houses.positions).length;
-  }
-);
-
-solution.main(import.meta.path);
+  })
+  .main(import.meta.path);

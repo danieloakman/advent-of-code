@@ -10,21 +10,11 @@ export function fileStr(year: string, day: string) {
 // @see https://adventofcode.com/${year}/day/${day}/input
 import { Solution } from '@lib';
 
-export const solution = new Solution(
-  ${year},
-  ${day},
-  /** @see https://adventofcode.com/${year}/day/${day} First Star */
-  async input => {
-    return null;
-  },
-
-  /** @see https://adventofcode.com/${year}/day/${day}#part2 Second Star */
-  async input => {
-    return null;
-  }
-);
-
-solution.main(import.meta.path);
+export const solution = new Solution(${year}, ${day})
+.firstStar(async input => null)
+.secondStar(async input => null)
+// .test('example', async () => {})
+.main(import.meta.path);
 `.trimStart();
 }
 

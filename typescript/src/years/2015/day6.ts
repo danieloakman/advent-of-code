@@ -29,10 +29,8 @@ function* lightsWithin(start: Point, end: Point) {
 //   return lights.reduce((acc, row) => acc + row.reduce((acc, light) => acc + light, 0), 0);
 // }
 
-export const solution = new Solution(
-  2015,
-  6,
-  async input => {
+export const solution = new Solution(2015, 6)
+  .firstStar(async input => {
     // const lights = new Map2D<number>();
     const lights = new NDArray(new Uint32Array(1000 * 1000), [1000, 1000]);
     // const lights = new Array2D<number>(1000);
@@ -44,8 +42,8 @@ export const solution = new Solution(
       }
     }
     return lights.iter().reduce((acc, [, light]) => acc + light, 0);
-  },
-  async input => {
+  })
+  .secondStar(async input => {
     const lights = new NDArray(new Uint32Array(1000 * 1000), [1000, 1000]);
     // const lights = new Array2D<number>(1000);
     for (const { cmd, start, end } of mapInput(input)) {
@@ -56,7 +54,5 @@ export const solution = new Solution(
       }
     }
     return lights.iter().reduce((acc, [, light]) => acc + light, 0);
-  },
-);
-
-solution.main(import.meta.path);
+  })
+  .main(import.meta.path);

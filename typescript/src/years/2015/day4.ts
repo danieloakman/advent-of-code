@@ -14,21 +14,21 @@ const hasher = once((input: string) => iter(count()).map(i => [i, hash(input + i
 // const zeros = zerosIt.take(6);
 const ZEROS = ['00000', '000000'];
 
-export const solution = new Solution(
-  2015,
-  4,
-  once(
-    async input =>
-      hasher(input)
-        .filter(([, h]) => h.startsWith(ZEROS[0]))
-        .next().value[0],
-  ),
-  once(
-    async input =>
-      hasher(input)
-        .filter(([, h]) => h.startsWith(ZEROS[1]))
-        .next().value[0],
-  ),
-);
-
-solution.main(import.meta.path);
+export const solution = new Solution(2015, 4)
+  .firstStar(
+    once(
+      async input =>
+        hasher(input)
+          .filter(([, h]) => h.startsWith(ZEROS[0]))
+          .next().value[0],
+    ),
+  )
+  .secondStar(
+    once(
+      async input =>
+        hasher(input)
+          .filter(([, h]) => h.startsWith(ZEROS[1]))
+          .next().value[0],
+    ),
+  )
+  .main(import.meta.path);

@@ -18,11 +18,7 @@ const solve = once((input: string) => {
   return { floor, firstBasement };
 });
 
-export const solution = new Solution(
-  2015,
-  1,
-  async input => solve(input).floor,
-  async input => solve(input).firstBasement,
-);
-
-solution.main(import.meta.path);
+export const solution = new Solution(2015, 1)
+  .firstStar(async input => solve(input).floor)
+  .secondStar(async input => solve(input).firstBasement)
+  .main(import.meta.path);

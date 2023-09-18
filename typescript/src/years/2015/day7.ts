@@ -50,18 +50,13 @@ const sigA = memoize((input: string) => createCircuit(input).a());
 // circuit.b = () => signalA;
 // console.log({ signalA: circuit.a() });
 
-export const solution = new Solution(
-  2015,
-  7,
-  async input => sigA(input),
-  async input => {
+export const solution = new Solution(2015, 7)
+  .firstStar(async input => sigA(input))
+  .secondStar(async input => {
     const circuit = createCircuit(input);
     circuit.b = () => sigA(input);
     return circuit.a();
-  },
-);
-
-solution
+  })
   .test.todo('examples', () => {
     const circuit = createCircuit(
       `

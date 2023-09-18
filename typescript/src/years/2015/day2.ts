@@ -4,7 +4,11 @@ import once from 'lodash/once';
 import { Solution, newLine } from '@lib';
 
 class Present {
-  constructor(public length: number, public width: number, public height: number) {}
+  constructor(
+    public length: number,
+    public width: number,
+    public height: number,
+  ) {}
 
   get area() {
     const area = 2 * this.length * this.width + 2 * this.width * this.height + 2 * this.height * this.length;
@@ -30,21 +34,14 @@ class Present {
 }
 
 const presents = once((input: string) =>
-  input
-    .split(newLine)
-    .map(line => new Present(...(line.split('x').map(Number) as [number, number, number]))),
+  input.split(newLine).map(line => new Present(...(line.split('x').map(Number) as [number, number, number]))),
 );
 
-export const solution = new Solution(
-  2015,
-  2,
-  async (input) => {
+export const solution = new Solution(2015, 2)
+  .firstStar(async input => {
     return presents(input).reduce((p, box) => p + box.area, 0);
-  },
-
-  async (input) => {
+  })
+  .secondStar(async input => {
     return presents(input).reduce((p, box) => p + box.ribbonLength, 0);
-  }
-);
-
-solution.main(import.meta.path);
+  })
+  .main(import.meta.path);

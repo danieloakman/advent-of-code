@@ -41,14 +41,7 @@ function isNice2(str: string): boolean {
 
 // console.log(isNice2('qjhvhtzxzqqjkmpb'), isNice2('xxyxx'), isNice2('uurcxstgmygtbstg'), isNice2('ieodomkazucvgmuy'));
 
-export const solution = new Solution(
-  2015,
-  5,
-  async input => input.split(newLine).filter(isNice).length,
-  async input => input.split(newLine).filter(isNice2).length,
-);
-
-solution
+export const solution = new Solution(2015, 5)
   .test('isNice', () => {
     assert(isNice('ugknbfddgicrmopn'));
     assert(isNice('aaa'));
@@ -62,4 +55,6 @@ solution
     assert(!isNice2('uurcxstgmygtbstg'));
     assert(!isNice2('ieodomkazucvgmuy'));
   })
+  .firstStar(async input => input.split(newLine).filter(isNice).length)
+  .secondStar(async input => input.split(newLine).filter(isNice2).length)
   .main(import.meta.path);
