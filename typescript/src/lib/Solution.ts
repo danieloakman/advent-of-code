@@ -70,8 +70,9 @@ export class Solution {
   }
 
   /** Internally calls `solve` wrapped in `main`. */
-  async main(module: any) {
-    await main(module, async () => this.solve());
+  main(module: any) {
+    main(module, async () => this.solve());
+    return this;
   }
 }
 
