@@ -24,7 +24,7 @@ export async function test(year: number | string, day: number | string) {
   if (imported.solution instanceof Solution) {
     await imported.solution.solve();
   } else {
-    const result = await sh(`pnpm tsn ${path}`);
+    const result = await sh(`bun run ${path}`);
     if (result instanceof Error) console.error(result);
   }
 }
@@ -66,7 +66,7 @@ main(import.meta.path, async () => {
   const args: { year: Nullish<number>; day: Nullish<number>; interactive: boolean } = parser.parse_args();
 
   if (args.year && args.day) {
-    const file = require(join(__dirname, '../src/years', args.year.toString(), `day${args.day}`)) || {};
+    const file = safeCall(() => require(join(__dirname, '../src/years', args.year?.toString() ?? '', `day${args.day}`)) || {});
     if (file.solution instanceof Solution) await file.solution.solve();
     else await test(args.year, args.day);
     return;
