@@ -75,7 +75,7 @@ importers:
         version: 3.17.4
       js-utils:
         specifier: github:danieloakman/js-utils#bun
-        version: github.com/danieloakman/js-utils/8d2736b56ad810e9ca09813a3685cdafd1751bef
+        version: github.com/danieloakman/js-utils/4e4299674e8b27d65c37ac3f0f059920a8137760
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1307,10 +1307,6 @@ packages:
     resolution: {integrity: sha512-8CbYR9vtuu/ufgpG1pIuCgVrkKCXcRCXywPH7ePtJp1W/AzV0ufSYXxDS07x40B65kFVLeJHzFCUstWdvv2/1w==}
     dev: true
 
-  /iteragain@3.17.4:
-    resolution: {integrity: sha512-gnmLnkpHAXBe7d7OuE7CXdFowWD2UiW50c5OHRcoy9UGgWeSXGh6sJhoEwLfKuqC3Z9dSktftSBxRxf8oPt80Q==}
-    dev: true
-
   /jackspeak@2.3.3:
     resolution: {integrity: sha512-R2bUw+kVZFS/h1AZqBKrSgDmdmjApzgY0AlCPumopFiAlbUxE2gf+SCuBzQ0cP5hHmUmFYF5yw55T97Th5Kstg==}
     engines: {node: '>=14'}
@@ -2203,11 +2199,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  github.com/danieloakman/js-utils/8d2736b56ad810e9ca09813a3685cdafd1751bef:
-    resolution: {tarball: https://codeload.github.com/danieloakman/js-utils/tar.gz/8d2736b56ad810e9ca09813a3685cdafd1751bef}
+  github.com/danieloakman/js-utils/4e4299674e8b27d65c37ac3f0f059920a8137760:
+    resolution: {tarball: https://codeload.github.com/danieloakman/js-utils/tar.gz/4e4299674e8b27d65c37ac3f0f059920a8137760}
     name: js-utils
     version: 0.1.0
-    dependencies:
-      argparse: 2.0.1
-      iteragain: 3.17.4
     dev: true
