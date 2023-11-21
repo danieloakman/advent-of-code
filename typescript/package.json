@@ -9,7 +9,8 @@
     "create": "bun run create scripts/create.ts",
     "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "bunx prettier --write \"./**/*.ts\"",
-    "check": "tsc --noEmit"
+    "check": "bunx tsc --noEmit",
+    "preinstall": "bunx only-allow pnpm"
   },
   "author": "Daniel Oakman",
   "license": "ISC",
