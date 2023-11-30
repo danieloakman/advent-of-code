@@ -12,6 +12,7 @@
     "tamasfe.even-better-toml",
     "ms-vscode.cpptools",
     "kosz78.nim",
-    "oven.bun-vscode"
+    "oven.bun-vscode",
+    "chenglou92.rescript-vscode"
   ]
 }

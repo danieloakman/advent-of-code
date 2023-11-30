@@ -3,6 +3,7 @@ packages:
   - golang
   - nim
   - python
+  - rescript
   - rust
   - typescript
   - zig
