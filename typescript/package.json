@@ -6,7 +6,7 @@
     "solve:debug": "bun run scripts/solve.ts",
     "test": "bun run scripts/test.ts",
     "test:watch": "bun run scripts/test.ts -w",
-    "create": "bun run create scripts/create.ts",
+    "create": "bun run scripts/create.ts",
     "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "bunx prettier --write \"./**/*.ts\"",
     "check": "bunx tsc --noEmit",
