@@ -2,6 +2,8 @@ packages:
   - c
   - golang
   - nim
+  - python
+  - rescript
   - rust
   - typescript
   - zig
