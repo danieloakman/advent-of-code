@@ -66,7 +66,7 @@ main(import.meta.path, async () => {
   const args: { year: Nullish<number>; day: Nullish<number>; interactive: boolean } = parser.parse_args();
 
   if (args.year && args.day) {
-    const file = safeCall(() => require(join(__dirname, '../src/years', args.year?.toString() ?? '', `day${args.day}`)) || {});
+    const file = safeCall(() => require(join(__dirname, '../src/years', args.year?.toString() ?? '', `day${args.day}`))) || {};
     if (file.solution instanceof Solution) await file.solution.solve();
     else await test(args.year, args.day);
     return;
