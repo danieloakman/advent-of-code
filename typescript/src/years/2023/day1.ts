@@ -1,6 +1,5 @@
 // @see https://adventofcode.com/2023/day/1/input
-import { Solution, add, newLine } from '@lib';
-import { expect } from 'bun:test';
+import { Solution, add, newLine, equal } from '@lib';
 import { iter } from 'iteragain-es';
 
 function isNumber(str: string): boolean {
@@ -21,9 +20,16 @@ export const solution = new Solution(2023, 1)
   .firstStar(async input => parseLines(input.split(newLine)))
   // .secondStar(async input => null)
   .test('example', async () => {
-    expect(parseLines(`1abc2
+    equal(
+      parseLines(
+        `1abc2
     pqr3stu8vwx
     a1b2c3d4e5f
-    treb7uchet`.split(newLine))).toEqual(142);
+    treb7uchet`
+          .split(newLine)
+          .map(s => s.trim()),
+      ),
+      142,
+    );
   })
   .main(import.meta.path);
