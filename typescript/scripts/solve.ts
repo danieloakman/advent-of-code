@@ -3,7 +3,7 @@ import { walkdirSync } from 'more-node-fs';
 import { join, relative } from 'path';
 import iter from 'iteragain-es/iter';
 import { ArgumentParser } from 'argparse';
-import { main, safeCall, sh, Nullish, Solution } from '../src/lib';
+import { main, safeCall, sh, Nullish, Solution, attempt } from '../src/lib';
 
 export const files = iter(walkdirSync(join(__dirname, '../'), { ignore: /node_modules/i }))
   .filterMap(file => (file.stats.isFile() && /day\d+\.[tj]s/.test(file.path) ? file : null))
@@ -20,13 +20,16 @@ export function testPath(year: number | string, day: number | string) {
 export async function test(year: number | string, day: number | string) {
   const path = testPath(year, day);
 
-  const imported: Record<string, unknown> = safeCall(() => require(path.replace(/\..+$/, ''))) || {};
-  if (imported.solution instanceof Solution) {
-    await imported.solution.solve();
-  } else {
-    const result = await sh(`bun run ${path}`);
-    if (result instanceof Error) console.error(result);
-  }
+  const threw = await attempt(async () => {
+    const imported: Record<string, unknown> = await safeCall(() => require(path.replace(/\..+$/, ''))) || {};
+    if (imported.solution instanceof Solution) {
+      await imported.solution.solve();
+    }
+  })
+  if (!(threw instanceof Error)) return;
+
+  const result = await sh(`bun run ${path}`);
+  if (result instanceof Error) console.error(result);
 }
 
 async function selectedText(err?: Error, res?: { selectedText: string }) {
@@ -66,7 +69,7 @@ main(import.meta.path, async () => {
   const args: { year: Nullish<number>; day: Nullish<number>; interactive: boolean } = parser.parse_args();
 
   if (args.year && args.day) {
-    const file = safeCall(() => require(join(__dirname, '../src/years', args.year?.toString() ?? '', `day${args.day}`))) || {};
+    const file = await safeCall(() => require(join(__dirname, '../src/years', args.year?.toString() ?? '', `day${args.day}`))) || {};
     if (file.solution instanceof Solution) await file.solution.solve();
     else await test(args.year, args.day);
     return;
