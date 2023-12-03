@@ -2,19 +2,16 @@
 import { Solution, add, assert, equal, newLine, raise, safeParseInt } from '@lib';
 import { iter } from 'iteragain-es';
 
-type Colour = 'red' | 'blue' | 'green';
+const COLOURS = ['red', 'blue', 'green'] as const;
+type Colour = typeof COLOURS[number];
 
-interface Pick {
-  colour: Colour;
-  number: number;
-}
+type Pick = Record<Colour, number>;
 
 interface Game {
   id: number;
-  picks: Pick[][];
+  picks: Partial<Pick>[];
 }
 
-type ColourNums = Record<Colour, number>;
 
 function parseGame(input: string): Game {
   const [game, rest] = input.split(':');
@@ -27,29 +24,27 @@ function parseGame(input: string): Game {
         pick
           .trim()
           .split(',')
-          .map(s => {
+          .reduce((p, s) => {
             const [number, colour] = s.trim().split(' ');
-            return {
-              colour: colour as Colour,
-              number: safeParseInt(number) ?? raise(`Could not parse int from "${number}"`),
-            };
-          }),
+            p[colour as Colour] = safeParseInt(number) ?? raise(`Could not parse int from "${number}"`);
+            return p;
+          }, {} as Partial<Pick>),
       ),
   };
 }
 
-function isGamePossible(game: Game, assertion: ColourNums): boolean {
-  const totals: ColourNums = game.picks.reduce(
-    (t, pick) => {
-      pick.forEach(({ colour, number }) => (t[colour] += number));
-      return t;
-    },
-    { red: 0, green: 0, blue: 0 } as ColourNums,
-  );
-  return Object.entries(assertion).every(([colour, number]) => totals[colour as Colour] <= number);
+function isGamePossible(game: Game, assertion: Pick): boolean {
+  for (const pick of game.picks) {
+    for (const colour in pick) {
+      if ((pick[colour as Colour] ?? raise(`Could find ${colour} in ${pick}`)) > assertion[colour as Colour]) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
-function firstStar(input: string, assertion: ColourNums) {
+function firstStar(input: string, assertion: Pick) {
   return iter(input.split(newLine))
     .filterMap(line => {
       const game = parseGame(line.trim());
