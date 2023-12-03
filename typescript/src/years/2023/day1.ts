@@ -1,6 +1,6 @@
 // @see https://adventofcode.com/2023/day/1/input
 import { Solution, add, newLine, equal, iife, matches, raise } from '@lib';
-import { iter, range, toArray } from 'iteragain-es';
+import { iter, range } from 'iteragain-es';
 import { last } from 'lodash';
 
 interface Parser {
@@ -17,32 +17,32 @@ function parseLine(str: string): number {
   return parseInt(first + last);
 }
 
-const parseLineStar2 = iife(
-  (
-    digits = /one|two|three|four|five|six|seven|eight|nine|\d/,
-    map = {
-      one: 1,
-      two: 2,
-      three: 3,
-      four: 4,
-      five: 5,
-      six: 6,
-      seven: 7,
-      eight: 8,
-      nine: 9,
-      ...iter(range(1, 10))
-        .map(n => [n.toString(), n] as const)
-        .toArray(),
-    },
-  ) =>
-    (str: string): number => {
-      const m = iter(matches(digits, str))
-        .map(m => m[0])
-        .toArray();
-      if (!m.length) throw new Error(`Less than 2 digits found in "${str}"`);
-      return parseInt((map as any)[m[0]] + (map as any)[last(m) ?? raise('No last digit found')]);
-    },
-);
+const parseLineStar2 = iife(() => {
+  const digits = /\d|one|two|three|four|five|six|seven|eight|nine/;
+  const map: Record<string | number, string> = {
+    one: '1',
+    two: '2',
+    three: '3',
+    four: '4',
+    five: '5',
+    six: '6',
+    seven: '7',
+    eight: '8',
+    nine: '9',
+    ...iter(range(1, 10))
+      .map(n => [n.toString(), n.toString()] as const)
+      .reduce((m, [k, v]) => ((m[k] = v), m), {} as any),
+  };
+
+  return (str: string): number => {
+    const m = iter(matches(digits, str))
+      .map(m => m[0])
+      .toArray();
+    const f = map[m[0]] ?? raise('No first digit found');
+    const l = map[last(m) ?? raise('No last digit found')];
+    return parseInt(f + l);
+  };
+});
 
 function parseLines(lines: string[], parser: Parser): number {
   return iter(lines).map(parser).reduce(add);
@@ -79,5 +79,6 @@ export const solution = new Solution(2023, 1)
       ),
       281,
     );
+    equal(parseLineStar2('hsbdxl4'), 44);
   })
   .main(import.meta.path);
