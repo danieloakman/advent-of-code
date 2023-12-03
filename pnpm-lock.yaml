@@ -12,8 +12,10 @@ importers:
 
   nim: {}
 
+  python: {}
+
   rescript:
-    dependencies:
+    devDependencies:
       '@rescript/core':
         specifier: '*'
         version: 0.6.0(rescript@10.1.4)
@@ -84,7 +86,7 @@ importers:
         version: 3.17.4
       js-utils:
         specifier: github:danieloakman/js-utils#bun
-        version: github.com/danieloakman/js-utils/4e4299674e8b27d65c37ac3f0f059920a8137760
+        version: github.com/danieloakman/js-utils/59732cf8d17dd140b9fb6036eca851fcb2a38e4f
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -303,7 +305,7 @@ packages:
       rescript: ^10.1.0 || ^11.0.0-alpha.0 || next
     dependencies:
       rescript: 10.1.4
-    dev: false
+    dev: true
 
   /@tootallnate/quickjs-emscripten@0.23.0:
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
@@ -1753,7 +1755,7 @@ packages:
     resolution: {integrity: sha512-FFKlS9AG/XrLepWsyw7B+A9DtQBPWEPDPDKghV831Y2KGbie+eeFBOS0xtRHp0xbt7S0N2Dm6hhX+kTZQ/3Ybg==}
     hasBin: true
     requiresBuild: true
-    dev: false
+    dev: true
 
   /resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
@@ -2222,8 +2224,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  github.com/danieloakman/js-utils/4e4299674e8b27d65c37ac3f0f059920a8137760:
-    resolution: {tarball: https://codeload.github.com/danieloakman/js-utils/tar.gz/4e4299674e8b27d65c37ac3f0f059920a8137760}
+  github.com/danieloakman/js-utils/59732cf8d17dd140b9fb6036eca851fcb2a38e4f:
+    resolution: {tarball: https://codeload.github.com/danieloakman/js-utils/tar.gz/59732cf8d17dd140b9fb6036eca851fcb2a38e4f}
     name: js-utils
     version: 0.1.0
     dev: true
