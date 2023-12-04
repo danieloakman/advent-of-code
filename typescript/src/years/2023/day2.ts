@@ -1,9 +1,9 @@
 // @see https://adventofcode.com/2023/day/2/input
-import { Solution, add, assert, equal, newLine, raise, safeParseInt } from '@lib';
+import { Solution, add, assert, equal, mult, newLine, raise, safeParseInt } from '@lib';
 import { iter } from 'iteragain-es';
 
 const COLOURS = ['red', 'blue', 'green'] as const;
-type Colour = typeof COLOURS[number];
+type Colour = (typeof COLOURS)[number];
 
 type Pick = Record<Colour, number>;
 
@@ -11,7 +11,6 @@ interface Game {
   id: number;
   picks: Partial<Pick>[];
 }
-
 
 function parseGame(input: string): Game {
   const [game, rest] = input.split(':');
@@ -53,9 +52,28 @@ function firstStar(input: string, assertion: Pick) {
     .reduce(add);
 }
 
+function minPossiblePick(game: Game): Pick {
+  const result: Pick = { red: 0, green: 0, blue: 0 };
+  for (const pick of game.picks) {
+    for (const [colour, number] of Object.entries(pick)) {
+      result[colour as Colour] = Math.max(result[colour as Colour], number);
+    }
+  }
+  return result;
+}
+
+function secondStar(input: string): number {
+  return iter(input.split(newLine))
+    .filterMap(line => {
+      const game = parseGame(line.trim());
+      return Object.values(minPossiblePick(game)).reduce(mult);
+    })
+    .reduce(add);
+}
+
 export const solution = new Solution(2023, 2)
   .firstStar(async input => firstStar(input, { red: 12, green: 13, blue: 14 }))
-  .secondStar(async input => null)
+  .secondStar(async input => secondStar(input))
   .test('example', async () => {
     assert(
       isGamePossible(parseGame('Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green'), {
@@ -74,6 +92,14 @@ export const solution = new Solution(2023, 2)
         { red: 12, green: 13, blue: 14 },
       ),
       8,
+    );
+    equal(
+      secondStar(`Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+    Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+    Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+    Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+    Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green`),
+      2286,
     );
   })
   .main(import.meta.path);
