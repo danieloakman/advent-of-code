@@ -41,7 +41,7 @@ export interface FixedLengthArray {
 export class NDArray<N extends Dimensions> implements MapLike<Tuple<number, N['length']>, number> {
   constructor(
     protected readonly arr: FixedLengthArray,
-    protected readonly dimensions: N,
+    readonly dimensions: N,
   ) {}
 
   [Symbol.iterator]() {
