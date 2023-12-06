@@ -16,5 +16,10 @@
   },
   "[nim]": {
     "editor.defaultFormatter": "kosz78.nim"
+  },
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "editor.defaultFormatter": "ms-python.black-formatter"
   }
 }

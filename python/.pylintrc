@@ -1,0 +1,24 @@
+# See https://github.com/kubeflow/examples/blob/master/.pylintrc for an example.
+[MASTER]
+
+disable=
+  W0703, # broad-except
+  C0114, # missing-module-docstring
+  W0640, # cell-var-from-loop
+  W0511, # TODOs/fixmes,etc
+  C0206, # consider-using-dict-items
+
+[BASIC]
+
+indent-string='    '
+max-line-length=1000 # black formatter handles this
+good-names=i,j,k,ex,Run,_,pk,x,y,a,b,v,e
+
+[DESIGN]
+
+max-branches=20
+max-bool-expr=10
+max-args=10
+max-attributes=15
+min-public-methods=0
+max-statements=75

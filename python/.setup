@@ -1,9 +1,10 @@
 # if .venv directory doesn't exist
 if [ ! -d ".venv" ]; then
   # create virtual environment
-  python3 -m venv .venv
+  python -m venv .venv
 fi
 # activate virtual environment
 source .venv/bin/activate
 # install requirements
-pip install -r requirements.txt
+pip install --upgrade -r requirements.txt
+pip install --upgrade -r requirements-dev.txt
