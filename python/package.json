@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "solve": "echo \"Error: no solve specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create": "echo \"Error: no create specified\" && exit 1",
+    "lint": "echo \"Error: no lint specified\" && exit 1",
+    "format": "echo \"Error: no format specified\" && exit 1"
   }
 }
