@@ -22,4 +22,5 @@ def file_input_lines(year: int, day: int) -> list:
 
 def txt(input: str) -> str:
     """Trims the leading whitespace from every line in the given string, and trims the start and end of the whole string."""
-    return reduce(lambda a, b: a + "\n" + b, map(lambda s: s.lstrip(), input.splitlines())).strip()
+    # return reduce(lambda a, b: a + "\n" + b, map(lambda s: s.lstrip(), input.splitlines())).strip()
+    return "\n".join(map(lambda s: s.lstrip(), input.splitlines())).strip()
