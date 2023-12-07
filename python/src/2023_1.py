@@ -1,27 +1,29 @@
+""" https://adventofcode.com/2023/day/1 """
 from lib.misc import file_input, txt
-import itertools
 
 
-def is_number(s: str) -> bool:
+def is_number(string: str) -> bool:
+    """Is the given string a number?"""
     try:
-        int(s)
+        int(string)
         return True
     except ValueError:
         return False
 
 
-def parse_line(s: str) -> int:
-    nums = list(filter(is_number, s))
+def parse_line(string: str) -> int:
+    """Parse one line from the expected input."""
+    nums = list(filter(is_number, string))
     return int(nums[0] + nums[-1])
 
 
-def first_star(input: str) -> int:
-    return sum(map(parse_line, input.splitlines()))
-    # for line in file_input_lines(2023, 1):
-    # print(line)
+def first_star(text: str) -> int:
+    """Solution to the 1st star of the day"""
+    return sum(map(parse_line, text.splitlines()))
 
 
-def second_star(input: str) -> int:
+def second_star(_text: str) -> int:
+    """Solution to the 2nd star of the day"""
     return 0
 
 

@@ -20,6 +20,7 @@
   "[python]": {
     "editor.tabSize": 4,
     "editor.detectIndentation": false,
-    "editor.defaultFormatter": "ms-python.black-formatter"
-  }
+    "editor.defaultFormatter": "ms-python.black-formatter",
+  },
+  "pylint.cwd": "${workspaceFolder}/python"
 }
