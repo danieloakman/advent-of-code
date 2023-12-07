@@ -138,8 +138,6 @@ def hash_dict(obj: dict):
     encoded_string = json.dumps(obj, sort_keys=True, default=repr).encode("utf-8")
     return hash_str(encoded_string)
 
-print(hash_dict({"a": 1, "b": 2}))
-
 def parse_num_list(arg: Union[str, list[int]]) -> Union[range, list[int], None]:
     """Parse a string or list of integers into a range or list of integers."""
     if isinstance(arg, str):
