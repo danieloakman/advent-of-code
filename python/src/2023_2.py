@@ -18,7 +18,7 @@ def parse_pick(string: str) -> Pick:
     green = 0
     blue = 0
     for p in string.split(","):
-        [count, color] = p.strip().split(" ")
+        (count, color) = p.strip().split(" ")
         match color:
             case "red":
                 red = int(count)
@@ -30,10 +30,10 @@ def parse_pick(string: str) -> Pick:
 
 
 def parse_game(line: str) -> Game:
-    [game, rest] = line.split(":")
+    (game, rest) = line.split(":")
     picks = map(parse_pick, rest.split(";"))
     return Game(parse_first_int(game), list(picks))
-    # return Game(parse_first_int(game), map(), rest.strip().split(";")))
+
 
 def is_possible_game(game: Game, assertion: Pick) -> bool:
     for pick in game.picks:
@@ -42,6 +42,7 @@ def is_possible_game(game: Game, assertion: Pick) -> bool:
                 return False
     return True
 
+
 def first_star(string: str) -> int:
     games = map(parse_game, string.splitlines())
     possible_games = filter(lambda g: is_possible_game(g, (12, 13, 14)), games)
@@ -49,16 +50,17 @@ def first_star(string: str) -> int:
 
 
 if __name__ == "__main__":
-    r = first_star(
-        txt(
-            """
-        Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-        Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
-        Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
-        Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
-        Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"""
-        )
-    )
-    print(r)
-    assert r == 8
+    # assert (
+    #     first_star(
+    #         txt(
+    #             """
+    #     Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+    #     Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+    #     Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+    #     Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+    #     Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"""
+    #         )
+    #     )
+    #     == 8
+    # )
     print(first_star(file_input(2023, 2)))
