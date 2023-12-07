@@ -39,13 +39,21 @@ int_regex = re.compile(r"(\d+)")
 
 
 def parse_first_int(string: str, default: int | None = None) -> int:
-    """Returns the first integer in a string."""
+    """Returns the first `int` in a `str`."""
     m = int_regex.search(string)
     if m is None:
         if default is not None:
             return default
         raise ValueError(f"Could not find an integer in {string}")
     return int(m.group(1))
+
+
+def safe_int(string: str) -> int | None:
+    """Parses a string into an `int`, or returns `None` if it fails."""
+    try:
+        return int(string)
+    except ValueError:
+        return None
 
 
 def once(func):
