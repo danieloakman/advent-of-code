@@ -6,6 +6,7 @@ from hashlib import md5
 from time import perf_counter
 from re import findall
 
+
 def file_input_path(year: int, day: int) -> str:
     return join_norm(tmpdir(), f"{year}-{day}-input.txt")
 
@@ -101,6 +102,7 @@ def tmpdir():
         mkdir(result_dir)
     return result_dir
 
+
 def join_norm(*paths) -> str:
     """Join paths and normalise the result. Just like nodejs's path.join function."""
     return path.normpath(path.join(*paths))  # type: ignore
@@ -138,6 +140,7 @@ def hash_dict(obj: dict):
     encoded_string = json.dumps(obj, sort_keys=True, default=repr).encode("utf-8")
     return hash_str(encoded_string)
 
+
 def parse_num_list(arg: Union[str, list[int]]) -> Union[range, list[int], None]:
     """Parse a string or list of integers into a range or list of integers."""
     if isinstance(arg, str):
@@ -146,3 +149,8 @@ def parse_num_list(arg: Union[str, list[int]]) -> Union[range, list[int], None]:
             return range(int(params[0]), int(params[1]), int(params[2]))
         return None
     return arg
+
+
+def assert_equal(a, b):
+    """Assert that two values are equal."""
+    assert a == b, f"{a} != {b}"
