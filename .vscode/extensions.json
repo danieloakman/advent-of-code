@@ -14,6 +14,7 @@
     "kosz78.nim",
     "oven.bun-vscode",
     "chenglou92.rescript-vscode",
-    "ms-python.black-formatter"
+    "ms-python.black-formatter",
+    "ms-python.mypy-type-checker"
   ]
 }

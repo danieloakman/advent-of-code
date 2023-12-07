@@ -22,5 +22,7 @@
     "editor.detectIndentation": false,
     "editor.defaultFormatter": "ms-python.black-formatter",
   },
-  "pylint.cwd": "${workspaceFolder}/python"
+  "pylint.cwd": "${workspaceFolder}/python",
+  "mypy-type-checker.cwd": "${workspaceFolder}/python",
+  "mypy-type-checker.path": ["${workspaceFolder}/python/src"],
 }

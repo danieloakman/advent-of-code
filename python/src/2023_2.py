@@ -10,8 +10,10 @@ int_regex = re.compile(r"(\d+)")
 
 def parse_first_int(string: str) -> int:
     """Returns the first integer in a string."""
-    found = int_regex.search(string).group(1)
-    return int(found)
+    m = int_regex.search(string)
+    if m is None:
+        return 0
+    return int(m.group(1))
 
 
 @dataclass
@@ -23,7 +25,7 @@ class Game:
 
 
 def parse_pick(string: str) -> Pick:
-    pick: Pick = tuple(0, 0, 0)
+    pick: Pick = (0, 0, 0)
     for _p in string.split(","):
         # TODO
         pass
@@ -35,13 +37,14 @@ def parse_pick(string: str) -> Pick:
 def parse_game(line: str) -> Game:
     [game, rest] = line.split(":")
     print(game, rest)
-
+    return Game(game, [])
     # tODO
     # return Game(parse_first_int(game), map(), rest.strip().split(";")))
 
 
 def first_star(string: str) -> int:
-    return sum(map(parse_game, string.splitlines()))
+    _games = map(parse_game, string.splitlines())
+    return 0
 
 
 if __name__ == "__main__":

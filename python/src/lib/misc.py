@@ -13,7 +13,7 @@ def file_input(year: int, day: int) -> str:
         return f.read()
 
 
-def file_input_lines(year: int, day: int) -> Generator[str]:
+def file_input_lines(year: int, day: int) -> Generator[str, None, None]:
     """Return the contents of the input file for the given year and day as a list of lines."""
     file_path = file_input_path(year, day)
     with open(file_path, "r", encoding="utf8") as f:
