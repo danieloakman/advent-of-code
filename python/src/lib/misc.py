@@ -7,7 +7,7 @@ from time import perf_counter
 from re import findall
 
 def file_input_path(year: int, day: int) -> str:
-    return path.join(getcwd(), "../tmp", f"{year}-{day}-input.txt")
+    return join_norm(tmpdir(), f"{year}-{day}-input.txt")
 
 
 def file_input(year: int, day: int) -> str:
@@ -96,7 +96,7 @@ def safe_call(func, *args, **kwargs):
 @once
 def tmpdir():
     """Returns the path to the temporary directory."""
-    result_dir = path.abspath(join_norm(__file__, "../../tmp"))
+    result_dir = path.abspath(join_norm(__file__, "../../../../tmp"))
     if not path.exists(result_dir):
         mkdir(result_dir)
     return result_dir
