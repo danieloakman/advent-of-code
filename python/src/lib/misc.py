@@ -1,7 +1,10 @@
-from os import path, getcwd
-from typing import Generator
+from os import path, getcwd, mkdir
+from typing import Generator, Union
 import re
-
+import json
+from hashlib import md5
+from time import perf_counter
+from re import findall
 
 def file_input_path(year: int, day: int) -> str:
     return path.join(getcwd(), "../tmp", f"{year}-{day}-input.txt")
@@ -42,3 +45,106 @@ def parse_first_int(string: str, default: int | None = None) -> int:
             return default
         raise ValueError(f"Could not find an integer in {string}")
     return int(m.group(1))
+
+
+def once(func):
+    """Decorator to ensure a function is only called once and the return value is stored for
+    subsequent calls.
+    """
+
+    def wrapper(*args, **kwargs):
+        if wrapper.called is False:
+            wrapper.called = True
+            wrapper.value = func(*args, **kwargs)
+        return wrapper.value
+
+    wrapper.value = None
+    wrapper.called = False
+    return wrapper
+
+
+def time_func(func):
+    """Decorator to time the execution of a function."""
+
+    def wrapper(*args, **kwargs):
+        start = perf_counter()
+        result = func(*args, **kwargs)
+        print(func.__name__, "took", perf_counter() - start, "seconds")
+        return result
+
+    return wrapper
+
+
+def log_func(func):
+    """Decorator to log the execution of a function."""
+
+    def wrapper(*args, **kwargs):
+        print("%s(%s, %s)", func.__name__, args, kwargs)
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+def safe_call(func, *args, **kwargs):
+    """Safely call a function and return the result, or None if an exception is raised."""
+    try:
+        return func(*args, **kwargs)
+    except Exception:  # pylint: disable=broad-except
+        return None
+
+
+@once
+def tmpdir():
+    """Returns the path to the temporary directory."""
+    result_dir = path.abspath(join_norm(__file__, "../../tmp"))
+    if not path.exists(result_dir):
+        mkdir(result_dir)
+    return result_dir
+
+def join_norm(*paths) -> str:
+    """Join paths and normalise the result. Just like nodejs's path.join function."""
+    return path.normpath(path.join(*paths))  # type: ignore
+
+
+def isiterable(obj):
+    """Test whether an object is iterable."""
+    try:
+        _ = (e for e in obj)
+        return True
+    except Exception:  # pylint: disable=broad-except
+        return False
+
+
+def round_to_nearest(number: float, nearest: float):
+    """Round a number to the nearest multiple of another number."""
+    return round(number / nearest) * nearest
+
+
+def hash_str(string: Union[str, bytes]) -> str:
+    """Hash a string."""
+    hashed = md5(string.encode("utf-8") if isinstance(string, str) else string)
+    return hashed.hexdigest()
+
+
+def hash_file(file_path: str):
+    """Returns the hash of a file."""
+    with open(file_path, "rb") as file:
+        hashed = md5(file.read())
+    return hashed.hexdigest()
+
+
+def hash_dict(obj: dict):
+    """Returns the hash of a JSON serializable dictionary."""
+    encoded_string = json.dumps(obj, sort_keys=True, default=repr).encode("utf-8")
+    return hash_str(encoded_string)
+
+print(hash_dict({"a": 1, "b": 2}))
+
+def parse_num_list(arg: Union[str, list[int]]) -> Union[range, list[int], None]:
+    """Parse a string or list of integers into a range or list of integers."""
+    if isinstance(arg, str):
+        if "range" in arg.lower():
+            params = findall(r"\d+", arg)
+            return range(int(params[0]), int(params[1]), int(params[2]))
+        return None
+    return arg
