@@ -1,5 +1,6 @@
 from os import path, getcwd
 from typing import Generator
+import re
 
 
 def file_input_path(year: int, day: int) -> str:
@@ -28,3 +29,16 @@ def txt(string: str) -> str:
     """Trims the leading whitespace from every line in the given string, and trims the start and end of the whole string."""
     # return reduce(lambda a, b: a + "\n" + b, map(lambda s: s.lstrip(), input.splitlines())).strip()
     return "\n".join(map(lambda s: s.lstrip(), string.splitlines())).strip()
+
+
+int_regex = re.compile(r"(\d+)")
+
+
+def parse_first_int(string: str, default: int | None = None) -> int:
+    """Returns the first integer in a string."""
+    m = int_regex.search(string)
+    if m is None:
+        if default is not None:
+            return default
+        raise ValueError(f"Could not find an integer in {string}")
+    return int(m.group(1))
