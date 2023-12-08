@@ -1,5 +1,6 @@
 """ https://adventofcode.com/2023/day/1 """
-from lib.misc import file_input, txt
+from lib.misc import txt
+from lib.puzzle_input import puzzle_input
 
 
 def is_number(string: str) -> bool:
@@ -40,7 +41,7 @@ if __name__ == "__main__":
         )
         == 142
     )
-    print(first_star(file_input(2023, 1)))
+    print(first_star(puzzle_input(2023, 1)))
     # assert second_star(txt("""
     #   two1nine
     #   eightwothree
@@ -50,4 +51,4 @@ if __name__ == "__main__":
     #   zoneight234
     #   7pqrstsixteen
     # """)) == 281
-    # print(second_star(file_input(2023, 1)))
+    # print(second_star(puzzle_input(2023, 1)))

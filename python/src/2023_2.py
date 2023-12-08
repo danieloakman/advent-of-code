@@ -1,6 +1,7 @@
 """ https://adventofcode.com/2023/day/2 """
 from dataclasses import dataclass
-from lib.misc import file_input, txt, parse_first_int
+from lib.misc import txt, parse_first_int
+from lib.puzzle_input import puzzle_input
 
 Pick = tuple[int, int, int]
 
@@ -76,7 +77,7 @@ if __name__ == "__main__":
         )
         == 8
     )
-    print(first_star(file_input(2023, 2)))
+    print(first_star(puzzle_input(2023, 2)))
 
     assert (
         (
@@ -93,4 +94,4 @@ if __name__ == "__main__":
         )
         == 2286
     )
-    print(second_star(file_input(2023, 2)))
+    print(second_star(puzzle_input(2023, 2)))

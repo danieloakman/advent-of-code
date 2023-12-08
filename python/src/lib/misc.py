@@ -1,32 +1,10 @@
-from os import path, getcwd, mkdir
-from typing import Generator, Union
+from os import path, mkdir
+from typing import Union
 import re
 import json
 from hashlib import md5
 from time import perf_counter
 from re import findall
-
-
-def file_input_path(year: int, day: int) -> str:
-    return join_norm(tmpdir(), f"{year}-{day}-input.txt")
-
-
-def file_input(year: int, day: int) -> str:
-    """Return the contents of the input file for the given year and day."""
-    file_path = file_input_path(year, day)
-    with open(file_path, "r", encoding="utf8") as f:
-        return f.read()
-
-
-def file_input_lines(year: int, day: int) -> Generator[str, None, None]:
-    """Return the contents of the input file for the given year and day as a list of lines."""
-    file_path = file_input_path(year, day)
-    with open(file_path, "r", encoding="utf8") as f:
-        while True:
-            line = f.readline()
-            if not line:
-                break
-            yield line.strip()
 
 
 def txt(string: str) -> str:
@@ -162,3 +140,16 @@ def parse_num_list(arg: Union[str, list[int]]) -> Union[range, list[int], None]:
 def assert_equal(a, b):
     """Assert that two values are equal."""
     assert a == b, f"{a} != {b}"
+
+
+def string_dimensions(string: str) -> tuple[int, int]:
+    """
+    Return the dimensions of a string that contains a map of characters.
+    ```
+    ###
+    ###
+    ### -> (3, 3)
+    ```
+    """
+    lines = string.splitlines()
+    return len(lines[0]), len(lines)
