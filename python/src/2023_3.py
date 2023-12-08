@@ -59,24 +59,29 @@ def first_star(text: str) -> int:
 
     return sum(part_nums)
 
+def second_star(text: str) -> int:
+    """Solution to the 2nd star of the day"""
+    _arr = parse_ndarray(text)
+
+    # todo
+
+    return 0
 
 if __name__ == "__main__":
-    # assert_equal(
-    #     first_star(
-    #         txt(
-    #             """
-    #             467..114..
-    #             ...*......
-    #             ..35..633.
-    #             ......#...
-    #             617*......
-    #             .....+.58.
-    #             ..592.....
-    #             ......755.
-    #             ...$.*....
-    #             .664.598.."""
-    #         )
-    #     ),
-    #     4361,
-    # )
+    example = txt(
+        """
+        467..114..
+        ...*......
+        ..35..633.
+        ......#...
+        617*......
+        .....+.58.
+        ..592.....
+        ......755.
+        ...$.*....
+        .664.598.."""
+    )
+
+    assert_equal(first_star(example), 4361)
     print(first_star(puzzle_input(2023, 3)))
+    assert_equal(second_star(example), 467835)
