@@ -1,5 +1,6 @@
 import numpy as np
-from lib.misc import file_input, assert_equal, txt, safe_int
+from lib.misc import assert_equal, txt, safe_int, string_dimensions
+from lib.puzzle_input import puzzle_input
 
 def parse_ndarray(text: str):
     arr = np.ndarray(shape=string_dimensions(text), dtype=int)
@@ -34,21 +35,22 @@ def first_star(text: str) -> int:
 
 
 if __name__ == "__main__":
-    assert_equal(
-        first_star(
-            txt(
-                """
-                467..114..
-                ...*......
-                ..35..633.
-                ......#...
-                617*......
-                .....+.58.
-                ..592.....
-                ......755.
-                ...$.*....
-                .664.598.."""
-            )
-        ),
-        4361,
-    )
+    # assert_equal(
+    #     first_star(
+    #         txt(
+    #             """
+    #             467..114..
+    #             ...*......
+    #             ..35..633.
+    #             ......#...
+    #             617*......
+    #             .....+.58.
+    #             ..592.....
+    #             ......755.
+    #             ...$.*....
+    #             .664.598.."""
+    #         )
+    #     ),
+    #     4361,
+    # )
+    print(first_star(puzzle_input(2023, 3)))
