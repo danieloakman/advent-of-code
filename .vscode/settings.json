@@ -20,17 +20,17 @@
   "[python]": {
     "editor.tabSize": 4,
     "editor.detectIndentation": false,
-    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "[go]": {
     "editor.insertSpaces": false,
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "golang.go",
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     }
   },
   "pylint.cwd": "${workspaceFolder}/python",
   "mypy-type-checker.cwd": "${workspaceFolder}/python",
-  "mypy-type-checker.path": ["${workspaceFolder}/python/src"],
+  "mypy-type-checker.path": ["${workspaceFolder}/python/src"]
 }
