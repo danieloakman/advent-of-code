@@ -326,3 +326,15 @@ export function canTest(): boolean {
 export function toFixed(n: number, decimalPlaces: number): string {
   return n.toFixed(decimalPlaces).replace(/\.?0+$/, '');
 }
+
+/**
+ * @description Trims the leading whitespace from every line in the given string, and trims the start and end of the
+ * whole string.
+ */
+export const txt = (...input: any[]): string =>
+  input
+    .join('')
+    .split(newLine)
+    .map(line => line.trim())
+    .join('\n')
+    .trim();
