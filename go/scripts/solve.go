@@ -1,7 +1,7 @@
 package main
 
 import (
-	// "os"
+	"os"
 
 	"danieloakman/aoc/lib"
 )
@@ -30,5 +30,7 @@ import (
 func main() {
 	// yearDay := YearDay{parseInt(os.Args[1]), parseInt(os.Args[2])}
 	// aoc.solve(&yearDay)
-	println("Solving ")
+	year := lib.parseInt(os.Args[1])
+	day := lib.parseInt(os.Args[2])
+	println("Solving", year, day)
 }
