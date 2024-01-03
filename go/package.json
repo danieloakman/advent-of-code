@@ -2,8 +2,8 @@
   "name": "@advent-of-code/golang",
   "version": "0.0.1",
   "scripts": {
-    "test": "echo \"Error: no test specified\"",
-    "solve": "echo \"Error no solve script\"",
+    "test": "go test ./...",
+    "solve": "go run scripts/solve.go",
     "create": "echo \"Error no create script\""
   }
 }

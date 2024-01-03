@@ -2,10 +2,11 @@ package main
 
 import (
 	"os"
+	"os/exec"
+	"path/filepath"
 
-	"danieloakman/aoc/lib"
+	// "danieloakman/aoc/lib"
 )
-
 
 // Solve all solutions or for a specific year and day.
 // func (aoc *AOC) solve(yearDay *YearDay) {
@@ -30,7 +31,25 @@ import (
 func main() {
 	// yearDay := YearDay{parseInt(os.Args[1]), parseInt(os.Args[2])}
 	// aoc.solve(&yearDay)
-	year := lib.parseInt(os.Args[1])
-	day := lib.parseInt(os.Args[2])
-	println("Solving", year, day)
+	if len(os.Args) < 3 {
+		println("Usage: solve <year> <day>")
+		os.Exit(1)
+	}
+
+	// year := lib.ParseInt(os.Args[1])
+	// day := lib.ParseInt(os.Args[2])
+	cwd, _ := os.Getwd()
+	path := filepath.Join(cwd, os.Args[1], os.Args[2], "main.go")
+
+	println("Solving", path)
+	// output, err := exec.Command("go", "run", path).Output()
+	// if err != nil {
+	// 	println("Error:", err.Error())
+	// 	os.Exit(1)
+	// }
+	// println(string(output[:]))
+	cmd := exec.Command("go", "run", path)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Run()
 }
