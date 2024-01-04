@@ -8,6 +8,6 @@
     "create": "echo \"Error: no create specified\" && exit 1",
     "lint": "pylint src && mypy src",
     "format": "black .",
-    "postinstall": "pip install --upgrade -r requirements.txt"
+    "postinstall": "echo \"COMMENTED OUT pip install --upgrade -r requirements.txt\""
   }
 }
