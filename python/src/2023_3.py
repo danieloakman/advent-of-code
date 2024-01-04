@@ -1,5 +1,5 @@
-import numpy as np
 from typing import Generator
+import numpy as np
 from lib.misc import assert_equal, txt, safe_int, string_dimensions
 from lib.puzzle_input import puzzle_input
 
