@@ -16,6 +16,7 @@ def session_cookie() -> str:
         print("Please create a file named sessionCookie.txt in the tmp directory with your session cookie.")
         sys.exit(1)
 
+
 def __download_puzzle_input(year: int, day: int) -> bytes:
     http = urllib3.PoolManager(
         cert_reqs="CERT_REQUIRED",

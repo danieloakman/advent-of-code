@@ -59,6 +59,7 @@ def first_star(text: str) -> int:
 
     return sum(part_nums)
 
+
 def second_star(text: str) -> int:
     """Solution to the 2nd star of the day"""
     _arr = parse_ndarray(text)
@@ -66,6 +67,7 @@ def second_star(text: str) -> int:
     # todo
 
     return 0
+
 
 if __name__ == "__main__":
     example = txt(
