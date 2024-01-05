@@ -3,7 +3,7 @@ package lib
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -50,10 +50,12 @@ func download_input(year int, day int) []byte {
 		panic(err)
 	}
 
-	req.AddCookie(&http.Cookie{Name: "session", Value: SessionCookie()})
+	req.AddCookie(&http.Cookie{Name: "session", Value: SessionCookie(), Path: "/", MaxAge: 86400})
+	req.Header.Set("User-Agent", "doakman94@gmail.com")
+	req.Header.Set("Cookie", "session="+SessionCookie()) // TODO: still doesn't work, still get 400 Bad Request
 
 	client := &http.Client{}
-	resp, err := client.Do(req) // TODO: throws 400 Bad Request for some reason
+	resp, err := client.Do(req)
 	if err != nil {
 		panic(err)
 	}
@@ -65,7 +67,7 @@ func download_input(year int, day int) []byte {
 		panic(err)
 	}
 
-	return Ok(ioutil.ReadAll(resp.Body))
+	return Ok(io.ReadAll(resp.Body))
 }
 
 func Get_Input(year int, day int) string {
