@@ -1,7 +1,7 @@
 from typing import Generator
 import sys
 from os import path
-import urllib3
+import urllib
 import certifi
 from .misc import join_norm, tmpdir, once
 
@@ -18,7 +18,7 @@ def session_cookie() -> str:
 
 
 def __download_puzzle_input(year: int, day: int) -> bytes:
-    http = urllib3.PoolManager(
+    http = urllib.PoolManager(
         cert_reqs="CERT_REQUIRED",
         ca_certs=certifi.where(),
     )
