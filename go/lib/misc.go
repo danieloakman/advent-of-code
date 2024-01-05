@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"runtime"
 )
 
 // Parses a string into an int, panicking if it fails.
@@ -28,8 +29,12 @@ func Ok[T any](value T, err error) T {
 }
 
 func Tmpdir() string {
-	cwd := Ok(os.Getwd())
-	path := filepath.Join(cwd, "../tmp")
+	// cwd := Ok(os.Getwd())
+	_, filename, _, runtimeErr := runtime.Caller(0)
+	if !runtimeErr {
+		panic("runtime.Caller(0) panicked")
+	}
+	path := filepath.Join(filename, "../../../tmp")
 	err := os.MkdirAll(path, 0777)
 	if err != nil {
 		panic(err)
@@ -43,7 +48,7 @@ func SessionCookie() string {
 	return string(bytes)
 }
 
-func download_input(year int, day int) []byte {
+func downloadInput(year int, day int) []byte {
 	url := fmt.Sprintf("https://www.adventofcode.com/%d/day/%d/input", year, day)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -70,10 +75,10 @@ func download_input(year int, day int) []byte {
 	return Ok(io.ReadAll(resp.Body))
 }
 
-func Get_Input(year int, day int) string {
+func GetInput(year int, day int) string {
 	path := filepath.Join(Tmpdir(), fmt.Sprintf("%d-%d-input.txt", year, day))
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		bytes := download_input(year, day)
+		bytes := downloadInput(year, day)
 		err = os.WriteFile(path, bytes, 0777)
 		if err != nil {
 			panic(err)
