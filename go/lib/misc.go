@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"runtime"
+	"strconv"
 )
 
 // Parses a string into an int, panicking if it fails.
@@ -28,17 +28,20 @@ func Ok[T any](value T, err error) T {
 	return value
 }
 
+// Panics if `err != nil`.
+func MayPanic(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
 func Tmpdir() string {
-	// cwd := Ok(os.Getwd())
 	_, filename, _, runtimeErr := runtime.Caller(0)
 	if !runtimeErr {
 		panic("runtime.Caller(0) panicked")
 	}
 	path := filepath.Join(filename, "../../../tmp")
-	err := os.MkdirAll(path, 0777)
-	if err != nil {
-		panic(err)
-	}
+	MayPanic(os.MkdirAll(path, 0777))
 	return path
 }
 
@@ -50,26 +53,19 @@ func SessionCookie() string {
 
 func downloadInput(year int, day int) []byte {
 	url := fmt.Sprintf("https://www.adventofcode.com/%d/day/%d/input", year, day)
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		panic(err)
-	}
+	req := Ok(http.NewRequest("GET", url, nil))
 
 	req.AddCookie(&http.Cookie{Name: "session", Value: SessionCookie(), Path: "/", MaxAge: 86400})
 	req.Header.Set("User-Agent", "doakman94@gmail.com")
 	req.Header.Set("Cookie", "session="+SessionCookie()) // TODO: still doesn't work, still get 400 Bad Request
 
 	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err)
-	}
+	resp := Ok(client.Do(req))
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		err = errors.New(url +
-			"\nresp.StatusCode: " + strconv.Itoa(resp.StatusCode))
-		panic(err)
+		panic(errors.New(url +
+			"\nresp.StatusCode: " + strconv.Itoa(resp.StatusCode)))
 	}
 
 	return Ok(io.ReadAll(resp.Body))
