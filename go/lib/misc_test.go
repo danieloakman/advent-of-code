@@ -1,8 +1,8 @@
 package lib
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestParseInt(t *testing.T) {
