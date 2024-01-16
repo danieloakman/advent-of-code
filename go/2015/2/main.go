@@ -2,6 +2,8 @@ package main
 
 import (
 	"danieloakman/aoc/lib"
+	"danieloakman/aoc/lib/iter"
+	"strconv"
 	"strings"
 )
 
@@ -11,17 +13,39 @@ type Present struct {
 	h int
 }
 
-func presents(input string) []Present {
-	result := []Present{}
-	for _, line := range strings.Split(input, "\n") {
-		// p := Present{}
-		// lib.Extract(line, `(\d+)x(\d+)x(\d+)`, &p.l, &p.w, &p.h)
-		// result = append(result, p)
+func (p Present) surfaceArea() int {
+	return 2*p.l*p.w + 2*p.w*p.h + 2*p.h*p.l
+}
+
+func newPresent(str string) Present {
+	parts := strings.Split(str, "x")
+	return Present{
+		lib.ParseInt(parts[0]),
+		lib.ParseInt(parts[1]),
+		lib.ParseInt(parts[2]),
 	}
-	return result
+}
+
+func presents(input string) iter.Iterator[Present] {
+	return iter.Map(iter.FromString(input, "\n"), func(line *string) Present {
+		return newPresent(*line)
+	})
+	// result := []Present{}
+	// for _, line := range strings.Split(input, "\n") {
+	// 	result = append(result, newPresent(line))
+	// }
+	// return result
+}
+
+func firstStar(input string) string {
+	sum := 0
+	presents(input).Each(func(p *Present) {
+		sum += p.surfaceArea()
+	})
+	return strconv.Itoa(sum)
 }
 
 func main() {
 	input := lib.GetInput(2015, 2)
-
+	println(firstStar(input))
 }
