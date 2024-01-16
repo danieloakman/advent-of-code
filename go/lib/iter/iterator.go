@@ -1,40 +1,10 @@
 package iter
 
-import "strings"
-
-// type Iterator[T any] func(yield func(T) bool)
-
-// func ToIterator[T any](items []T) func(yield func(T) bool) {
-// 	return func(yield func(value T) bool) {
-// 		for _, v := range items {
-// 			if !yield(v) {
-// 				return
-// 			}
-// 		}
-// 	}
-// }
-
-// // Convert Iterator to a slice.
-// func ToArray[T any](iter Iterator[T]) []T {
-// 	result := []T{}
-// 	iter(func(value T) bool {
-// 		result = append(result, value)
-// 		return true
-// 	})
-// 	return result
-// }
-
-// func A() {
-// 	a := ToArray(ToIterator([]int{1, 2, 3}))
-// 	for _, v := range a {
-// 		println(v)
-// 	}
-// }
-
 // An Iterator is a function that yields values T and a bool signalling
 // whether there are more values.
 type Iterator[T any] func() (*T, bool)
 
+// Convert a slice to an Iterator.
 func FromSlice[T any](items []T) Iterator[T] {
 	i := 0
 	return func() (*T, bool) {
@@ -46,21 +16,16 @@ func FromSlice[T any](items []T) Iterator[T] {
 	}
 }
 
-func (iter Iterator[T]) ToSlice() []T {
-	result := []T{}
-	for {
-		value, done := iter()
-		if !done {
-			return result
-		}
-		result = append(result, *value)
+// Converts a string to an Iterator
+func FromString(str string) Iterator[string] {
+	result := []string{}
+	for i := range str {
+		result = append(result, string(str[i]))
 	}
+	return FromSlice(result)
 }
 
-func FromString(str string, sep string) Iterator[string] {
-	return FromSlice(strings.Split(str, sep))
-}
-
+// Maps over each value in an Iterator and returns a new one.
 func Map[T any, U any](iter Iterator[T], f func(*T) U) Iterator[U] {
 	return func() (*U, bool) {
 		value, done := iter()
@@ -72,37 +37,103 @@ func Map[T any, U any](iter Iterator[T], f func(*T) U) Iterator[U] {
 	}
 }
 
-func (iter Iterator[T]) Filter(f func(*T) bool) Iterator[T] {
+// Convert an Iterator to a slice.
+func (iter Iterator[T]) ToSlice() []T {
+	result := []T{}
+	for {
+		value, done := iter()
+		if !done {
+			return result
+		}
+		result = append(result, *value)
+	}
+}
+
+// Filters this Iterator using a predicate.
+func (iter Iterator[T]) Filter(predicate func(*T) bool) Iterator[T] {
 	return func() (*T, bool) {
 		for {
 			value, done := iter()
 			if done {
 				return nil, true
 			}
-			if f(value) {
+			if predicate(value) {
 				return value, false
 			}
 		}
 	}
 }
 
-func (iter Iterator[T]) Each(f func(*T)) {
+// Loops over all values in this Iterator.
+func (iter Iterator[T]) Each(iteratee func(*T)) {
 	for {
 		value, done := iter()
 		if done {
 			return
 		}
-		f(value)
+		iteratee(value)
 	}
 }
 
-func Reduce[T any, U any](iter Iterator[T], initial U, f func(U, *T) U) U {
+func Reduce[T any, U any](iter Iterator[T], initial U, reducer func(U, *T) U) U {
 	result := initial
 	for {
 		value, done := iter()
 		if done {
 			return result
 		}
-		result = f(result, value)
+		result = reducer(result, value)
 	}
+}
+
+func (iter Iterator[T]) Some(predicate func(*T) bool) bool {
+	for {
+		value, done := iter()
+		if done {
+			return false
+		}
+		if predicate(value) {
+			return true
+		}
+	}
+}
+
+func (iter Iterator[T]) Every(predicate func(*T) bool) bool {
+	for {
+		value, done := iter()
+		if done {
+			return true
+		}
+		if !predicate(value) {
+			return false
+		}
+	}
+}
+
+func (iter Iterator[T]) Find(predicate func(*T) bool) *T {
+	for {
+		value, done := iter()
+		if done {
+			return nil
+		}
+		if predicate(value) {
+			return value
+		}
+	}
+}
+
+func (iter Iterator[T]) Take(n int) []T {
+	taken := 0
+	result := []T{};
+	for {
+		if taken > n {
+			break
+		}
+		value, done := iter()
+		if done {
+			break
+		}
+		result = append(result, *value)
+	}
+	return result
 }
