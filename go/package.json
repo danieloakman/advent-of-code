@@ -4,6 +4,7 @@
   "scripts": {
     "test": "go test ./...",
     "solve": "go run scripts/solve.go",
-    "create": "echo \"Error no create script\""
+    "create": "echo \"Error no create script\"",
+    "format": "go fmt ./..."
   }
 }
