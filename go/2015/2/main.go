@@ -27,9 +27,12 @@ func newPresent(str string) Present {
 }
 
 func presents(input string) iter.Iterator[Present] {
-	return iter.Map(iter.FromString(input, "\n"), func(line *string) Present {
-		return newPresent(*line)
-	})
+	return iter.Map(
+		iter.FromSlice(strings.Split(input, "\n")),
+		func(line *string) Present {
+			return newPresent(*line)
+		},
+	)
 	// result := []Present{}
 	// for _, line := range strings.Split(input, "\n") {
 	// 	result = append(result, newPresent(line))

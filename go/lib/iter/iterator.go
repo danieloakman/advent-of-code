@@ -37,6 +37,11 @@ func Map[T any, U any](iter Iterator[T], f func(*T) U) Iterator[U] {
 	}
 }
 
+func (iter Iterator[T]) Next() *T {
+	value, _ := iter()
+	return value
+}
+
 // Convert an Iterator to a slice.
 func (iter Iterator[T]) ToSlice() []T {
 	result := []T{}
@@ -136,4 +141,17 @@ func (iter Iterator[T]) Take(n int) []T {
 		result = append(result, *value)
 	}
 	return result
+}
+
+func (iter Iterator[T]) TakeWhile(predicate func(*T) bool) Iterator[T] {
+	return func() (*T, bool) {
+		value, done := iter()
+		if done {
+			return nil, true
+		}
+		if predicate(value) {
+			return value, false
+		}
+		return nil, true
+	}
 }
