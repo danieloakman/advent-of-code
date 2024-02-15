@@ -3,6 +3,7 @@
 {
   # https://devenv.sh/basics/
   # env.GREET = "devenv";
+  # env.GOEXPERIMENT = "rangefunc";
 
   # https://devenv.sh/packages/
   packages = with pkgs; [
@@ -20,7 +21,7 @@
   # languages.nix.enable = true;
   languages.go = {
     enable = true;
-    # version = "1.21.5";
+    # version = "1.22";
   };
 
   # https://devenv.sh/pre-commit-hooks/
