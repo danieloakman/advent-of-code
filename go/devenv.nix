@@ -7,7 +7,7 @@
 
   # https://devenv.sh/packages/
   packages = with pkgs; [
-
+    go_1_22
   ];
 
   # https://devenv.sh/scripts/
@@ -21,6 +21,7 @@
   # languages.nix.enable = true;
   languages.go = {
     enable = true;
+    package = pkgs.go_1_22;
     # version = "1.22";
   };
 
