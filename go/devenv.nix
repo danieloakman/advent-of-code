@@ -3,7 +3,7 @@
 {
   # https://devenv.sh/basics/
   # env.GREET = "devenv";
-  # env.GOEXPERIMENT = "rangefunc";
+  env.GOEXPERIMENT = "rangefunc";
 
   # https://devenv.sh/packages/
   packages = with pkgs; [
