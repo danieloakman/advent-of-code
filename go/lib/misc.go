@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
+	"strings"
 )
 
 // Parses a string into an int, panicking if it fails.
@@ -48,7 +49,7 @@ func Tmpdir() string {
 func SessionCookie() string {
 	path := filepath.Join(Tmpdir(), "sessionCookie.txt")
 	bytes := Ok(os.ReadFile(path))
-	return string(bytes)
+	return strings.TrimSpace(string(bytes))
 }
 
 func downloadInput(year int, day int) []byte {
