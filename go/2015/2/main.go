@@ -27,27 +27,13 @@ func newPresent(str string) Present {
 }
 
 func presents(input string) iter.Iterator[Present] {
-	return iter.Map(
-		iter.FromSlice(strings.Split(input, "\n")),
-		func(line string) Present {
-			return newPresent(line)
-		},
-	)
-	// result := []Present{}
-	// for _, line := range strings.Split(input, "\n") {
-	// 	result = append(result, newPresent(line))
-	// }
-	// return result
+	return iter.MapTo(iter.FromSlice(strings.Split(input, "\n")), newPresent)
 }
 
 func firstStar(input string) string {
-	sum := 0
-	for p := range presents(input) {
-		sum += p.surfaceArea()
-	}
-	// presents(input).Each(func(p *Present) {
-	// 	sum += p.surfaceArea()
-	// })
+	sum := iter.ReduceTo(presents(input), 0, func(acc int, p Present) int {
+		return acc + p.surfaceArea()
+	})
 	return strconv.Itoa(sum)
 }
 
