@@ -10,6 +10,30 @@ type Iterator[V any] iter.Seq[V]
 // Redefined Seq2 so we can define our own methods on it, but otherwise it's identical.
 type Iterator2[T any, U any] iter.Seq2[T, U]
 
+// Converts our `Iterator` into a `iter.Seq`
+func (iter Iterator[T]) Lift() iter.Seq[T] {
+	return func(yield func(T) bool) {
+		iter(yield)
+	}
+}
+
+// Converts our `Iterator2` into a `iter.Seq2`
+func (iter Iterator2[T, U]) Lift() iter.Seq2[T, U] {
+	return func(yield func(T, U) bool) {
+		iter(yield)
+	}
+}
+
+// Calls `iter.Pull` with our lifted `Iterator` so we can use it in the same way as `iter.Pull`.
+func (self Iterator[T]) Pull() (func() (T, bool), func()) {
+	return iter.Pull((self.Lift()))
+}
+
+// Calls `iter.Pull2` with our lifted `Iterator2` so we can use it in the same way as `iter.Pull2`.
+func (self Iterator2[T, U]) Pull() (func() (T, U, bool), func()) {
+	return iter.Pull2((self.Lift()))
+}
+
 // Convert a slice to an Iterator.
 func FromSlice[T any](items []T) Iterator[T] {
 	return func(yield func(T) bool) {
@@ -43,6 +67,7 @@ func Enumerate[T any](items []T) Iterator2[int, T] {
 	}
 }
 
+// Enumerate a slice, creating an `Iterator2`, reversed.
 func EnumerateR[T any](items []T) Iterator2[int, T] {
 	return func(yield func(int, T) bool) {
 		for i := len(items)-1; i >= 0; i-- {
@@ -53,6 +78,7 @@ func EnumerateR[T any](items []T) Iterator2[int, T] {
 	}
 }
 
+// Iterate through all values in this iterator and collect them into a slice.
 func (self Iterator[T]) ToSlice() []T {
 	result := []T{}
 	self(func(item T) bool {
@@ -96,6 +122,7 @@ func FromStringR(str string) Iterator[string] {
 	}
 }
 
+// Enumerate through an iteraotr, creating an `Iterator2[int, T]`.
 func (self Iterator[T]) Enumerate() Iterator2[int, T] {
 	return func(yield func(int, T) bool) {
 		i := 0
@@ -136,7 +163,7 @@ func (self Iterator2[T, U]) Map(f func(T, U) (T, U)) Iterator2[T, U] {
 	}
 }
 
-// 
+// Filter this iterator using a predicate.
 func (self Iterator[T]) Filter(predicate func(T) bool) Iterator[T] {
 	return func(yield func(T) bool) {
 		self(func(item T) bool {
@@ -148,6 +175,7 @@ func (self Iterator[T]) Filter(predicate func(T) bool) Iterator[T] {
 	}
 }
 
+// Filter this iterator using a predicate.
 func (self Iterator2[T, U]) Filter(predicate func(T, U) bool) Iterator2[T, U] {
 	return func(yield func(T, U) bool) {
 		self(func(a T, b U) bool {
@@ -169,6 +197,8 @@ func Reduce[T any, U any](seq Iterator[T], initial U, f func(U, T) U) U {
 	return result
 }
 
+// TODO: maybe need Reduce2?
+
 // Reduce an iterator to a single value with the same type.
 func (self Iterator[T]) Reduce(initial T, reducer func(T, T) T) T {
 	result := initial
@@ -179,10 +209,11 @@ func (self Iterator[T]) Reduce(initial T, reducer func(T, T) T) T {
 	return result
 }
 
-func Take[T any](seq Iterator[T], n int) Iterator[T] {
+// Only take the first `n` items from this iterator.
+func (self Iterator[T]) Take(n int) Iterator[T] {
 	return func(yield func(T) bool) {
 		i := 0
-		seq(func(item T) bool {
+		self(func(item T) bool {
 			if i >= n {
 				return false
 			}
@@ -192,10 +223,25 @@ func Take[T any](seq Iterator[T], n int) Iterator[T] {
 	}
 }
 
-func Drop[T any](seq Iterator[T], n int) Iterator[T] {
+// Only take the first `n` items from this iterator.
+func (self Iterator2[T, U]) Take(n int) Iterator2[T, U] {
+	return func(yield func(T, U) bool) {
+		i := 0
+		self(func(a T, b U) bool {
+			if i >= n {
+				return false
+			}
+			i++
+			return yield(a, b)
+		})
+	}
+}
+
+// Drop or *don't* take the first `n` items from this iterator.
+func (self Iterator[T]) Drop(n int) Iterator[T] {
 	return func(yield func(T) bool) {
 		i := 0
-		seq(func(item T) bool {
+		self(func(item T) bool {
 			if i < n {
 				i++
 				return true
@@ -205,9 +251,25 @@ func Drop[T any](seq Iterator[T], n int) Iterator[T] {
 	}
 }
 
-func TakeWhile[T any](seq Iterator[T], predicate func(T) bool) Iterator[T] {
+// Drop or *don't* take the first `n` items from this iterator.
+func (self Iterator2[T, U]) Drop(n int) Iterator2[T, U] {
+	return func(yield func(T, U) bool) {
+		i := 0
+		self(func(a T, b U) bool {
+			if i < n {
+				i++
+				return true
+			}
+			return yield(a, b)
+		})
+	}
+}
+
+
+// Take items from the iterator while the predicate is true.
+func (self Iterator[T]) TakeWhile(predicate func(T) bool) Iterator[T] {
 	return func(yield func(T) bool) {
-		seq(func(item T) bool {
+		self(func(item T) bool {
 			if !predicate(item) {
 				return false
 			}
@@ -216,8 +278,21 @@ func TakeWhile[T any](seq Iterator[T], predicate func(T) bool) Iterator[T] {
 	}
 }
 
-func Some[T any](seq iter.Seq[T], predicate func(T) bool) bool {
-	next, stop := iter.Pull(seq)
+// Take items from the iterator while the predicate is true.
+func (self Iterator2[T, U]) TakeWhile(predicate func(T, U) bool) Iterator2[T, U] {
+	return func(yield func(T, U) bool) {
+		self(func(a T, b U) bool {
+			if !predicate(a, b) {
+				return false
+			}
+			return yield(a, b)
+		})
+	}
+}
+
+// Returns true if the predicate is true for any item in the iterator.
+func (self Iterator[T]) Some(predicate func(T) bool) bool {
+	next, stop := self.Pull()
 	defer stop()
 	for {
 		item, hasMore := next()
@@ -230,8 +305,24 @@ func Some[T any](seq iter.Seq[T], predicate func(T) bool) bool {
 	}
 }
 
-func Every[T any](seq iter.Seq[T], predicate func(T) bool) bool {
-	next, _ := iter.Pull(seq)
+func (self Iterator2[T, U]) Some(predicate func(T, U) bool) bool {
+	next, stop := self.Pull()
+	defer stop()
+	for {
+		a, b, hasMore := next()
+		if !hasMore {
+			return false
+		}
+		if predicate(a, b) {
+			return true
+		}
+	}
+}
+
+// Returns true if every item in the iterator matches the predicate.
+func (self Iterator[T]) Every(predicate func(T) bool) bool {
+	next, stop := self.Pull()
+	defer stop()
 	for {
 		item, hasMore := next()
 		if !hasMore {
@@ -243,28 +334,18 @@ func Every[T any](seq iter.Seq[T], predicate func(T) bool) bool {
 	}
 }
 
-// Converts our `Iterator` into a `iter.Seq`
-func (iter Iterator[T]) Lift() iter.Seq[T] {
-	return func(yield func(T) bool) {
-		iter(yield)
+func (self Iterator2[T, U]) Every(predicate func(T, U) bool) bool {
+	next, stop := self.Pull()
+	defer stop()
+	for {
+		a, b, hasMore := next()
+		if !hasMore {
+			return true
+		}
+		if !predicate(a, b) {
+			return false
+		}
 	}
-}
-
-// Converts our `Iterator2` into a `iter.Seq2`
-func (iter Iterator2[T, U]) Lift() iter.Seq2[T, U] {
-	return func(yield func(T, U) bool) {
-		iter(yield)
-	}
-}
-
-// Calls `iter.Pull` with our lifted `Iterator` so we can use it in the same way as `iter.Pull`.
-func (self Iterator[T]) Pull() (func() (T, bool), func()) {
-	return iter.Pull((self.Lift()))
-}
-
-// Calls `iter.Pull2` with our lifted `Iterator2` so we can use it in the same way as `iter.Pull2`.
-func (self Iterator2[T, U]) Pull() (func() (T, U, bool), func()) {
-	return iter.Pull2((self.Lift()))
 }
 
 // Returns the first item in the iterator that matches the predicate.
