@@ -1,7 +1,6 @@
-import { Nullish, iife, isNullish, main, ok } from 'js-utils';
+import { Nullish, isNullish, main } from 'js-utils';
 import Timer from './Timer';
 import { downloadInput } from './downloadInput';
-import once from 'lodash/once';
 
 export interface SolutionMethod {
   (
