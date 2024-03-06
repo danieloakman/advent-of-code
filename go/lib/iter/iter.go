@@ -25,13 +25,13 @@ func (iter Iterator2[T, U]) Lift() iter.Seq2[T, U] {
 }
 
 // Calls `iter.Pull` with our lifted `Iterator` so we can use it in the same way as `iter.Pull`.
-func (self Iterator[T]) Pull() (func() (T, bool), func()) {
-	return iter.Pull((self.Lift()))
+func (_iter Iterator[T]) Pull() (func() (T, bool), func()) {
+	return iter.Pull((_iter.Lift()))
 }
 
 // Calls `iter.Pull2` with our lifted `Iterator2` so we can use it in the same way as `iter.Pull2`.
-func (self Iterator2[T, U]) Pull() (func() (T, U, bool), func()) {
-	return iter.Pull2((self.Lift()))
+func (_iter Iterator2[T, U]) Pull() (func() (T, U, bool), func()) {
+	return iter.Pull2((_iter.Lift()))
 }
 
 // Convert a slice to an Iterator.
@@ -79,10 +79,10 @@ func EnumerateR[T any](items []T) Iterator2[int, T] {
 }
 
 // Enumerate through an iterator, creating an `Iterator2[int, T]`.
-func (self Iterator[T]) Enumerate() Iterator2[int, T] {
+func (iter Iterator[T]) Enumerate() Iterator2[int, T] {
 	return func(yield func(int, T) bool) {
 		i := 0
-		self(func(item T) bool {
+		iter(func(item T) bool {
 			if !yield(i, item) {
 				return false
 			}
@@ -93,9 +93,9 @@ func (self Iterator[T]) Enumerate() Iterator2[int, T] {
 }
 
 // Iterate through all values in this iterator and collect them into a slice.
-func (self Iterator[T]) ToSlice() []T {
+func (iter Iterator[T]) ToSlice() []T {
 	result := []T{}
-	self(func(item T) bool {
+	iter(func(item T) bool {
 		result = append(result, item)
 		return true
 	})
@@ -106,9 +106,9 @@ func (self Iterator[T]) ToSlice() []T {
 // type Pair[T any, U any] struct {
 // 	A T; B T
 // }
-// func (self Iterator2[T, U]) ToSlice() []Pair[T, U]{
+// func (iter Iterator2[T, U]) ToSlice() []Pair[T, U]{
 // 	result := []Pair[T, U]{}
-// 	self(func(a T, b U) bool {
+// 	iter(func(a T, b U) bool {
 // 		// result = append(result, Pair{a, b})
 // 		result = append(result, Pair[T, U]{a, b})
 // 		return true
@@ -139,36 +139,32 @@ func FromStringR(str string) Iterator[string] {
 }
 
 // Maps over each value in an Iterator and returns a new one with a possibly different type.
-func MapTo[T any, U any](iter Iterator[T], f func(T) U) Iterator[U] {
+func MapTo[T any, U any](iter Iterator[T], iteratee func(T) U) Iterator[U] {
 	return func(yield func(U) bool) {
 		iter(func(item T) bool {
-			return yield(f(item))
+			return yield(iteratee(item))
 		})
 	}
 }
 
 // Map this iterator's values, but keep the same type.
-func (self Iterator[T]) Map(f func(T) T) Iterator[T] {
-	return func(yield func(T) bool) {
-		self(func(item T) bool {
-			return yield(f(item))
-		})
-	}
+func (iter Iterator[T]) Map(iteratee func(T) T) Iterator[T] {
+	return MapTo(iter, iteratee)
 }
 
 // Maps over each pair in an Iterator, but keeps the same type.
-func (self Iterator2[T, U]) Map(f func(T, U) (T, U)) Iterator2[T, U] {
+func (iter Iterator2[T, U]) Map(f func(T, U) (T, U)) Iterator2[T, U] {
 	return func(yield func(T, U) bool) {
-		self(func(a T, b U) bool {
+		iter(func(a T, b U) bool {
 			return yield(f(a, b))
 		})
 	}
 }
 
 // Filter this iterator using a predicate.
-func (self Iterator[T]) Filter(predicate func(T) bool) Iterator[T] {
+func (iter Iterator[T]) Filter(predicate func(T) bool) Iterator[T] {
 	return func(yield func(T) bool) {
-		self(func(item T) bool {
+		iter(func(item T) bool {
 			if predicate(item) {
 				return yield(item)
 			}
@@ -178,9 +174,9 @@ func (self Iterator[T]) Filter(predicate func(T) bool) Iterator[T] {
 }
 
 // Filter this iterator using a predicate.
-func (self Iterator2[T, U]) Filter(predicate func(T, U) bool) Iterator2[T, U] {
+func (iter Iterator2[T, U]) Filter(predicate func(T, U) bool) Iterator2[T, U] {
 	return func(yield func(T, U) bool) {
-		self(func(a T, b U) bool {
+		iter(func(a T, b U) bool {
 			if predicate(a, b) {
 				return yield(a, b)
 			}
@@ -190,32 +186,26 @@ func (self Iterator2[T, U]) Filter(predicate func(T, U) bool) Iterator2[T, U] {
 }
 
 // ReduceTo an iterator to a single value with a possibly different type.
-func ReduceTo[T any, U any](seq Iterator[T], initial U, f func(U, T) U) U {
-	result := initial
+func ReduceTo[T any, U any](seq Iterator[T], initial U, reducer func(U, T) U) U {
 	seq(func(item T) bool {
-		result = f(result, item)
+		initial = reducer(initial, item)
 		return true
 	})
-	return result
+	return initial
 }
 
 // TODO: maybe need Reduce2?
 
 // Reduce an iterator to a single value with the same type.
-func (self Iterator[T]) Reduce(initial T, reducer func(T, T) T) T {
-	result := initial
-	self(func(item T) bool {
-		result = reducer(result, item)
-		return true
-	})
-	return result
+func (iter Iterator[T]) Reduce(initial T, reducer func(T, T) T) T {
+	return ReduceTo(iter, initial, reducer)
 }
 
 // Only take the first `n` items from this iterator.
-func (self Iterator[T]) Take(n int) Iterator[T] {
+func (iter Iterator[T]) Take(n int) Iterator[T] {
 	return func(yield func(T) bool) {
 		i := 0
-		self(func(item T) bool {
+		iter(func(item T) bool {
 			if i >= n {
 				return false
 			}
@@ -226,10 +216,10 @@ func (self Iterator[T]) Take(n int) Iterator[T] {
 }
 
 // Only take the first `n` items from this iterator.
-func (self Iterator2[T, U]) Take(n int) Iterator2[T, U] {
+func (iter Iterator2[T, U]) Take(n int) Iterator2[T, U] {
 	return func(yield func(T, U) bool) {
 		i := 0
-		self(func(a T, b U) bool {
+		iter(func(a T, b U) bool {
 			if i >= n {
 				return false
 			}
@@ -240,10 +230,10 @@ func (self Iterator2[T, U]) Take(n int) Iterator2[T, U] {
 }
 
 // Drop or *don't* take the first `n` items from this iterator.
-func (self Iterator[T]) Drop(n int) Iterator[T] {
+func (iter Iterator[T]) Drop(n int) Iterator[T] {
 	return func(yield func(T) bool) {
 		i := 0
-		self(func(item T) bool {
+		iter(func(item T) bool {
 			if i < n {
 				i++
 				return true
@@ -254,10 +244,10 @@ func (self Iterator[T]) Drop(n int) Iterator[T] {
 }
 
 // Drop or *don't* take the first `n` items from this iterator.
-func (self Iterator2[T, U]) Drop(n int) Iterator2[T, U] {
+func (iter Iterator2[T, U]) Drop(n int) Iterator2[T, U] {
 	return func(yield func(T, U) bool) {
 		i := 0
-		self(func(a T, b U) bool {
+		iter(func(a T, b U) bool {
 			if i < n {
 				i++
 				return true
@@ -268,10 +258,10 @@ func (self Iterator2[T, U]) Drop(n int) Iterator2[T, U] {
 }
 
 // Slice the iterator from `start` to `end`.
-func (self Iterator[T]) Slice(start int, end int) Iterator[T] {
+func (iter Iterator[T]) Slice(start int, end int) Iterator[T] {
 	return func(yield func(T) bool) {
 		i := 0
-		self(func(item T) bool {
+		iter(func(item T) bool {
 			if i >= start && i < end {
 				return yield(item)
 			}
@@ -281,10 +271,24 @@ func (self Iterator[T]) Slice(start int, end int) Iterator[T] {
 	}
 }
 
+// Slice the iterator from `start` to `end`.
+func (iter Iterator2[T, U]) Slice(start int, end int) Iterator2[T, U] {
+	return func(yield func(T, U) bool) {
+		i := 0
+		iter(func(a T, b U) bool {
+			if i >= start && i < end {
+				return yield(a, b)
+			}
+			i++
+			return true
+		})
+	}
+}
+
 // Take items from the iterator while the predicate is true.
-func (self Iterator[T]) TakeWhile(predicate func(T) bool) Iterator[T] {
+func (iter Iterator[T]) TakeWhile(predicate func(T) bool) Iterator[T] {
 	return func(yield func(T) bool) {
-		self(func(item T) bool {
+		iter(func(item T) bool {
 			if !predicate(item) {
 				return false
 			}
@@ -294,9 +298,9 @@ func (self Iterator[T]) TakeWhile(predicate func(T) bool) Iterator[T] {
 }
 
 // Take items from the iterator while the predicate is true.
-func (self Iterator2[T, U]) TakeWhile(predicate func(T, U) bool) Iterator2[T, U] {
+func (iter Iterator2[T, U]) TakeWhile(predicate func(T, U) bool) Iterator2[T, U] {
 	return func(yield func(T, U) bool) {
-		self(func(a T, b U) bool {
+		iter(func(a T, b U) bool {
 			if !predicate(a, b) {
 				return false
 			}
@@ -306,8 +310,8 @@ func (self Iterator2[T, U]) TakeWhile(predicate func(T, U) bool) Iterator2[T, U]
 }
 
 // Returns true if the predicate is true for any item in the iterator.
-func (self Iterator[T]) Some(predicate func(T) bool) bool {
-	next, stop := self.Pull()
+func (iter Iterator[T]) Some(predicate func(T) bool) bool {
+	next, stop := iter.Pull()
 	defer stop()
 	for {
 		item, hasMore := next()
@@ -321,8 +325,8 @@ func (self Iterator[T]) Some(predicate func(T) bool) bool {
 }
 
 // Returns true if the predicate is true for any pair in the iterator.
-func (self Iterator2[T, U]) Some(predicate func(T, U) bool) bool {
-	next, stop := self.Pull()
+func (iter Iterator2[T, U]) Some(predicate func(T, U) bool) bool {
+	next, stop := iter.Pull()
 	defer stop()
 	for {
 		a, b, hasMore := next()
@@ -336,8 +340,8 @@ func (self Iterator2[T, U]) Some(predicate func(T, U) bool) bool {
 }
 
 // Returns true if every item in the iterator matches the predicate.
-func (self Iterator[T]) Every(predicate func(T) bool) bool {
-	next, stop := self.Pull()
+func (iter Iterator[T]) Every(predicate func(T) bool) bool {
+	next, stop := iter.Pull()
 	defer stop()
 	for {
 		item, hasMore := next()
@@ -351,8 +355,8 @@ func (self Iterator[T]) Every(predicate func(T) bool) bool {
 }
 
 // Returns true if every pair in the iterator matches the predicate.
-func (self Iterator2[T, U]) Every(predicate func(T, U) bool) bool {
-	next, stop := self.Pull()
+func (iter Iterator2[T, U]) Every(predicate func(T, U) bool) bool {
+	next, stop := iter.Pull()
 	defer stop()
 	for {
 		a, b, hasMore := next()
@@ -366,8 +370,8 @@ func (self Iterator2[T, U]) Every(predicate func(T, U) bool) bool {
 }
 
 // Returns the first item in the iterator that matches the predicate.
-func (self Iterator[T]) Find(predicate func(T) bool) *T {
-	next, stop := self.Pull()
+func (iter Iterator[T]) Find(predicate func(T) bool) *T {
+	next, stop := iter.Pull()
 	defer stop()
 	for {
 		item, hasMore := next()
@@ -381,8 +385,8 @@ func (self Iterator[T]) Find(predicate func(T) bool) *T {
 }
 
 // Returns the first pair in the iterator that matches the predicate.
-func (self Iterator2[T, U]) Find(predicate func(T, U) bool) (*T, *U) {
-	next, stop := self.Pull()
+func (iter Iterator2[T, U]) Find(predicate func(T, U) bool) (*T, *U) {
+	next, stop := iter.Pull()
 	defer stop()
 	for {
 		a, b, hasMore := next()
@@ -410,4 +414,148 @@ func Pairwise[T any](iter Iterator[T]) Iterator2[T, T] {
 			return true
 		})
 	}
+}
+
+func createRange(start int, stop int, step int) Iterator[int] {
+	done := func(i int) bool {
+		if step > 0 {
+			return i >= stop
+		} else {
+			return i <= stop
+		}
+	}
+	return func(yield func(int) bool) {
+		for i := start; !done(i); i += step {
+			if !yield(i) {
+				return
+			}
+		}
+	}
+}
+
+// Creates an iterator that counts up from `start` to `end` with a step of `step`.
+func Range(startStopStep ...int) Iterator[int] {
+	switch len(startStopStep) {
+	case 1:
+		return createRange(0, startStopStep[0], 1)
+	case 2:
+		return createRange(startStopStep[0], startStopStep[1], 1) // TODO: step should be calculated from start and stop
+	case 3:
+		return createRange(startStopStep[0], startStopStep[1], startStopStep[2])
+	}
+	panic("Range: invalid number of arguments")
+}
+
+// TODO: implement Count
+// func Count(stop ...int) Iterator[int] {
+// 	switch len(stop) {
+// 	case 0:
+// 		return createRange(0, Infinity, 1)
+// 	case 1:
+// 		return createRange(0, stop[0], 1)
+// 	}
+// 	return createRange(stop[0], stop[1], 1)
+// }
+
+// An iterator that repeats `item` `times` times.
+func Repeat[T any](item T, times int) Iterator[T] {
+	return func(yield func(T) bool) {
+		for i := 0; i < times; i++ {
+			if !yield(item) {
+				return
+			}
+		}
+	}
+}
+
+func Empty[T any]() Iterator[T] {
+	return func(yield func(T) bool) {}
+}
+
+func Empty2[T any, U any]() Iterator2[T, U] {
+	return func(yield func(T, U) bool) {}
+}
+
+func Concat[T any](iters ...Iterator[T]) Iterator[T] {
+	return func(yield func(T) bool) {
+		for _, iter := range iters {
+			iter(func(item T) bool {
+				return yield(item)
+			})
+		}
+	}
+}
+
+// func Concat2[T any, U any](iters ...Iterator2[T, U]) Iterator2[T, U] {
+// 	return func(yield func(T, U) bool) {
+// 		for _, iter := range iters {
+// 			iter(func(a T, b U) bool {
+// 				return yield(a, b)
+// 			})
+// 		}
+// 	}
+// }
+
+func Zip[T any, U any](a Iterator[T], b Iterator[U]) Iterator2[T, U] {
+	return func(yield func(T, U) bool) {
+		nextA, stopA := a.Pull()
+		nextB, stopB := b.Pull()
+		defer stopA()
+		defer stopB()
+		for {
+			itemA, hasMoreA := nextA()
+			itemB, hasMoreB := nextB()
+			if !hasMoreA || !hasMoreB {
+				return
+			}
+			if !yield(itemA, itemB) {
+				return
+			}
+		}
+	}
+}
+
+func ZipLongest[T any, U any](a Iterator[T], b Iterator[U], fillValueT T, fillValueU U) Iterator2[T, U] {
+	return func(yield func(T, U) bool) {
+		nextA, stopA := a.Pull()
+		nextB, stopB := b.Pull()
+		defer stopA()
+		defer stopB()
+		for {
+			itemA, hasMoreA := nextA()
+			itemB, hasMoreB := nextB()
+
+			if !hasMoreA && !hasMoreB {
+				return
+			} else if !hasMoreA {
+				itemA = fillValueT
+			} else if !hasMoreB {
+				itemB = fillValueU
+			}
+
+			if !yield(itemA, itemB) {
+				return
+			}
+		}
+	}
+}
+
+func (iter Iterator[T]) Zip(b Iterator[T]) Iterator2[T, T] {
+	return Zip(iter, b)
+}
+
+func (iter Iterator[T]) ZipLongest(b Iterator[T], fillValue T) Iterator2[T, T] {
+	return ZipLongest(iter, b, fillValue, fillValue)
+}
+
+func (iter Iterator[T]) Unique(key func(T) string) Iterator[T] {
+	seen := map[string]bool{}
+	return iter.Filter(func(item T) bool {
+		k := key(item)
+		if seen[k] {
+			return false
+		}
+		seen[k] = true
+		return true
+	})
 }

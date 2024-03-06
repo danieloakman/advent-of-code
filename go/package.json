@@ -2,6 +2,8 @@
   "name": "@advent-of-code/go",
   "version": "0.0.1",
   "scripts": {
+    "postinstall": "go mod tidy",
+    "go:install": "go get",
     "test": "go test ./...",
     "solve": "go run scripts/solve.go",
     "create": "echo \"Error no create script\"",
