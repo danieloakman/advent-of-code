@@ -1,6 +1,6 @@
 packages:
   - c
-  - golang
+  - go
   - nim
   - python
   - rescript
