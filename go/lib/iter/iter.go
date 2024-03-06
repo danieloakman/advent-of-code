@@ -2,7 +2,6 @@ package iter
 
 import (
 	"iter"
-	"math"
 )
 
 // Redefined `Seq` so we can define our own methods on it, but otherwise it's identical.
@@ -184,6 +183,38 @@ func (iter Iterator2[T, U]) Filter(predicate func(T, U) bool) Iterator2[T, U] {
 			return true
 		})
 	}
+}
+
+func FilterMapTo[T any, U any](iter Iterator[T], iteratee func(T) *U) Iterator[U] {
+	return func(yield func(U) bool) {
+		iter(func(item T) bool {
+			mapped := iteratee(item)
+			if mapped != nil {
+				return yield(*mapped)
+			}
+			return true
+		})
+	}
+}
+
+func (iter Iterator[T]) FilterMap(iteratee func(T) *T) Iterator[T] {
+	return FilterMapTo(iter, iteratee)
+}
+
+func FlatMapTo[T any, U any](iter Iterator[T], iteratee func(T) Iterator[U]) Iterator[U] {
+	return func(yield func(U) bool) {
+		iter(func(item T) bool {
+			inner := iteratee(item)
+			inner(func(innerItem U) bool {
+				return yield(innerItem)
+			})
+			return true
+		})
+	}
+}
+
+func (iter Iterator[T]) FlatMap(iteratee func(T) Iterator[T]) Iterator[T] {
+	return FlatMapTo(iter, iteratee)
 }
 
 // ReduceTo an iterator to a single value with a possibly different type.
@@ -515,6 +546,28 @@ func Zip[T any, U any](a Iterator[T], b Iterator[U]) Iterator2[T, U] {
 	}
 }
 
+func ZipAny[T any](iters ...Iterator[T]) Iterator[T] {
+	return func(yield func(T) bool) {
+		pulls := make([]func() (T, bool), len(iters))
+		stops := make([]func(), len(iters))
+		for i, iter := range iters {
+			pulls[i], stops[i] = iter.Pull()
+			defer stops[i]()
+		}
+		for {
+			for _, pull := range pulls {
+				item, hasMore := pull()
+				if !hasMore {
+					return
+				}
+				if !yield(item) {
+					return
+				}
+			}
+		}
+	}
+}
+
 func ZipLongest[T any, U any](a Iterator[T], b Iterator[U], fillValueT T, fillValueU U) Iterator2[T, U] {
 	return func(yield func(T, U) bool) {
 		nextA, stopA := a.Pull()
@@ -548,14 +601,26 @@ func (iter Iterator[T]) ZipLongest(b Iterator[T], fillValue T) Iterator2[T, T] {
 	return ZipLongest(iter, b, fillValue, fillValue)
 }
 
-func (iter Iterator[T]) Unique(key func(T) string) Iterator[T] {
-	seen := map[string]bool{}
+func (iter Iterator[T]) Unique(key func(T) int) Iterator[T] {
+	seen := map[int]bool{}
 	return iter.Filter(func(item T) bool {
 		k := key(item)
 		if seen[k] {
 			return false
 		}
 		seen[k] = true
+		return true
+	})
+}
+
+func (iter Iterator[T]) UniqueJustSeen(key func(T) int) Iterator[T] {
+	var lastSeen *int = nil
+	return iter.Filter(func(item T) bool {
+		k := key(item)
+		if lastSeen != nil && *lastSeen == k {
+			return false
+		}
+		lastSeen = &k
 		return true
 	})
 }
