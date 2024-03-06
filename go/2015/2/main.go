@@ -2,8 +2,7 @@ package main
 
 import (
 	"danieloakman/aoc/lib"
-	"danieloakman/aoc/lib/iterator"
-	"iter"
+	"danieloakman/aoc/lib/iter"
 	"strconv"
 	"strings"
 )
@@ -27,9 +26,9 @@ func newPresent(str string) Present {
 	}
 }
 
-func presents(input string) iter.Seq[Present] {
-	return iterator.Map(
-		iterator.FromSlice(strings.Split(input, "\n")),
+func presents(input string) iter.Iterator[Present] {
+	return iter.Map(
+		iter.FromSlice(strings.Split(input, "\n")),
 		func(line string) Present {
 			return newPresent(line)
 		},
