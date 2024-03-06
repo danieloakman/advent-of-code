@@ -78,6 +78,20 @@ func EnumerateR[T any](items []T) Iterator2[int, T] {
 	}
 }
 
+// Enumerate through an iterator, creating an `Iterator2[int, T]`.
+func (self Iterator[T]) Enumerate() Iterator2[int, T] {
+	return func(yield func(int, T) bool) {
+		i := 0
+		self(func(item T) bool {
+			if !yield(i, item) {
+				return false
+			}
+			i++
+			return true
+		})
+	}
+}
+
 // Iterate through all values in this iterator and collect them into a slice.
 func (self Iterator[T]) ToSlice() []T {
 	result := []T{}
@@ -102,6 +116,7 @@ func (self Iterator[T]) ToSlice() []T {
 // 	return result
 // }
 
+// Convert a string to an Iterator.
 func FromString(str string) Iterator[string] {
 	return func(yield func(string) bool) {
 		for _, c := range str {
@@ -112,6 +127,7 @@ func FromString(str string) Iterator[string] {
 	}
 }
 
+// Convert a string to an Iterator, reversed.
 func FromStringR(str string) Iterator[string] {
 	return func(yield func(string) bool) {
 		for i := len(str) - 1; i >= 0; i-- {
@@ -119,20 +135,6 @@ func FromStringR(str string) Iterator[string] {
 				return
 			}
 		}
-	}
-}
-
-// Enumerate through an iteraotr, creating an `Iterator2[int, T]`.
-func (self Iterator[T]) Enumerate() Iterator2[int, T] {
-	return func(yield func(int, T) bool) {
-		i := 0
-		self(func(item T) bool {
-			if !yield(i, item) {
-				return false
-			}
-			i++
-			return true
-		})
 	}
 }
 
