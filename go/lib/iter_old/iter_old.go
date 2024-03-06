@@ -1,4 +1,5 @@
-package iter
+// This is the old version of an iterator package I wrote before go 1.22
+package iter_old
 
 // An Iterator is a function that yields values T and a bool signalling
 // whether there are more values.

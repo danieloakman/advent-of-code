@@ -2,7 +2,8 @@ package main
 
 import (
 	"danieloakman/aoc/lib"
-	"danieloakman/aoc/lib/iter"
+	"danieloakman/aoc/lib/iterator"
+	"iter"
 	"strconv"
 	"strings"
 )
@@ -26,11 +27,11 @@ func newPresent(str string) Present {
 	}
 }
 
-func presents(input string) iter.Iterator[Present] {
-	return iter.Map(
-		iter.FromSlice(strings.Split(input, "\n")),
-		func(line *string) Present {
-			return newPresent(*line)
+func presents(input string) iter.Seq[Present] {
+	return iterator.Map(
+		iterator.FromSlice(strings.Split(input, "\n")),
+		func(line string) Present {
+			return newPresent(line)
 		},
 	)
 	// result := []Present{}
@@ -42,9 +43,12 @@ func presents(input string) iter.Iterator[Present] {
 
 func firstStar(input string) string {
 	sum := 0
-	presents(input).Each(func(p *Present) {
+	for p := range presents(input) {
 		sum += p.surfaceArea()
-	})
+	}
+	// presents(input).Each(func(p *Present) {
+	// 	sum += p.surfaceArea()
+	// })
 	return strconv.Itoa(sum)
 }
 
