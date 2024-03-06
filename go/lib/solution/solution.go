@@ -6,21 +6,37 @@ import (
 	"time"
 )
 
-type Solution struct {
-	Year       int
-	Day        int
-	FirstStar  func(string) string
-	SecondStar func(string) string
+type SolutionMethod func(string) string
+
+func Todo(input string) string {
+	return "TODO"
 }
 
-func (solution Solution) Solve() {
-	input := lib.GetInput(solution.Year, solution.Day)
+// type Solution struct {
+// 	Year       int
+// 	Day        int
+// 	FirstStar  func(string) string
+// 	SecondStar func(string) string
+// }
+
+func Solve(year int, day int, firstStar SolutionMethod, secondStar SolutionMethod) {
+	input := lib.GetInput(year, day)
+
 	start := time.Now()
-	result := solution.FirstStar(input)
+	result := firstStar(input)
 	elapsed := time.Since(start)
-	println(fmt.Sprintf("🎄 First star: %s, elapsed %s", result, elapsed))
+	if result == "TODO" {
+		println("🎄 First star not implemented yet")
+	} else {
+		println(fmt.Sprintf("🎄 First star: %s (elapsed %s)", result, elapsed))
+	}
+
 	start = time.Now()
-	result = solution.SecondStar(input)
+	result = secondStar(input)
 	elapsed = time.Since(start)
-	println(fmt.Sprintf("🎄 Second star: %s, elapsed %s", result, elapsed))
+	if result == "TODO" {
+		println("🎄 Second star not implemented yet")
+	} else {
+		println(fmt.Sprintf("🎄 Second star: %s (elapsed %s)", result, elapsed))
+	}
 }

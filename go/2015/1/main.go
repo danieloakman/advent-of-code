@@ -26,16 +26,16 @@ func solve(input string) (int, int) {
 }
 
 func main() {
-	solution.Solution{
-		Year: 2015,
-		Day:  1,
-		FirstStar: func(input string) string {
+	solution.Solve(
+		2015,
+		1,
+		func(input string) string {
 			floor, _ := solve(input)
 			return fmt.Sprint(floor)
 		},
-		SecondStar: func(input string) string {
+		func(input string) string {
 			_, firstBasement := solve(input)
 			return fmt.Sprint(firstBasement)
 		},
-	}.Solve()
+	)
 }

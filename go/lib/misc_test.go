@@ -26,7 +26,7 @@ func TestParseInt(t *testing.T) {
 	}
 }
 
-func TestSessionCookie(t * testing.T) {
+func TestSessionCookie(t *testing.T) {
 	cookie := SessionCookie()
 	if len(cookie) < 10 {
 		t.Errorf("SessionCookie() = %s, cookie isn't valid", cookie)
