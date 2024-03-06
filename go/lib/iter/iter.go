@@ -318,6 +318,7 @@ func (self Iterator[T]) Some(predicate func(T) bool) bool {
 	}
 }
 
+// Returns true if the predicate is true for any pair in the iterator.
 func (self Iterator2[T, U]) Some(predicate func(T, U) bool) bool {
 	next, stop := self.Pull()
 	defer stop()
@@ -347,6 +348,7 @@ func (self Iterator[T]) Every(predicate func(T) bool) bool {
 	}
 }
 
+// Returns true if every pair in the iterator matches the predicate.
 func (self Iterator2[T, U]) Every(predicate func(T, U) bool) bool {
 	next, stop := self.Pull()
 	defer stop()
@@ -391,7 +393,9 @@ func (self Iterator2[T, U]) Find(predicate func(T, U) bool) (*T, *U) {
 	}
 }
 
-func Pairwise[T any, U any](iter Iterator[T]) Iterator2[T, T] {
+// Pairs up each item in the iterator with the next one.
+// E.g. [1, 2, 3, 4] -> [(1, 2), (2, 3), (3, 4)]
+func Pairwise[T any](iter Iterator[T]) Iterator2[T, T] {
 	var prev *T
 	return func(yield func(T, T) bool) {
 		iter(func(item T) bool {
