@@ -2,6 +2,7 @@ package iter
 
 import (
 	"iter"
+	"math"
 )
 
 // Redefined `Seq` so we can define our own methods on it, but otherwise it's identical.
@@ -416,7 +417,7 @@ func Pairwise[T any](iter Iterator[T]) Iterator2[T, T] {
 	}
 }
 
-func createRange(start int, stop int, step int) Iterator[int] {
+func rangeIter(start int, stop int, step int) Iterator[int] {
 	done := func(i int) bool {
 		if step > 0 {
 			return i >= stop
@@ -437,25 +438,24 @@ func createRange(start int, stop int, step int) Iterator[int] {
 func Range(startStopStep ...int) Iterator[int] {
 	switch len(startStopStep) {
 	case 1:
-		return createRange(0, startStopStep[0], 1)
+		return func (yield func(int) bool) {
+			for i := range startStopStep[0] {
+				if !yield(i) {
+					return
+				}
+			}
+		}
 	case 2:
-		return createRange(startStopStep[0], startStopStep[1], 1) // TODO: step should be calculated from start and stop
+		step := 1
+		if startStopStep[1] < startStopStep[0] {
+			step = -1
+		}
+		return rangeIter(startStopStep[0], startStopStep[1], step)
 	case 3:
-		return createRange(startStopStep[0], startStopStep[1], startStopStep[2])
+		return rangeIter(startStopStep[0], startStopStep[1], startStopStep[2])
 	}
 	panic("Range: invalid number of arguments")
 }
-
-// TODO: implement Count
-// func Count(stop ...int) Iterator[int] {
-// 	switch len(stop) {
-// 	case 0:
-// 		return createRange(0, Infinity, 1)
-// 	case 1:
-// 		return createRange(0, stop[0], 1)
-// 	}
-// 	return createRange(stop[0], stop[1], 1)
-// }
 
 // An iterator that repeats `item` `times` times.
 func Repeat[T any](item T, times int) Iterator[T] {
