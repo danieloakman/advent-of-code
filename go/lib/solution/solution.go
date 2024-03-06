@@ -18,9 +18,9 @@ func (solution Solution) Solve() {
 	start := time.Now()
 	result := solution.FirstStar(input)
 	elapsed := time.Since(start)
-	fmt.Printf("🎄 First star: %s, elapsed %dns\n", result, elapsed)
+	println(fmt.Sprintf("🎄 First star: %s, elapsed %s", result, elapsed))
 	start = time.Now()
 	result = solution.SecondStar(input)
 	elapsed = time.Since(start)
-	fmt.Printf("🎄 Second star: %s, elapsed %dns\n", result, elapsed)
+	println(fmt.Sprintf("🎄 Second star: %s, elapsed %s", result, elapsed))
 }
