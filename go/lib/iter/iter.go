@@ -147,6 +147,14 @@ func MapTo[T any, U any](iter Iterator[T], iteratee func(T) U) Iterator[U] {
 	}
 }
 
+// func MapTo2[T any, U any, V any](iter Iterator2[T, U], iteratee func(T, U) V) Iterator[V] {
+// 	return func(yield func(V) bool) {
+// 		iter(func(a T, b U) bool {
+// 			return yield(iteratee(a, b))
+// 		})
+// 	}
+// }
+
 // Map this iterator's values, but keep the same type.
 func (iter Iterator[T]) Map(iteratee func(T) T) Iterator[T] {
 	return MapTo(iter, iteratee)
@@ -469,7 +477,7 @@ func rangeIter(start int, stop int, step int) Iterator[int] {
 func Range(startStopStep ...int) Iterator[int] {
 	switch len(startStopStep) {
 	case 1:
-		return func (yield func(int) bool) {
+		return func(yield func(int) bool) {
 			for i := range startStopStep[0] {
 				if !yield(i) {
 					return
@@ -486,6 +494,23 @@ func Range(startStopStep ...int) Iterator[int] {
 		return rangeIter(startStopStep[0], startStopStep[1], startStopStep[2])
 	}
 	panic("Range: invalid number of arguments")
+}
+
+func Count(stop ...int) Iterator[int] {
+	if len(stop) > 1 {
+		panic("Count: invalid number of arguments")
+	} else if len(stop) == 1 {
+		return Range(stop[0])
+	}
+	return func(yield func(int) bool) {
+		i := 0
+		for {
+			if !yield(i) {
+				return
+			}
+			i++
+		}
+	}
 }
 
 // An iterator that repeats `item` `times` times.
