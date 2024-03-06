@@ -434,7 +434,7 @@ func rangeIter(start int, stop int, step int) Iterator[int] {
 	}
 }
 
-// Creates an iterator that counts up from `start` to `end` with a step of `step`.
+// Creates an iterator that counts up from `start` to `stop` with increments of `step`.
 func Range(startStopStep ...int) Iterator[int] {
 	switch len(startStopStep) {
 	case 1:
