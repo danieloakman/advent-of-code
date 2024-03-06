@@ -89,12 +89,25 @@ func Sum[T int | string](a T, b T) T {
 	return a + b
 }
 
+// Returns whatever value is passed to it, `T => T`.
 func Identity[T any](value T) T {
 	return value
 }
 
+// Returns a function that always returns the same value.
 func Constant[T any](value T) func() T {
 	return func() T {
 		return value
 	}
+}
+
+// Returns -1 if n < 0, 1 if n > 0, and 0 if n == 0.
+func Sign(n int) int {
+	if n < 0 {
+		return -1
+	}
+	if n > 0 {
+		return 1
+	}
+	return 0
 }
