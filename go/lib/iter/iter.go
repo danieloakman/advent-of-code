@@ -48,7 +48,7 @@ func FromSlice[T any](items []T) Iterator[T] {
 // Convert a slice to an Iterator, reversed.
 func FromSliceR[T any](items []T) Iterator[T] {
 	return func(yield func(T) bool) {
-		for i := len(items)-1; i >= 0; i-- {
+		for i := len(items) - 1; i >= 0; i-- {
 			if !yield(items[i]) {
 				return
 			}
@@ -70,7 +70,7 @@ func Enumerate[T any](items []T) Iterator2[int, T] {
 // Enumerate a slice, creating an `Iterator2`, reversed.
 func EnumerateR[T any](items []T) Iterator2[int, T] {
 	return func(yield func(int, T) bool) {
-		for i := len(items)-1; i >= 0; i-- {
+		for i := len(items) - 1; i >= 0; i-- {
 			if !yield(i, items[i]) {
 				return
 			}
@@ -114,7 +114,7 @@ func FromString(str string) Iterator[string] {
 
 func FromStringR(str string) Iterator[string] {
 	return func(yield func(string) bool) {
-		for i := len(str)-1; i >= 0; i-- {
+		for i := len(str) - 1; i >= 0; i-- {
 			if !yield(string(str[i])) {
 				return
 			}
@@ -157,7 +157,7 @@ func (self Iterator[T]) Map(f func(T) T) Iterator[T] {
 // Maps over each pair in an Iterator, but keeps the same type.
 func (self Iterator2[T, U]) Map(f func(T, U) (T, U)) Iterator2[T, U] {
 	return func(yield func(T, U) bool) {
-		self(func (a T, b U) bool {
+		self(func(a T, b U) bool {
 			return yield(f(a, b))
 		})
 	}

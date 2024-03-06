@@ -1,7 +1,7 @@
 package main
 
 import (
-	"danieloakman/aoc/lib"
+	"danieloakman/aoc/lib/solution"
 	"fmt"
 )
 
@@ -26,7 +26,16 @@ func solve(input string) (int, int) {
 }
 
 func main() {
-	input := lib.GetInput(2015, 1)
-	floor, firstBasement := solve(input)
-	fmt.Printf("Floor: %d, First Basement: %d", floor, firstBasement)
+	solution.Solution{
+		Year: 2015,
+		Day:  1,
+		FirstStar: func(input string) string {
+			floor, _ := solve(input)
+			return fmt.Sprint(floor)
+		},
+		SecondStar: func(input string) string {
+			_, firstBasement := solve(input)
+			return fmt.Sprint(firstBasement)
+		},
+	}.Solve()
 }

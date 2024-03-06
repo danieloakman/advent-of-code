@@ -1,8 +1,8 @@
 package main
 
 import (
-	"danieloakman/aoc/lib/iter"
 	"danieloakman/aoc/lib"
+	"danieloakman/aoc/lib/iter"
 	"strconv"
 )
 
