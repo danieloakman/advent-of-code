@@ -137,7 +137,7 @@ func (self Iterator[T]) Enumerate() Iterator2[int, T] {
 }
 
 // Maps over each value in an Iterator and returns a new one with a possibly different type.
-func Map[T any, U any](iter Iterator[T], f func(T) U) Iterator[U] {
+func MapTo[T any, U any](iter Iterator[T], f func(T) U) Iterator[U] {
 	return func(yield func(U) bool) {
 		iter(func(item T) bool {
 			return yield(f(item))
@@ -187,8 +187,8 @@ func (self Iterator2[T, U]) Filter(predicate func(T, U) bool) Iterator2[T, U] {
 	}
 }
 
-// Reduce an iterator to a single value with a possibly different type.
-func Reduce[T any, U any](seq Iterator[T], initial U, f func(U, T) U) U {
+// ReduceTo an iterator to a single value with a possibly different type.
+func ReduceTo[T any, U any](seq Iterator[T], initial U, f func(U, T) U) U {
 	result := initial
 	seq(func(item T) bool {
 		result = f(result, item)
@@ -265,6 +265,19 @@ func (self Iterator2[T, U]) Drop(n int) Iterator2[T, U] {
 	}
 }
 
+// Slice the iterator from `start` to `end`.
+func (self Iterator[T]) Slice(start int, end int) Iterator[T] {
+	return func(yield func(T) bool) {
+		i := 0
+		self(func(item T) bool {
+			if i >= start && i < end {
+				return yield(item)
+			}
+			i++
+			return true
+		})
+	}
+}
 
 // Take items from the iterator while the predicate is true.
 func (self Iterator[T]) TakeWhile(predicate func(T) bool) Iterator[T] {
@@ -375,5 +388,20 @@ func (self Iterator2[T, U]) Find(predicate func(T, U) bool) (*T, *U) {
 		if predicate(a, b) {
 			return &a, &b
 		}
+	}
+}
+
+func Pairwise[T any, U any](iter Iterator[T]) Iterator2[T, T] {
+	var prev *T
+	return func(yield func(T, T) bool) {
+		iter(func(item T) bool {
+			if prev != nil {
+				if !yield(*prev, item) {
+					return false
+				}
+			}
+			prev = &item
+			return true
+		})
 	}
 }
