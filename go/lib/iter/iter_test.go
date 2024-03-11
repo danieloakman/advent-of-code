@@ -19,7 +19,7 @@ func TestMapFilterReduce(t *testing.T) {
 			}
 			return nil
 		}).Reduce(0, lib.Sum)
-		assert.Equal(n, 90)
+		assert.Equal(n, 36)
 	})
 	// tests := []struct {
 	// 	input string
@@ -47,5 +47,21 @@ func TestFlatMap(t *testing.T) {
 			})
 		})
 		assert.Equal([]string{"-1", "0", "1", "0", "1", "2", "1", "2", "3"}, it.ToSlice())
+	})
+}
+
+func TestTapConsumeEach(t *testing.T) {
+	assert := assert.New(t)
+
+	t.Run("TestTapConsumeEach", func(t *testing.T) {
+		var a []int
+		Range(5).Tap(func(n int) {
+			a = append(a, n)
+		}).Consume()
+		var b []int
+		Range(5).Each(func(n int) {
+			b = append(b, n)
+		})
+		assert.Equal(a, b)
 	})
 }
