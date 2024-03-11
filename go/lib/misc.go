@@ -4,12 +4,14 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Parses a string into an int, panicking if it fails.
@@ -124,4 +126,9 @@ func Sign(n int) int {
 		return 1
 	}
 	return 0
+}
+
+func RandInteger(min, max int) int {
+	rand.Seed(time.Now().UnixNano())
+	return min + rand.Intn(max-min+1)
 }
