@@ -87,7 +87,7 @@ func GetInput(year int, day int) string {
 	return string(Ok(os.ReadFile(path)))
 }
 
-func Sum[T int | string](a T, b T) T {
+func Sum[T string | int | float32 | float64](a T, b T) T {
 	return a + b
 }
 
