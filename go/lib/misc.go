@@ -36,6 +36,19 @@ func MayPanic(err error) {
 	}
 }
 
+// Safely checks if a file or directory exists.
+func PathExists(path string) bool {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true
+	} else if errors.Is(err, os.ErrNotExist) {
+		return false
+	}
+	// Some other error occurred:
+	println("Error checking if path exists:", path, err)
+	panic(err)
+}
+
 func Tmpdir() string {
 	_, filename, _, runtimeErr := runtime.Caller(0)
 	if !runtimeErr {

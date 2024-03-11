@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 func main() {
@@ -14,26 +13,28 @@ func main() {
 		os.Exit(1)
 	}
 
+	cwd := lib.Ok(os.Getwd())
+
 	year := os.Args[1]
 	day := os.Args[2]
-	path := filepath.Join(lib.Ok(os.Getwd()), year, day, "main.go")
+	path := filepath.Join(cwd, year, day, "main.go")
 
-	// Safely check if the file already exists:
-	if _, err := os.Stat(path); !os.IsNotExist(err) {
+	if lib.PathExists(path) {
 		println("File already exists:", path)
 		os.Exit(1)
 	}
 
-	fileStr := strings.TrimSpace(fmt.Sprintf(`
-package main
+	// Create directory to the file:
+	lib.MayPanic(os.MkdirAll(filepath.Join(cwd, year, day), os.ModePerm))
 
+	fileStr := fmt.Sprintf(`package main
 import "danieloakman/aoc/lib/solution"
 
+// See https://adventofcode.com/%s/day/%s
 func main() {
 	solution.Solve(%s, %s, solution.Todo, solution.Todo)
 }
-	`, year, day))
+`, year, day, year, day)
 
-	// Write the file:
 	lib.MayPanic(os.WriteFile(path, []byte(fileStr), 0777))
 }
