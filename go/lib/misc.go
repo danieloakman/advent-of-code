@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -53,15 +54,16 @@ func SessionCookie() string {
 }
 
 func downloadInput(year int, day int) []byte {
-	url := fmt.Sprintf("https://www.adventofcode.com/%d/day/%d/input", year, day)
+	url := fmt.Sprintf("http://adventofcode.com/%d/day/%d/input", year, day)
 	req := Ok(http.NewRequest("GET", url, nil))
 
-	req.AddCookie(&http.Cookie{Name: "session", Value: SessionCookie(), Path: "/", MaxAge: 86400})
+	req.AddCookie(&http.Cookie{
+		Name: "session",
+		Value: SessionCookie(),
+	})
 	req.Header.Set("User-Agent", "doakman94@gmail.com")
-	req.Header.Set("Cookie", "session="+SessionCookie()) // TODO: still doesn't work, still get 400 Bad Request
 
-	client := &http.Client{}
-	resp := Ok(client.Do(req))
+	resp := Ok(http.DefaultClient.Do(req))
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
@@ -80,7 +82,7 @@ func GetInput(year int, day int) string {
 		if err != nil {
 			panic(err)
 		}
-		return string(bytes)
+		return strings.TrimSpace(string(bytes))
 	}
 	return string(Ok(os.ReadFile(path)))
 }
