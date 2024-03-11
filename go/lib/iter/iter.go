@@ -649,3 +649,49 @@ func (iter Iterator[T]) UniqueJustSeen(key func(T) int) Iterator[T] {
 		return true
 	})
 }
+
+// Iterates through the iterator and calls `effect` on each item but without modifying the value.
+func (iter Iterator[T]) Tap(effect func(T)) Iterator[T] {
+	return iter.Map(func(value T) T {
+		effect(value)
+		return value
+	})
+}
+
+// Iterates through the iterator and calls `effect` on each pair but without modifying the value.
+func (iter Iterator2[A, B]) Tap(effect func(a A, b B)) Iterator2[A, B] {
+	return iter.Map(func(a A, b B) (A, B) {
+		effect(a, b)
+		return a, b
+	})
+}
+
+// Iterates through all values in this iterator and calls `iteratee` on each one.
+func (iter Iterator[T]) Each(iteratee func(T)) {
+	iter(func (value T) bool {
+		iteratee(value)
+		return true
+	})
+}
+
+// Iterates through all pairs in this iterator and calls `iteratee` on each one.
+func (iter Iterator2[A, B]) Each(iteratee func(a A, b B)) {
+	iter(func (a A, b B) bool {
+		iteratee(a, b)
+		return true
+	})
+}
+
+// Consumes the iterator by iterating through it.
+func (iter Iterator[T]) Consume() {
+	iter(func (_ T) bool {
+		return true
+	})
+}
+
+// Consumes the iterator by iterating through it.
+func (iter Iterator2[A, B]) Consume() {
+	iter(func (_ A, _ B) bool {
+		return true
+	})
+}
