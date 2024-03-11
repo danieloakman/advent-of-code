@@ -8,7 +8,6 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -58,7 +57,7 @@ func downloadInput(year int, day int) []byte {
 	req := Ok(http.NewRequest("GET", url, nil))
 
 	req.AddCookie(&http.Cookie{
-		Name: "session",
+		Name:  "session",
 		Value: SessionCookie(),
 	})
 	req.Header.Set("User-Agent", "doakman94@gmail.com")
